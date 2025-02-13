@@ -1,0 +1,37 @@
+@import 'tailwindcss';
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-in-out;
+}
+
+input {
+  border: 1px solid #d1d5db; /* Tailwind gray-300 */
+  border-radius: 0.5rem; /* Tailwind rounded-lg */
+  padding: 0.5rem 1rem; /* Tailwind px-4 py-2 */
+  outline: none;
+  color: #1f2937;
+}
+
+input::placeholder {
+  color: #9ca3af; /* Tailwind gray-500 */
+}
+
+input:focus {
+  border-color: #f472b6; /* Tailwind pink-400 */
+  box-shadow: 0 0 0 2px #f472b6; /* Focus ring */
+}
