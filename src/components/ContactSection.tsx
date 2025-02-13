@@ -1,13 +1,7 @@
-import { useState } from 'react';
 import ContactForm from './ContactForm';
-import Modal from './Modal';
+import ModalButton from './ModalButton';
 
-// ContactSection.tsx
 const ContactSection = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
   return (
     <section className="bg-gray-100 py-10">
       <div className="max-w-6xl mx-auto px-4 text-center">
@@ -26,17 +20,13 @@ const ContactSection = () => {
             info@skinera.com
           </a>
         </p>
-        {/* Кнопка до форми */}
-        <button
-          className="mt-6 bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 px-6 rounded-lg hover:from-pink-600 hover:to-purple-600 shadow-lg transform hover:scale-105 transition-transform duration-300"
-          onClick={openModal}
-        >
-          Записатись на прийом
-        </button>
+        {/* Використання ModalButton */}
+        <ModalButton
+          buttonText="Записатись на прийом"
+          modalContent={<ContactForm />}
+          className="bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600"
+        />
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <ContactForm />
-      </Modal>
     </section>
   );
 };
