@@ -4,7 +4,7 @@ import FloatingButton from './components/FloatingButton';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
-import ReviewsSection from './components/ReviewsSection';
+import ReviewsSlider from './components/ReviewsSlider';
 import ServicesSection from './components/ServicesSection';
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
         <HeroSection />
         <AboutSection />
         <ServicesSection />
-        <ReviewsSection />
+        <ReviewsSlider />
         <ContactSection />
       </main>
 
