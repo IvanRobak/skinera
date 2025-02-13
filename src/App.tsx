@@ -1,5 +1,6 @@
 import AboutSection from './components/AboutSection';
 import ContactSection from './components/ContactSection';
+import FloatingButton from './components/FloatingButton';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -20,6 +21,7 @@ const App = () => {
       </main>
 
       <Footer />
+      <FloatingButton />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from './Modal';
 
 interface ModalButtonProps {
-  buttonText: string;
+  buttonText: React.ReactNode;
   modalContent: React.ReactNode;
   className?: string;
 }
