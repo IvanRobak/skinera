@@ -1,5 +1,5 @@
-import ContactForm from './ContactForm';
-import ModalButton from './ModalButton';
+import ContactForm from '../forms/ContactForm';
+import ModalButton from '../common/ModalButton';
 
 const HeroSection = () => {
   return (

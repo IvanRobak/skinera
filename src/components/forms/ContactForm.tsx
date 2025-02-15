@@ -97,7 +97,7 @@ const ContactForm = () => {
         </div>
 
         {/* Дата */}
-        <div>
+        {/* <div>
           <label className="block text-gray-700 font-bold mb-2" htmlFor="date">
             Дата
           </label>
@@ -128,7 +128,7 @@ const ContactForm = () => {
               {typeof errors.date.message === 'string' && errors.date.message}
             </p>
           )}
-        </div>
+        </div> */}
 
         {/* Кнопка */}
         <button

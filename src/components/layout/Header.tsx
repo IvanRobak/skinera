@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import ReactLogo from '../assets/icon.svg';
+import ReactLogo from '../../assets/icon/icon.svg';
+import Navigation from './Navigation';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="bg-pink-500 text-white py-4 shadow-md fixed top-0 w-full z-10">
-      <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
+      <div className="max-w-6xl mx-auto px-25 flex justify-between items-center">
         {/* Логотип */}
         <div className="flex items-center space-x-2">
           <img src={ReactLogo} alt="Skinera Logo" className="w-6 h-6" />
@@ -50,20 +51,21 @@ const Header = () => {
 
       {/* Меню для мобільних екранів */}
       {isMenuOpen && (
-        <nav className="md:hidden bg-pink-600">
-          <a href="#about" className="block py-2 px-4 hover:bg-pink-700 transition">
-            Про нас
-          </a>
-          <a href="#services" className="block py-2 px-4 hover:bg-pink-700 transition">
-            Послуги
-          </a>
-          <a href="#reviews" className="block py-2 px-4 hover:bg-pink-700 transition">
-            Відгуки
-          </a>
-          <a href="#contact" className="block py-2 px-4 hover:bg-pink-700 transition">
-            Контакти
-          </a>
-        </nav>
+        <Navigation />
+        // <nav className="md:hidden bg-pink-600">
+        //   <a href="#about" className="block py-2 px-4 hover:bg-pink-700 transition">
+        //     Про нас
+        //   </a>
+        //   <a href="#services" className="block py-2 px-4 hover:bg-pink-700 transition">
+        //     Послуги
+        //   </a>
+        //   <a href="#reviews" className="block py-2 px-4 hover:bg-pink-700 transition">
+        //     Відгуки
+        //   </a>
+        //   <a href="#contact" className="block py-2 px-4 hover:bg-pink-700 transition">
+        //     Контакти
+        //   </a>
+        // </nav>
       )}
     </header>
   );

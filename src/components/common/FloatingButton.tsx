@@ -1,5 +1,5 @@
 import ModalButton from './ModalButton';
-import ContactForm from './ContactForm';
+import ContactForm from '../forms/ContactForm';
 import { PhoneIcon } from '@heroicons/react/16/solid';
 
 const FloatingButton = () => {

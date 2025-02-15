@@ -1,6 +1,6 @@
-import faceCareImg from '../assets/images/face-care.png';
-import laserEpilationImg from '../assets/images/laser-epilation.png';
-import massageImg from '../assets/images/massage.png';
+import faceCareImg from '../../assets/images/face-care.png';
+import laserEpilationImg from '../../assets/images/laser-epilation.png';
+import massageImg from '../../assets/images/massage.png';
 
 const AboutSection = () => {
   return (

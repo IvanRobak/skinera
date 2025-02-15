@@ -1,12 +1,12 @@
-import AboutSection from './components/AboutSection';
-import ContactSection from './components/ContactSection';
-import FloatingButton from './components/FloatingButton';
-import FloatingSocialButtons from './components/FloatingSocialButtons';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import HeroSection from './components/HeroSection';
-import ReviewsSlider from './components/ReviewsSlider';
-import ServicesSection from './components/ServicesSection';
+import AboutSection from './components/sections/AboutSection';
+import ContactSection from './components/sections/ContactSection';
+import FloatingButton from './components/common/FloatingButton';
+import FloatingSocialButtons from './components/widgets/FloatingSocialButtons';
+import Footer from './components/layout/Footer';
+import Header from './components/layout/Header';
+import HeroSection from './components/sections/HeroSection';
+import ServicesSection from './components/sections/ServicesSection';
+import ReviewsSection from './components/sections/ReviewsSection';
 
 const App = () => {
   return (
@@ -17,7 +17,7 @@ const App = () => {
         <HeroSection />
         <AboutSection />
         <ServicesSection />
-        <ReviewsSlider />
+        <ReviewsSection />
         <ContactSection />
       </main>
 

@@ -1,9 +1,9 @@
-import ContactForm from './ContactForm';
-import ModalButton from './ModalButton';
+import ContactForm from '../forms/ContactForm';
+import ModalButton from '../common/ModalButton';
 
 const ContactSection = () => {
   return (
-    <section className="bg-gray-100 py-10">
+    <section className="bg-gray-100 py-10" id="contact">
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row  justify-center gap-8">
         {/* Ліва частина: текстова інформація */}
         <div
@@ -15,16 +15,10 @@ const ContactSection = () => {
           <p className="text-lg font-medium text-gray-900 mb-4">
             м. Львів, пр. Червоної калини, 36в
           </p>
-          <p className="text-lg text-gray-700 mb-4">
+          <p className="text-lg text-gray-700 mb-15">
             Телефон для запису:{' '}
             <a href="tel:+380965180956" className="text-pink-500 hover:underline">
               +38 096 518 0956
-            </a>
-          </p>
-          <p className="text-lg text-gray-700 mb-15">
-            Електронна пошта:{' '}
-            <a href="mailto:info@skinera.com" className="text-pink-500 hover:underline">
-              info@skinera.com
             </a>
           </p>
           {/* Використання ModalButton */}
