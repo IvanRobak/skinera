@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ReactLogo from '../assets/icon.svg';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -7,9 +8,10 @@ const Header = () => {
     <header className="bg-pink-500 text-white py-4 shadow-md fixed top-0 w-full z-10">
       <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
         {/* Логотип */}
-        {/* <img src="../assets/logo.png" alt="Skinera Logo" className="h-8" /> */}
-
-        <div className="text-2xl font-bold">Skinera</div>
+        <div className="flex items-center space-x-2">
+          <img src={ReactLogo} alt="Skinera Logo" className="w-6 h-6" />
+          <span className="text-2xl font-bold">Skinera</span>
+        </div>
 
         {/* Меню для великих екранів */}
         <nav className="hidden md:flex space-x-6">
