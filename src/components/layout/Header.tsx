@@ -50,23 +50,7 @@ const Header = () => {
       </div>
 
       {/* Меню для мобільних екранів */}
-      {isMenuOpen && (
-        <Navigation />
-        // <nav className="md:hidden bg-pink-600">
-        //   <a href="#about" className="block py-2 px-4 hover:bg-pink-700 transition">
-        //     Про нас
-        //   </a>
-        //   <a href="#services" className="block py-2 px-4 hover:bg-pink-700 transition">
-        //     Послуги
-        //   </a>
-        //   <a href="#reviews" className="block py-2 px-4 hover:bg-pink-700 transition">
-        //     Відгуки
-        //   </a>
-        //   <a href="#contact" className="block py-2 px-4 hover:bg-pink-700 transition">
-        //     Контакти
-        //   </a>
-        // </nav>
-      )}
+      {isMenuOpen && <Navigation />}
     </header>
   );
 };
