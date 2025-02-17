@@ -1,10 +1,9 @@
-import ContactForm from '../forms/ContactForm';
-import ModalButton from '../common/ModalButton';
+import ContactForm from '../components/forms/ContactForm';
+import ModalButton from '../components/common/ModalButton';
 
 const HeroSection = () => {
   return (
     <section
-      id="hero"
       className="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-white py-20 mt-16"
     >
       <div className="max-w-6xl mx-auto text-center px-4">

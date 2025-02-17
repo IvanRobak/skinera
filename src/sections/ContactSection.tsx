@@ -1,9 +1,9 @@
-import ContactForm from '../forms/ContactForm';
-import ModalButton from '../common/ModalButton';
+import ContactForm from '../components/forms/ContactForm';
+import ModalButton from '../components/common/ModalButton';
 
 const ContactSection = () => {
   return (
-    <section className="bg-gray-100 py-10" id="contact">
+    <section className="bg-gray-100 py-10">
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row  justify-center gap-8">
         {/* Ліва частина: текстова інформація */}
         <div

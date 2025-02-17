@@ -1,10 +1,10 @@
-import faceCareImg from '../../assets/images/face-care.png';
-import laserEpilationImg from '../../assets/images/laser-epilation.png';
-import massageImg from '../../assets/images/massage.png';
+import faceCareImg from '../assets/images/face-care.png';
+import laserEpilationImg from '../assets/images/laser-epilation.png';
+import massageImg from '../assets/images/massage.png';
 
 const AboutSection = () => {
   return (
-    <section className="py-20 bg-white" id="about">
+    <section className="py-20 bg-white">
       <div className="max-w-6xl mx-auto text-center px-4">
         <h2 className="text-4xl font-bold text-gray-800 mb-6 animate-fade-in">Про нас</h2>
         <p className="text-lg text-gray-600 leading-relaxed">

@@ -1,30 +1,27 @@
-import AboutSection from './components/sections/AboutSection';
-import ContactSection from './components/sections/ContactSection';
-import FloatingButton from './components/common/FloatingButton';
-import FloatingSocialButtons from './components/widgets/FloatingSocialButtons';
-import Footer from './components/layout/Footer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ServicesPage from './pages/ServicesPage';
+import ReviewsPage from './pages/ReviewsPage';
+import ContactPage from './pages/ContactPage';
 import Header from './components/layout/Header';
-import HeroSection from './components/sections/HeroSection';
-import ServicesSection from './components/sections/ServicesSection';
-import ReviewsSection from './components/sections/ReviewsSection';
+import Footer from './components/layout/Footer';
 
 const App = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <Router>
       <Header />
-
       <main className="flex-grow p-6 bg-gray-300">
-        <HeroSection />
-        <AboutSection />
-        <ServicesSection />
-        <ReviewsSection />
-        <ContactSection />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
       </main>
-
       <Footer />
-      <FloatingButton />
-      <FloatingSocialButtons />
-    </div>
+    </Router>
   );
 };
 
