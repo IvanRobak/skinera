@@ -1,10 +1,27 @@
+import { useState, useEffect } from 'react';
 import products from '../../assets/products.json';
 import ProductCard from './ProductCard';
 
-const ProductList = () => {
+const ProductList = ({ sortOption }: { sortOption: string }) => {
+  const [sortedProducts, setSortedProducts] = useState(products);
+
+  useEffect(() => {
+    let sorted = [...products];
+
+    if (sortOption === 'price-asc') {
+      sorted.sort((a, b) => a.price - b.price);
+    } else if (sortOption === 'price-desc') {
+      sorted.sort((a, b) => b.price - a.price);
+    } else if (sortOption === 'name') {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    setSortedProducts(sorted);
+  }, [sortOption]);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-y-16 gap-x-6 relative">
-      {products.map(product => (
+      {sortedProducts.map(product => (
         <div key={product.id} className="relative group">
           {/* Картка товару */}
           <ProductCard product={product} />
