@@ -1,17 +1,38 @@
+import { useNavigate } from 'react-router-dom';
+
 interface Product {
   id: number;
-  image: string;
+  image_url: string;
   name: string;
   price: number;
 }
 
 const ProductCard = ({ product }: { product: Product }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="border rounded-lg p-4 shadow-md">
-      <img src={product.image} alt={product.name} className="w-full h-40 object-cover mb-4" />
-      <h2 className="text-xl font-semibold">{product.name}</h2>
-      <p className="text-gray-700">Ціна: {product.price} грн</p>
-      <button className="mt-4 bg-pink-500 text-white py-2 px-4 rounded">Детальніше</button>
+    <div
+      className="bg-white rounded-lg shadow-lg flex flex-col h-full cursor-pointer"
+      onClick={() => navigate(`/product/${product.id}`)}
+    >
+      {/* Контейнер для зображення */}
+      <div className="w-full h-64 bg-gray-100 p-6 flex items-center justify-center rounded-lg overflow-hidden">
+        <img
+          src={product.image_url}
+          alt={product.name}
+          className="max-h-full w-auto object-contain"
+        />
+      </div>
+
+      {/* Контейнер для назви та ціни */}
+      <div className="flex-grow p-4 text-center">
+        <h2 className="text-gray-600 text-sm md:text-base font-medium line-clamp-2 min-h-[3rem]">
+          {product.name}
+        </h2>
+        <p className="text-gray-600 mt-2 text-lg">
+          <span className="font-bold">{product.price} ₴</span>
+        </p>
+      </div>
     </div>
   );
 };

@@ -1,17 +1,21 @@
+import products from '../../assets/products.json';
 import ProductCard from './ProductCard';
-import creamImg from '../../assets/images/face-care.png';
-
-const products = [
-  { id: 1, name: 'Крем для обличчя', price: 250, image: creamImg },
-  { id: 2, name: 'Лосьйон для тіла', price: 300, image: creamImg },
-  { id: 3, name: 'Маска для шкіри', price: 180, image: creamImg },
-];
 
 const ProductList = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-y-16 gap-x-6 relative">
       {products.map(product => (
-        <ProductCard key={product.id} product={product} />
+        <div key={product.id} className="relative group">
+          {/* Картка товару */}
+          <ProductCard product={product} />
+
+          {/* Кнопка "Купити" в просторі між рядами */}
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-[-50px] opacity-0 group-hover:opacity-100 group-hover:bottom-[-40px] transition-all duration-300">
+            <button className="bg-pink-500 text-white py-2 px-16 rounded-lg shadow-md hover:bg-pink-600 transition">
+              Купити
+            </button>
+          </div>
+        </div>
       ))}
     </div>
   );
