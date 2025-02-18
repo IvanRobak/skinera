@@ -6,6 +6,7 @@ import ReviewsPage from './pages/ReviewsPage';
 import ContactPage from './pages/ContactPage';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import ProductsPage from './pages/ProductsPage';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/reviews" element={<ReviewsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/products" element={<ProductsPage />} />
         </Routes>
       </main>
       <Footer />

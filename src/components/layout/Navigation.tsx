@@ -10,6 +10,12 @@ const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
       <Link to="/about" className={`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}>
         Про нас
       </Link>
+      <Link
+        to="/products"
+        className="{`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}"
+      >
+        Товари
+      </Link>
       <Link to="/services" className={`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}>
         Послуги
       </Link>
