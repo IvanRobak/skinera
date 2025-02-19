@@ -1331,5 +1331,29 @@
       "Фактор защиты": "SPF 30",
       "Тип фактора защиты": "Широкий спектр защиты UVA/UVB"
     }
+  },
+  {
+    "id": 1140208,
+    "name": "Зволожувальний Сонцезахисний Крем SPF-50 Sun Protect Moisturizing Cream SPF-50 Renew 80мл",
+    "price": 2200,
+    "image_url": "https://images.prom.ua/6391931620_uvlazhnyayuschij-solntsezaschitnyj-krem.jpg",
+    "category": "Sunscreen",
+    "brand": "Holilend",
+    "country": "Франція",
+    "characteristics": {
+      "skin_type": "Комбінована (Змішана)|Нормальна|Суха|Жирна",
+      "cosmetic_classification": "Професійна",
+      "volume": "80.0",
+      "purpose_and_result": "Зволоження|Відновлення|Пом’якшення",
+      "skin_problem": "Чутливість",
+      "age": "18+",
+      "hypoallergenic": "Так",
+      "age_group": "Без обмежень",
+      "application_area": "Лицо|Шея",
+      "eye_care_type": "Крем",
+      "Тип солнцезащитного средства": "Крем",
+      "Фактор защиты": "SPF 30",
+      "Тип фактора защиты": "Широкий спектр защиты UVA/UVB"
+    }
   }
 ]
