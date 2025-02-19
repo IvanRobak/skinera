@@ -2,17 +2,37 @@ import { useState, useEffect } from 'react';
 import products from '../../assets/products.json';
 import ProductCard from './ProductCard';
 
-const ProductList = ({ sortOption, searchQuery }: { sortOption: string; searchQuery: string }) => {
+const ProductList = ({
+  sortOption,
+  searchQuery,
+  selectedBrand,
+  selectedCategory,
+}: {
+  sortOption: string;
+  searchQuery: string;
+  selectedBrand: string;
+  selectedCategory: string;
+}) => {
   const [filteredProducts, setFilteredProducts] = useState(products);
 
   useEffect(() => {
     let updatedProducts = [...products];
 
-    // Фільтрація за назвою
+    // Фільтр за пошуковим запитом
     if (searchQuery) {
       updatedProducts = updatedProducts.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
+    }
+
+    // Фільтр за брендом
+    if (selectedBrand) {
+      updatedProducts = updatedProducts.filter(product => product.brand === selectedBrand);
+    }
+
+    // Фільтр за категорією
+    if (selectedCategory) {
+      updatedProducts = updatedProducts.filter(product => product.category === selectedCategory);
     }
 
     // Сортування
@@ -25,7 +45,7 @@ const ProductList = ({ sortOption, searchQuery }: { sortOption: string; searchQu
     }
 
     setFilteredProducts(updatedProducts);
-  }, [sortOption, searchQuery]);
+  }, [sortOption, searchQuery, selectedBrand, selectedCategory]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-y-16 gap-x-6 relative">
