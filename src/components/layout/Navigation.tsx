@@ -29,7 +29,7 @@ const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
         Відгуки
       </Link>
       <Link
-        href="/contact"
+        href="/contacts"
         className={`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}
       >
         Контакти

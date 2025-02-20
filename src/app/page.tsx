@@ -3,6 +3,8 @@ import './globals.css';
 import AboutSection from '@/components/sections/AboutSection';
 import ServicesSection from '@/components/sections/ServicesSection';
 import HeroSection from '@/components/sections/HeroSection';
+import ReviewsSection from '@/components/sections/ReviewsSection';
+import ContactSection from '@/components/sections/ContactsSection';
 
 export default function Home() {
   return (
@@ -10,6 +12,8 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
+      <ReviewsSection />
+      <ContactSection />
     </div>
   );
 }
