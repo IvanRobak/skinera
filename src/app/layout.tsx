@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import FloatingButton from '@/components/common/FloatingButton';
+import FloatingSocialButtons from '@/components/common/FloatingSocialButtons';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,7 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <Header />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-grow">
+          {children}
+          <FloatingButton />
+          <FloatingSocialButtons />
+        </main>
         <Footer />
       </body>
     </html>
