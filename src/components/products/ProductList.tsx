@@ -75,7 +75,7 @@ const ProductList = ({
           <div key={product.id} className="relative group">
             <ProductCard product={product} />
             <div className="absolute left-1/2 -translate-x-1/2 bottom-[-50px] opacity-0 group-hover:opacity-100 group-hover:bottom-[-40px] transition-all duration-300">
-              <button className="bg-pink-500 text-white py-2 px-16 rounded-lg shadow-md hover:bg-pink-600 transition">
+              <button className="bg-red-500 text-white py-2 px-16 rounded-lg shadow-md hover:bg-red-600 transition">
                 Купити
               </button>
             </div>

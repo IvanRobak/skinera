@@ -18,12 +18,12 @@ const ProductCard = ({ product }: { product: Product }) => {
       className="bg-white rounded-lg shadow-lg flex flex-col h-full cursor-pointer"
       onClick={() => router.push(`/products/${product.id}`)}
     >
-      {/* Контейнер для зображення */}
-      <div className="w-full h-64 bg-gray-100 p-6 flex items-center justify-center rounded-lg overflow-hidden">
+      {/* Контейнер для зображення з підложкою */}
+      <div className="w-full h-64 bg-gray-100 p-6 flex items-center justify-center rounded-lg overflow-hidden shadow-md">
         <Image
           src={product.image_url}
           alt={product.name}
-          width={300} // встановіть оптимальні розміри
+          width={300} // Встановіть оптимальні розміри
           height={300}
           className="object-contain"
         />
