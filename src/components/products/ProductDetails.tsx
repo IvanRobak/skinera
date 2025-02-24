@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import ProductCard from '@/components/products/ProductCard'; // Імпортуємо ProductCard
 
 interface Product {
   id: number;
@@ -33,13 +34,15 @@ interface Product {
 export default function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProducts = async () => {
       try {
         const res = await fetch('/products.json');
         const products: Product[] = await res.json();
+        setAllProducts(products);
         const foundProduct = products.find(p => p.id.toString() === id) || null;
         setProduct(foundProduct);
       } catch (error) {
@@ -49,7 +52,7 @@ export default function ProductDetails() {
       }
     };
 
-    if (id) fetchProduct();
+    if (id) fetchProducts();
   }, [id]);
 
   if (loading) {
@@ -80,8 +83,14 @@ export default function ProductDetails() {
     );
   }
 
+  // Фільтруємо схожі продукти (наприклад, за брендом і категорією)
+  const relatedProducts = allProducts
+    .filter(p => p.id !== product.id) // Виключаємо поточний продукт
+    .filter(p => p.brand === product.brand || p.category === product.category) // Схожі за брендом або категорією
+    .slice(0, 4); // Беремо лише 4 схожі продукти
+
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -95,16 +104,16 @@ export default function ProductDetails() {
             {product.brand} | {product.country}
           </p>
         </div>
-
         {/* Основний контент: зображення ліворуч, кнопка/ціна праворуч */}
         <div className="flex flex-col md:flex-row gap-8 p-6">
           {/* Зображення */}
           <div className="w-full md:w-1/2 flex justify-center p-8 bg-gray-100 rounded-lg shadow-md">
-            <div className="relative w-full max-w-xs h-[400px]  p-4">
+            <div className="relative w-full max-w-xs h-[400px] p-4">
               <Image
                 src={product.image_url}
                 alt={product.name}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-contain"
                 priority={true}
               />
@@ -117,7 +126,7 @@ export default function ProductDetails() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className=" bg-red-500 text-white py-3 px-12 rounded-md hover:bg-red-600 focus:ring-4 focus:ring-red-200 focus:outline-none transition duration-300"
+              className="w-full bg-red-500 text-white py-3 px-6 rounded-md hover:bg-red-600 focus:ring-4 focus:ring-red-200 focus:outline-none transition duration-300"
             >
               Купити зараз
             </motion.button>
@@ -127,7 +136,6 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
-
         {/* Текстовий контент: опис, інструкції, склад */}
         <div className="p-6 border-t border-gray-200 space-y-6">
           {/* Опис */}
@@ -185,6 +193,17 @@ export default function ProductDetails() {
             </div>
           )}
         </div>
+        // У секції "Схожі продукти" в ProductDetails:
+        {relatedProducts.length > 0 && (
+          <div className="p-6 border-t border-gray-200">
+            <h2 className="text-lg font-medium text-gray-800 mb-4">Схожі продукти</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-4 sm:p-6 justify-items-center">
+              {relatedProducts.map(relatedProduct => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              ))}
+            </div>
+          </div>
+        )}
       </motion.div>
     </div>
   );

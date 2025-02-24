@@ -15,26 +15,27 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-lg flex flex-col h-full cursor-pointer"
+      className="bg-white rounded-lg shadow-lg flex flex-col h-full cursor-pointer max-w-xs"
       onClick={() => router.push(`/products/${product.id}`)}
     >
       {/* Контейнер для зображення з підложкою */}
-      <div className="w-full h-64 bg-gray-100 p-6 flex items-center justify-center rounded-lg overflow-hidden shadow-md">
+      <div className="w-full h-auto sm:h-48 md:h-64 bg-gray-100 p-4 sm:p-6 flex items-center justify-center rounded-lg overflow-hidden shadow-md">
         <Image
           src={product.image_url}
           alt={product.name}
-          width={300} // Встановіть оптимальні розміри
+          width={300}
           height={300}
-          className="object-contain"
+          className="object-contain w-full h-auto max-h-full"
+          priority={true}
         />
       </div>
 
       {/* Контейнер для назви та ціни */}
-      <div className="flex-grow p-4 text-center">
-        <h2 className="text-gray-600 text-sm md:text-base font-medium line-clamp-2 min-h-[3rem]">
+      <div className="flex-grow p-2 sm:p-4 text-center">
+        <h2 className="text-gray-600 text-xs sm:text-sm md:text-base font-medium line-clamp-2 min-h-[2rem] sm:min-h-[3rem]">
           {product.name}
         </h2>
-        <p className="text-gray-600 mt-2 text-lg">
+        <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-lg">
           <span className="font-bold">{product.price} ₴</span>
         </p>
       </div>
