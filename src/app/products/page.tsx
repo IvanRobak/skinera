@@ -122,7 +122,7 @@ const ProductsPage = () => {
         </aside>
 
         {/* Список товарів (праворуч) */}
-        <div className="md:w-3/4">
+        <div className="md:w-3/4 flex justify-center">
           <ProductList
             sortOption={sortOption}
             searchQuery={searchQuery}

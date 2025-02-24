@@ -69,13 +69,13 @@ const ProductList = ({
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-4 sm:p-6 justify-items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-4 sm:p-6">
       {products.length > 0 ? (
         products.map(product => (
           <div key={product.id} className="relative group">
             <ProductCard product={product} />
             <div className="absolute left-1/2 -translate-x-1/2 bottom-[-30px] sm:bottom-[-40px] opacity-0 group-hover:opacity-100 group-hover:bottom-[-20px] sm:group-hover:bottom-[-30px] transition-all duration-300">
-              <button className="bg-red-500 text-white py-1 sm:py-2 px-8 sm:px-16 rounded-lg shadow-md hover:bg-red-600 transition text-xs sm:text-sm">
+              <button className="bg-red-500 text-white py-1 sm:py-2 px-8 sm:px-16 rounded-lg shadow-md hover:bg-red-600 transition text-xs sm:text-sm ">
                 Купити
               </button>
             </div>
