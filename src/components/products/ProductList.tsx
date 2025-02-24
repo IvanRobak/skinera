@@ -74,8 +74,8 @@ const ProductList = ({
         products.map(product => (
           <div key={product.id} className="relative group">
             <ProductCard product={product} />
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-[-30px] sm:bottom-[-40px] opacity-0 group-hover:opacity-100 group-hover:bottom-[-20px] sm:group-hover:bottom-[-30px] transition-all duration-300">
-              <button className="bg-red-500 text-white py-1 sm:py-2 px-8 sm:px-16 rounded-lg shadow-md hover:bg-red-600 transition text-xs sm:text-sm ">
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-[-10px] opacity-0 group-hover:opacity-100 group-hover:bottom-[-20px] transition-all duration-300">
+              <button className="bg-red-500 text-white py-1 sm:py-2 px-8 sm:px-16 rounded-lg shadow-md hover:bg-red-600 transition text-xs sm:text-sm">
                 Купити
               </button>
             </div>
