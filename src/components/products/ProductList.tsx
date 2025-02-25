@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
+import { toast } from 'react-toastify'; // Додамо бібліотеку для спливаючих повідомлень (потім поясню, як її інсталювати)
 
 const ProductList = ({
   sortOption = '',
@@ -18,6 +19,7 @@ const ProductList = ({
 }) => {
   const [products, setProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [cart, setCart] = useState<any[]>([]); // Новий стан для кошика, де зберігатимуться продукти
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -64,6 +66,23 @@ const ProductList = ({
     fetchProducts();
   }, [sortOption, searchQuery, selectedBrand, selectedCategory, selectedCountry]);
 
+  // Обробник для додавання товару до кошика
+  const handleAddToCart = (product: any) => {
+    const existingProduct = cart.find(item => item.id === product.id);
+    if (existingProduct) {
+      toast.info('Цей товар уже в кошику!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    } else {
+      setCart([...cart, { ...product, quantity: 1 }]); // Додаємо продукт із кількістю 1
+      toast.success('Товар додано до кошика!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    }
+  };
+
   if (isLoading) {
     return <p className="text-center text-gray-600 text-lg">⏳ Завантаження...</p>;
   }
@@ -75,7 +94,13 @@ const ProductList = ({
           <div key={product.id} className="relative group">
             <ProductCard product={product} />
             <div className="absolute left-1/2 -translate-x-1/2 bottom-[-10px] opacity-0 group-hover:opacity-100 group-hover:bottom-[-20px] transition-all duration-300 z-10">
-              <button className="bg-red-500 text-white py-1 px-12  rounded-lg shadow-md hover:bg-red-600 transition text-xs sm:text-sm">
+              <button
+                className="bg-red-500 text-white py-1 px-12 rounded-lg shadow-md hover:bg-red-600 transition text-xs sm:text-sm"
+                onClick={e => {
+                  e.stopPropagation(); // Щоб не викликати onClick картки
+                  handleAddToCart(product);
+                }}
+              >
                 Купити
               </button>
             </div>

@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import FloatingButton from '@/components/common/FloatingButton';
 import FloatingSocialButtons from '@/components/common/FloatingSocialButtons';
+import { ToastContainer } from 'react-toastify';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <FloatingButton />
           <FloatingSocialButtons />
+          <ToastContainer />
         </main>
         <Footer />
       </body>
