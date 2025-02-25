@@ -43,7 +43,7 @@ const ProductsPage = () => {
       <h1 className="text-3xl font-bold text-center m-10">Наші Товари</h1>
 
       {/* Пошук та сортування */}
-      <div className="mb-6 flex flex-col md:flex-row justify-end items-center gap-4">
+      <div className="mb-6 flex flex-col md:flex-row justify-end items-center gap-4 px-15 sm:px-30 md:px-6 ">
         <input
           type="text"
           placeholder="🔍 Пошук товарів..."
@@ -64,9 +64,9 @@ const ProductsPage = () => {
         </select>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-6 ">
         {/* Блок фільтрів (ліворуч) */}
-        <aside className="md:w-1/4 border-r pr-4 space-y-4">
+        <aside className="md:w-1/4 border-r p-4 space-y-4 gap-4 px-15 sm:px-30 md:px-6  ">
           <h2 className="text-xl font-semibold mb-2">Фільтри</h2>
 
           {/* Фільтр за брендом */}
