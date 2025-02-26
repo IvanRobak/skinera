@@ -79,7 +79,7 @@ const ProductList = ({
     addToCart(cartItem);
     toast.success('Товар додано до кошика!', {
       position: 'top-right',
-      autoClose: 3000,
+      autoClose: 1000,
     });
   };
 

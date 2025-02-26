@@ -1,9 +1,6 @@
 // components/Cart.tsx
 'use client';
 
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-
 interface CartItem {
   id: number;
   name: string;
@@ -23,14 +20,14 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
   if (!cart.length) {
     return (
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 pointer-events-auto"
+        className="fixed inset-0 bg-gray-800 bg-opacity-30 flex items-center justify-center z-[100] pointer-events-auto"
         onClick={onClose}
       >
         <div
-          className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full z-50 pointer-events-auto"
+          className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full"
           onClick={e => e.stopPropagation()}
         >
-          <h3 className="text-lg font-bold mb-2">Кошик</h3>
+          <h3 className="text-lg font-bold text-gray-600 mb-2">Кошик</h3>
           <p className="text-gray-600">Кошик порожній</p>
           <button
             className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
@@ -45,11 +42,11 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 pointer-events-auto"
+      className="fixed inset-0 bg-gray-700 bg-opacity-30 flex items-center justify-center z-[100] pointer-events-auto"
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full z-60 pointer-events-auto"
+        className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4">
