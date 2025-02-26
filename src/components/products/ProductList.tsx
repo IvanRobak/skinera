@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
-import { toast } from 'react-toastify'; // Додамо бібліотеку для спливаючих повідомлень (потім поясню, як її інсталювати)
+import { useCartStore } from '../store/cartStore'; // Імпортуй зі свого шляху
+import { toast } from 'react-toastify';
 
 const ProductList = ({
   sortOption = '',
@@ -19,7 +20,7 @@ const ProductList = ({
 }) => {
   const [products, setProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [cart, setCart] = useState<any[]>([]); // Новий стан для кошика, де зберігатимуться продукти
+  const { addToCart, cart } = useCartStore(); // Використовуємо Zustand для кошика
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -68,19 +69,18 @@ const ProductList = ({
 
   // Обробник для додавання товару до кошика
   const handleAddToCart = (product: any) => {
-    const existingProduct = cart.find(item => item.id === product.id);
-    if (existingProduct) {
-      toast.info('Цей товар уже в кошику!', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]); // Додаємо продукт із кількістю 1
-      toast.success('Товар додано до кошика!', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-    }
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url,
+      quantity: 1, // Початкова кількість
+    };
+    addToCart(cartItem);
+    toast.success('Товар додано до кошика!', {
+      position: 'top-right',
+      autoClose: 3000,
+    });
   };
 
   if (isLoading) {
@@ -97,7 +97,7 @@ const ProductList = ({
               <button
                 className="bg-red-500 text-white py-1 px-12 rounded-lg shadow-md hover:bg-red-600 transition text-xs sm:text-sm"
                 onClick={e => {
-                  e.stopPropagation(); // Щоб не викликати onClick картки
+                  e.stopPropagation();
                   handleAddToCart(product);
                 }}
               >
