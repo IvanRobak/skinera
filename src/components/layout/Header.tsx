@@ -3,9 +3,18 @@
 import { useState } from 'react';
 import Navigation from './Navigation';
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { UserIcon } from '@heroicons/react/24/outline';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
+
+  const handleAuthClick = () => {
+    if (session) {
+      signOut();
+    }
+  };
 
   return (
     <header className="bg-pink-500 text-white py-4 shadow-md fixed top-0 w-full z-10">
@@ -17,7 +26,29 @@ const Header = () => {
         </Link>
 
         {/* Меню для великих екранів */}
-        <Navigation />
+        <div className="flex items-center space-x-4">
+          <Navigation />
+          {session ? (
+            <div className="flex items-center space-x-2">
+              <span className="text-sm">{session.user?.name}</span>
+              <button
+                onClick={handleAuthClick}
+                className="flex items-center space-x-1 px-3 py-1 rounded-md hover:bg-pink-600 transition-colors"
+              >
+                <UserIcon className="w-5 h-5" />
+                <span>Вийти</span>
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/auth/signin"
+              className="flex items-center space-x-1 px-3 py-1 rounded-md hover:bg-pink-600 transition-colors"
+            >
+              <UserIcon className="w-5 h-5" />
+              <span>Увійти</span>
+            </Link>
+          )}
+        </div>
 
         {/* Бургер-меню для мобільних екранів */}
         <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden focus:outline-none">
@@ -39,7 +70,35 @@ const Header = () => {
       </div>
 
       {/* Меню для мобільних екранів */}
-      {isMenuOpen && <Navigation isMobile />}
+      {isMenuOpen && (
+        <div className="md:hidden">
+          <Navigation isMobile />
+          {session ? (
+            <div className="px-4 py-2 border-t border-pink-600">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">{session.user?.name}</span>
+                <button
+                  onClick={handleAuthClick}
+                  className="flex items-center space-x-1 px-3 py-1 rounded-md hover:bg-pink-600 transition-colors"
+                >
+                  <UserIcon className="w-5 h-5" />
+                  <span>Вийти</span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="px-4 py-2 border-t border-pink-600">
+              <Link
+                href="/auth/signin"
+                className="flex items-center space-x-1 px-3 py-1 rounded-md hover:bg-pink-600 transition-colors"
+              >
+                <UserIcon className="w-5 h-5" />
+                <span>Увійти</span>
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
     </header>
   );
 };
