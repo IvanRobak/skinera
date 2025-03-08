@@ -1,12 +1,9 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import clientPromise from '@/lib/mongodb';
+import { MongoClient } from 'mongodb';
 import { compare } from 'bcryptjs';
 
-export const authOptions: NextAuthOptions = {
-  adapter: MongoDBAdapter(clientPromise),
-  secret: process.env.NEXTAUTH_SECRET,
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -16,52 +13,39 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) {
-          return null;
+          throw new Error('Missing credentials');
         }
 
-        const db = (await clientPromise).db();
-        const user = await db.collection('users').findOne({ username: credentials.username });
+        const client = await MongoClient.connect(process.env.MONGODB_URI as string);
+        const users = client.db().collection('users');
+
+        const user = await users.findOne({ username: credentials.username });
+        await client.close();
 
         if (!user) {
-          return null;
+          throw new Error('No user found');
         }
 
-        const isPasswordValid = await compare(credentials.password, user.password);
-        if (!isPasswordValid) {
-          return null;
+        const isValid = await compare(credentials.password, user.password);
+
+        if (!isValid) {
+          throw new Error('Invalid password');
         }
 
         return {
           id: user._id.toString(),
-          name: user.name,
-          email: user.email,
+          name: user.username, 
+          email: user.email
         };
       },
     }),
   ],
+  pages: {
+    signIn: '/auth/signin',
+  },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 днів
   },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      session.user = {
-        id: token.id,
-        name: token.name,
-        email: token.email,
-      };
-      return session;
-    },
-  },
-};
+});
 
-const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
