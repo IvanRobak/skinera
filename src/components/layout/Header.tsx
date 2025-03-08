@@ -40,13 +40,21 @@ const Header = () => {
               </button>
             </div>
           ) : (
-            <Link
-              href="/auth/signin"
-              className="flex items-center space-x-1 px-3 py-1 rounded-md hover:bg-pink-600 transition-colors"
-            >
-              <UserIcon className="w-5 h-5" />
-              <span>Увійти</span>
-            </Link>
+            <div className="flex items-center space-x-2">
+              <Link
+                href="/auth/signin"
+                className="flex items-center space-x-1 px-3 py-1 rounded-md hover:bg-pink-600 transition-colors"
+              >
+                <UserIcon className="w-5 h-5" />
+                <span>Увійти</span>
+              </Link>
+              <Link
+                href="/auth/register"
+                className="flex items-center space-x-1 px-3 py-1 bg-white text-pink-600 rounded-md hover:bg-gray-100 transition-colors"
+              >
+                <span>Реєстрація</span>
+              </Link>
+            </div>
           )}
         </div>
 
@@ -87,13 +95,19 @@ const Header = () => {
               </div>
             </div>
           ) : (
-            <div className="px-4 py-2 border-t border-pink-600">
+            <div className="px-4 py-2 border-t border-pink-600 flex flex-col space-y-2">
               <Link
                 href="/auth/signin"
                 className="flex items-center space-x-1 px-3 py-1 rounded-md hover:bg-pink-600 transition-colors"
               >
                 <UserIcon className="w-5 h-5" />
                 <span>Увійти</span>
+              </Link>
+              <Link
+                href="/auth/register"
+                className="flex items-center space-x-1 px-3 py-1 bg-white text-pink-600 rounded-md hover:bg-gray-100 transition-colors"
+              >
+                <span>Реєстрація</span>
               </Link>
             </div>
           )}

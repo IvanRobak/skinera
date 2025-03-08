@@ -1,9 +1,12 @@
-import NextAuth from 'next-auth';
-import type { AuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import clientPromise from '@/lib/mongodb';
+import { compare } from 'bcryptjs';
 
-export const authOptions: AuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET || 'your-default-secret',
+export const authOptions: NextAuthOptions = {
+  adapter: MongoDBAdapter(clientPromise),
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -16,28 +19,33 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
-        if (credentials.username === 'admin' && credentials.password === 'password') {
-          return {
-            id: '1',
-            name: 'Test User',
-            email: 'test@example.com',
-          };
+        const db = (await clientPromise).db();
+        const user = await db.collection('users').findOne({ username: credentials.username });
+
+        if (!user) {
+          return null;
         }
-        return null;
+
+        const isPasswordValid = await compare(credentials.password, user.password);
+        if (!isPasswordValid) {
+          return null;
+        }
+
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+        };
       },
     }),
   ],
-  pages: {
-    signIn: '/auth/signin',
-  },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60, // 30 днів
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // Copy user properties to token
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
@@ -45,12 +53,11 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        // Copy token properties to session user
-        session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
-      }
+      session.user = {
+        id: token.id,
+        name: token.name,
+        email: token.email,
+      };
       return session;
     },
   },
