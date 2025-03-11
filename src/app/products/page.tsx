@@ -1,4 +1,4 @@
-'use client'; // Вказуємо, що це клієнтський компонент
+'use client';
 
 import { useState, useEffect } from 'react';
 import ProductList from '@/components/products/ProductList';
@@ -9,14 +9,30 @@ const ProductsPage = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [products, setProducts] = useState<any[]>([]);
+  interface Product {
+    id: number;
+    name: string;
+    price: number;
+    image_url: string;
+    category: string;
+    brand: string;
+    country: string;
+  }
+  const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Отримання даних про товари з файлу products.json у public/
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('/products.json'); // Завантаження JSON
+        const url = new URL('/api/products', window.location.origin);
+        if (searchQuery) url.searchParams.append('search', searchQuery);
+        if (selectedBrand) url.searchParams.append('brand', selectedBrand);
+        if (selectedCategory) url.searchParams.append('category', selectedCategory);
+        if (selectedCountry) url.searchParams.append('country', selectedCountry);
+        if (sortOption && sortOption !== 'default') url.searchParams.append('sort', sortOption);
+
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         setProducts(data);
         setIsLoading(false);
@@ -27,12 +43,14 @@ const ProductsPage = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [sortOption, searchQuery, selectedBrand, selectedCategory, selectedCountry]);
 
-  // Отримуємо унікальні значення для фільтрів (якщо товари завантажилися)
-  const uniqueBrands = Array.from(new Set(products.map(product => product.brand)));
-  const uniqueCategories = Array.from(new Set(products.map(product => product.category)));
-  const uniqueCountries = Array.from(new Set(products.map(product => product.country)));
+  // Отримуємо унікальні значення для фільтрів
+  const uniqueBrands = Array.from(new Set(products.map((product: Product) => product.brand)));
+  const uniqueCategories = Array.from(
+    new Set(products.map((product: Product) => product.category))
+  );
+  const uniqueCountries = Array.from(new Set(products.map((product: Product) => product.country)));
 
   if (isLoading) {
     return <p className="text-center text-gray-600 text-lg">⏳ Завантаження...</p>;
@@ -41,8 +59,6 @@ const ProductsPage = () => {
   return (
     <div className="max-w-6xl mx-auto py-10">
       <h1 className="text-3xl font-bold text-center m-10">Наші Товари</h1>
-
-      {/* Пошук та сортування */}
       <div className="mb-6 flex flex-col md:flex-row justify-end items-center gap-4 px-15 sm:px-30 md:px-6 ">
         <input
           type="text"
@@ -63,13 +79,9 @@ const ProductsPage = () => {
           <option value="country">За країною</option>
         </select>
       </div>
-
       <div className="flex flex-col md:flex-row gap-6 ">
-        {/* Блок фільтрів (ліворуч) */}
         <aside className="md:w-1/4 border-r p-4 space-y-4 gap-4 px-15 sm:px-30 md:px-6  ">
           <h2 className="text-xl font-semibold mb-2">Фільтри</h2>
-
-          {/* Фільтр за брендом */}
           <div>
             <label className="text-gray-700 font-medium">Бренд:</label>
             <select
@@ -85,8 +97,6 @@ const ProductsPage = () => {
               ))}
             </select>
           </div>
-
-          {/* Фільтр за категорією */}
           <div>
             <label className="text-gray-700 font-medium">Категорія:</label>
             <select
@@ -102,8 +112,6 @@ const ProductsPage = () => {
               ))}
             </select>
           </div>
-
-          {/* Фільтр за країною */}
           <div>
             <label className="text-gray-700 font-medium">Країна:</label>
             <select
@@ -120,10 +128,9 @@ const ProductsPage = () => {
             </select>
           </div>
         </aside>
-
-        {/* Список товарів (праворуч) */}
         <div className="md:w-3/4 flex justify-center">
           <ProductList
+            products={products} // Передаємо завантажені продукти
             sortOption={sortOption}
             searchQuery={searchQuery}
             selectedBrand={selectedBrand}

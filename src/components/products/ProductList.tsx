@@ -5,62 +5,51 @@ import ProductCard from './ProductCard';
 import { useCartStore } from '../store/cartStore'; // Імпортуй зі свого шляху
 import { toast } from 'react-toastify';
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image_url: string;
+  category: string;
+  brand: string;
+  country: string;
+}
+
 const ProductList = ({
+  products: initialProducts = [], // Отримуємо продукти як проп
   sortOption = '',
   searchQuery = '',
   selectedBrand = '',
   selectedCategory = '',
   selectedCountry = '',
 }: {
+  products?: Product[];
   sortOption?: string;
   searchQuery?: string;
   selectedBrand?: string;
   selectedCategory?: string;
   selectedCountry?: string;
 }) => {
-  const [products, setProducts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { addToCart, cart } = useCartStore(); // Використовуємо Zustand для кошика
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const { addToCart } = useCartStore();
 
+  // Оновлення продуктів, якщо змінилися фільтри (хоча сортування вже на сервері)
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('/products.json');
+        const url = new URL('/api/products', window.location.origin);
+        if (searchQuery) url.searchParams.append('search', searchQuery);
+        if (selectedBrand) url.searchParams.append('brand', selectedBrand);
+        if (selectedCategory) url.searchParams.append('category', selectedCategory);
+        if (selectedCountry) url.searchParams.append('country', selectedCountry);
+        if (sortOption && sortOption !== 'default') url.searchParams.append('sort', sortOption);
+
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        let updatedProducts = [...data];
-
-        if (searchQuery) {
-          updatedProducts = updatedProducts.filter(product =>
-            product.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
-        if (selectedBrand) {
-          updatedProducts = updatedProducts.filter(product => product.brand === selectedBrand);
-        }
-        if (selectedCategory) {
-          updatedProducts = updatedProducts.filter(
-            product => product.category === selectedCategory
-          );
-        }
-        if (selectedCountry) {
-          updatedProducts = updatedProducts.filter(product => product.country === selectedCountry);
-        }
-
-        if (sortOption === 'price-asc') {
-          updatedProducts.sort((a, b) => a.price - b.price);
-        } else if (sortOption === 'price-desc') {
-          updatedProducts.sort((a, b) => b.price - a.price);
-        } else if (sortOption === 'name') {
-          updatedProducts.sort((a, b) => a.name.localeCompare(b.name));
-        } else if (sortOption === 'country') {
-          updatedProducts.sort((a, b) => a.country.localeCompare(b.country));
-        }
-
-        setProducts(updatedProducts);
-        setIsLoading(false);
+        setProducts(data);
       } catch (error) {
-        console.error('Помилка завантаження продуктів:', error);
-        setIsLoading(false);
+        console.error('Помилка оновлення продуктів:', error);
       }
     };
 
@@ -68,13 +57,13 @@ const ProductList = ({
   }, [sortOption, searchQuery, selectedBrand, selectedCategory, selectedCountry]);
 
   // Обробник для додавання товару до кошика
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     const cartItem = {
       id: product.id,
       name: product.name,
       price: product.price,
       image_url: product.image_url,
-      quantity: 1, // Початкова кількість
+      quantity: 1,
     };
     addToCart(cartItem);
     toast.success('Товар додано до кошика!', {
@@ -82,10 +71,6 @@ const ProductList = ({
       autoClose: 1000,
     });
   };
-
-  if (isLoading) {
-    return <p className="text-center text-gray-600 text-lg">⏳ Завантаження...</p>;
-  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 sm:gap-6 p-4 sm:p-6">

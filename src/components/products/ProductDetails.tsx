@@ -40,11 +40,12 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('/products.json');
+        const res = await fetch('/api/products');
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const products: Product[] = await res.json();
-        setAllProducts(products);
         const foundProduct = products.find(p => p.id.toString() === id) || null;
         setProduct(foundProduct);
+        setAllProducts(products);
       } catch (error) {
         console.error('Помилка завантаження продукту:', error);
       } finally {
@@ -193,7 +194,6 @@ export default function ProductDetails() {
             </div>
           )}
         </div>
-        // У секції "Схожі продукти" в ProductDetails:
         {relatedProducts.length > 0 && (
           <div className="p-6 border-t border-gray-200">
             <h2 className="text-lg font-medium text-gray-800 mb-4">Схожі продукти</h2>
