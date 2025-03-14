@@ -10,6 +10,8 @@ const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cart = useCartStore(state => state.cart); // Отримуємо кошик із Zustand
 
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -58,7 +60,7 @@ const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
           onClick={toggleCart}
         >
           <span>🛒</span>
-          <span className="text-sm">{cart.length}</span>
+          <span className="text-sm">{totalItems}</span>
         </button>
       </nav>
       {/* Модальне вікно кошика */}

@@ -33,7 +33,13 @@ export const useCartStore = create<CartStore>()(
           set(state => {
             const existingProduct = state.cart.find(item => item.id === product.id);
             if (existingProduct) {
-              return state;
+              return {
+                cart: state.cart.map(item =>
+                  item.id === product.id
+                    ? { ...item, quantity: Math.min(item.quantity + 1, 99) }
+                    : item
+                ),
+              };
             }
             return { cart: [...state.cart, { ...product, quantity: 1 }] };
           }),
@@ -70,7 +76,7 @@ export const useCartStore = create<CartStore>()(
         getTotal: () => get().cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
       }),
       {
-        name: 'cart-storage', // Ім’я для localStorage
+        name: 'cart-storage', // Ім'я для localStorage
         storage: createJSONStorage(() => localStorage), // Використовуємо createJSONStorage з localStorage
       }
     ),
