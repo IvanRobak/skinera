@@ -207,7 +207,7 @@ export default function ProductDetails() {
                   <strong>Призначення:</strong> {product.characteristics.purpose_and_result}
                 </li>
                 <li>
-                  <strong>Об’єм:</strong> {product.characteristics.volume} мл
+                  <strong>Обʼєм:</strong> {product.characteristics.volume} мл
                 </li>
                 <li>
                   <strong>Тип очищувача:</strong> {product.characteristics.cleanser_type}
@@ -237,14 +237,16 @@ export default function ProductDetails() {
           <div className="p-8 border-t border-gray-200">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">Схожі продукти</h2>
             <div className="relative">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 ">
                 {relatedProducts.map(relatedProduct => (
                   <motion.div
                     key={relatedProduct.id}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.02 }}
                     className="bg-white rounded-lg shadow-md overflow-hidden"
                   >
-                    <ProductCard product={relatedProduct} />
+                    <div className="relative  bg-gray-50 rounded-lg h-78">
+                      <ProductCard product={relatedProduct} />
+                    </div>
                   </motion.div>
                 ))}
               </div>

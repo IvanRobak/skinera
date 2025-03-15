@@ -23,21 +23,17 @@ const ProductCard = ({ product }: { product: Product }) => {
         <Image
           src={product.image_url}
           alt={product.name}
-          width={200} // Зменшив базову ширину
-          height={200} // Зменшив базову висоту
-          className="object-contain w-full h-auto max-h-[300px] sm:max-h-[150px] md:max-h-[340px]" // Додав адаптивні max-h
+          width={200}
+          height={200}
+          className="object-contain h-full w-full "
           priority={true}
         />
       </div>
 
       {/* Контейнер для назви та ціни */}
-      <div className="flex-grow p-2 sm:p-4 text-center">
-        <h2 className="text-gray-600 text-base  font-medium line-clamp-2 min-h-[2rem] sm:min-h-[3rem]">
-          {product.name}
-        </h2>
-        <p className="text-gray-600 mt-1 sm:mt-2 text-lg">
-          <span className="font-bold">{product.price} ₴</span>
-        </p>
+      <div className="flex-grow p-4 text-center">
+        <h2 className="text-gray-600 text-sm font-medium line-clamp-2 mb-2">{product.name}</h2>
+        <p className="text-gray-600 font-bold">{product.price} ₴</p>
       </div>
     </div>
   );
