@@ -42,10 +42,10 @@ export default function ProductDetails() {
       try {
         const res = await fetch('/api/products');
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const products: Product[] = await res.json();
-        const foundProduct = products.find(p => p.id.toString() === id) || null;
+        const data = await res.json();
+        const foundProduct = data.products.find((p: Product) => p.id.toString() === id) || null;
         setProduct(foundProduct);
-        setAllProducts(products);
+        setAllProducts(data.products);
       } catch (error) {
         console.error('Помилка завантаження продукту:', error);
       } finally {

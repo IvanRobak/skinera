@@ -47,7 +47,7 @@ const ProductList = ({
         const res = await fetch(url.toString());
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        setProducts(data);
+        setProducts(data.products);
       } catch (error) {
         console.error('Помилка оновлення продуктів:', error);
       }

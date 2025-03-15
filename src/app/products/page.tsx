@@ -13,6 +13,13 @@ interface Product {
   country: string;
 }
 
+interface PaginationData {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 const ProductsPage = () => {
   const [sortOption, setSortOption] = useState('default');
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,6 +31,12 @@ const ProductsPage = () => {
   const [allCategories, setAllCategories] = useState<string[]>([]);
   const [allBrands, setAllBrands] = useState<string[]>([]);
   const [allCountries, setAllCountries] = useState<string[]>([]);
+  const [pagination, setPagination] = useState<PaginationData>({
+    total: 0,
+    page: 1,
+    limit: 12,
+    totalPages: 0,
+  });
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -34,21 +47,27 @@ const ProductsPage = () => {
       if (selectedCategory) url.searchParams.append('category', selectedCategory);
       if (selectedCountry) url.searchParams.append('country', selectedCountry);
       if (sortOption && sortOption !== 'default') url.searchParams.append('sort', sortOption);
+      url.searchParams.append('page', pagination.page.toString());
+      url.searchParams.append('limit', pagination.limit.toString());
 
       const res = await fetch(url.toString());
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = (await res.json()) as Product[];
-      setProducts(data);
+      const data = await res.json();
+      setProducts(data.products);
+      setPagination(data.pagination);
 
-      // Update all available options only if they haven't been set yet
+      // Update filters only on first load
       if (allCategories.length === 0) {
-        setAllCategories(Array.from(new Set(data.map(product => product.category))));
-      }
-      if (allBrands.length === 0) {
-        setAllBrands(Array.from(new Set(data.map(product => product.brand))));
-      }
-      if (allCountries.length === 0) {
-        setAllCountries(Array.from(new Set(data.map(product => product.country))));
+        const initialData = await fetch('/api/products').then(res => res.json());
+        setAllCategories(
+          Array.from(new Set(initialData.products.map((product: Product) => product.category)))
+        );
+        setAllBrands(
+          Array.from(new Set(initialData.products.map((product: Product) => product.brand)))
+        );
+        setAllCountries(
+          Array.from(new Set(initialData.products.map((product: Product) => product.country)))
+        );
       }
     } catch (error) {
       console.error('Помилка завантаження продуктів:', error);
@@ -61,14 +80,56 @@ const ProductsPage = () => {
     selectedBrand,
     selectedCategory,
     selectedCountry,
+    pagination.page,
+    pagination.limit,
     allCategories.length,
-    allBrands.length,
-    allCountries.length,
   ]);
+
+  const handlePageChange = (newPage: number) => {
+    setPagination(prev => ({ ...prev, page: newPage }));
+  };
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  const renderPagination = () => {
+    const pages = [];
+    for (let i = 1; i <= pagination.totalPages; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-1 mx-1 rounded ${
+            pagination.page === i
+              ? 'bg-pink-500 text-white'
+              : 'bg-white text-gray-700 hover:bg-pink-100'
+          } transition-colors duration-200`}
+        >
+          {i}
+        </button>
+      );
+    }
+    return (
+      <div className="flex justify-center items-center mt-8 space-x-2">
+        <button
+          onClick={() => handlePageChange(pagination.page - 1)}
+          disabled={pagination.page === 1}
+          className="px-4 py-2 rounded bg-white text-gray-700 hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          ←
+        </button>
+        {pages}
+        <button
+          onClick={() => handlePageChange(pagination.page + 1)}
+          disabled={pagination.page === pagination.totalPages}
+          className="px-4 py-2 rounded bg-white text-gray-700 hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          →
+        </button>
+      </div>
+    );
+  };
 
   if (isLoading) {
     return <p className="text-center text-gray-600 text-lg">⏳ Завантаження...</p>;
@@ -154,7 +215,7 @@ const ProductsPage = () => {
             </select>
           </div>
         </aside>
-        <div className="md:w-3/4 flex justify-center">
+        <div className="md:w-3/4 flex flex-col">
           <ProductList
             products={products}
             sortOption={sortOption}
@@ -163,6 +224,7 @@ const ProductsPage = () => {
             selectedCategory={selectedCategory}
             selectedCountry={selectedCountry}
           />
+          {renderPagination()}
         </div>
       </div>
     </div>

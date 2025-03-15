@@ -16,11 +16,14 @@ export async function GET(req: Request) {
   const brand = searchParams.get('brand');
   const category = searchParams.get('category');
   const country = searchParams.get('country');
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '12');
 
   try {
     const client = await clientPromise;
     const db = client.db();
-    const query: ProductQuery = {};
+    // eslint-disable-next-line prefer-const
+    let query: ProductQuery = {};
 
     if (search) query['name'] = { $regex: search, $options: 'i' };
     if (brand) query['brand'] = brand;
@@ -33,8 +36,27 @@ export async function GET(req: Request) {
     else if (sort === 'name') sortOption = { name: 1 };
     else if (sort === 'country') sortOption = { country: 1 };
 
-    const products = await db.collection('products').find(query).sort(sortOption).toArray();
-    return NextResponse.json(products);
+    // Get total count for pagination
+    const totalCount = await db.collection('products').countDocuments(query);
+
+    // Get paginated results
+    const products = await db
+      .collection('products')
+      .find(query)
+      .sort(sortOption)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .toArray();
+
+    return NextResponse.json({
+      products,
+      pagination: {
+        total: totalCount,
+        page,
+        limit,
+        totalPages: Math.ceil(totalCount / limit),
+      },
+    });
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
