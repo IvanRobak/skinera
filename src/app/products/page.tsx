@@ -83,12 +83,12 @@ const ProductsPage = () => {
           placeholder="🔍 Пошук товарів..."
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          className="border rounded-lg px-3 py-2 w-full md:w-1/3 focus:ring-pink-500"
+          className="border border-gray-300 rounded-lg px-3 py-2 w-full md:w-1/3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
         />
         <select
           value={sortOption}
           onChange={e => setSortOption(e.target.value)}
-          className="border rounded-lg px-3 py-2 w-full md:w-1/4 focus:ring-pink-500"
+          className="border border-gray-300 rounded-lg px-3 py-2 w-full md:w-1/3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
         >
           <option value="default">За замовчуванням</option>
           <option value="price-asc">Від дешевших до дорогих</option>
@@ -98,14 +98,18 @@ const ProductsPage = () => {
         </select>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
-        <aside className="md:w-1/4 border-r p-4 space-y-4 gap-4 px-15 sm:px-30 md:px-6">
-          <h2 className="text-xl font-semibold mb-2">Фільтри</h2>
-          <div>
-            <label className="text-gray-700 font-medium">Бренд:</label>
+        <aside className="md:w-1/4 p-6 bg-white rounded-lg shadow-md space-y-6">
+          <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-pink-500 pb-2">
+            Фільтри
+          </h2>
+
+          {/* Фільтр за брендом */}
+          <div className="space-y-2">
+            <label className="text-gray-700 font-medium block">Бренд:</label>
             <select
               value={selectedBrand}
               onChange={e => setSelectedBrand(e.target.value)}
-              className="border rounded-lg px-3 py-2 w-full focus:ring-pink-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
             >
               <option value="">Усі бренди</option>
               {allBrands.map(brand => (
@@ -115,12 +119,14 @@ const ProductsPage = () => {
               ))}
             </select>
           </div>
-          <div>
-            <label className="text-gray-700 font-medium">Категорія:</label>
+
+          {/* Фільтр за категорією */}
+          <div className="space-y-2">
+            <label className="text-gray-700 font-medium block">Категорія:</label>
             <select
               value={selectedCategory}
               onChange={e => setSelectedCategory(e.target.value)}
-              className="border rounded-lg px-3 py-2 w-full focus:ring-pink-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
             >
               <option value="">Усі категорії</option>
               {allCategories.map(category => (
@@ -130,12 +136,14 @@ const ProductsPage = () => {
               ))}
             </select>
           </div>
-          <div>
-            <label className="text-gray-700 font-medium">Країна:</label>
+
+          {/* Фільтр за країною */}
+          <div className="space-y-2">
+            <label className="text-gray-700 font-medium block">Країна:</label>
             <select
               value={selectedCountry}
               onChange={e => setSelectedCountry(e.target.value)}
-              className="border rounded-lg px-3 py-2 w-full focus:ring-pink-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
             >
               <option value="">Усі країни</option>
               {allCountries.map(country => (
