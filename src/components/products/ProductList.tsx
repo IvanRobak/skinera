@@ -22,6 +22,8 @@ const ProductList = ({
   selectedBrand = '',
   selectedCategory = '',
   selectedCountry = '',
+  page = 1,
+  limit = 12,
 }: {
   products?: Product[];
   sortOption?: string;
@@ -29,6 +31,8 @@ const ProductList = ({
   selectedBrand?: string;
   selectedCategory?: string;
   selectedCountry?: string;
+  page?: number;
+  limit?: number;
 }) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const { addToCart } = useCartStore();
@@ -43,6 +47,8 @@ const ProductList = ({
         if (selectedCategory) url.searchParams.append('category', selectedCategory);
         if (selectedCountry) url.searchParams.append('country', selectedCountry);
         if (sortOption && sortOption !== 'default') url.searchParams.append('sort', sortOption);
+        url.searchParams.append('page', page.toString());
+        url.searchParams.append('limit', limit.toString());
 
         const res = await fetch(url.toString());
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -54,7 +60,7 @@ const ProductList = ({
     };
 
     fetchProducts();
-  }, [sortOption, searchQuery, selectedBrand, selectedCategory, selectedCountry]);
+  }, [sortOption, searchQuery, selectedBrand, selectedCategory, selectedCountry, page, limit]);
 
   // Обробник для додавання товару до кошика
   const handleAddToCart = (product: Product) => {

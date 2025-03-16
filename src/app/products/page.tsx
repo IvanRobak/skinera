@@ -223,6 +223,8 @@ const ProductsPage = () => {
             selectedBrand={selectedBrand}
             selectedCategory={selectedCategory}
             selectedCountry={selectedCountry}
+            page={pagination.page}
+            limit={pagination.limit}
           />
           {renderPagination()}
         </div>

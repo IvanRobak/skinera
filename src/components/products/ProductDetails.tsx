@@ -42,14 +42,25 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('/api/products');
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        const foundProduct = data.products.find((p: Product) => p.id.toString() === id) || null;
-        setProduct(foundProduct);
-        setAllProducts(data.products);
-      } catch (error) {
-        console.error('Помилка завантаження продукту:', error);
+        // First fetch the specific product
+        const productRes = await fetch(`/api/products/${id}`);
+        const productData = await productRes.json();
+
+        if (!productRes.ok) {
+          throw new Error(productData.error || `HTTP error! status: ${productRes.status}`);
+        }
+
+        setProduct(productData);
+
+        // Then fetch all products for related products
+        const allProductsRes = await fetch('/api/products');
+        if (!allProductsRes.ok) {
+          throw new Error(`Failed to fetch related products: ${allProductsRes.status}`);
+        }
+        const allProductsData = await allProductsRes.json();
+        setAllProducts(allProductsData.products);
+      } catch {
+        setProduct(null);
       } finally {
         setLoading(false);
       }
