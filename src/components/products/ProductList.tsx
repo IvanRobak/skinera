@@ -86,7 +86,7 @@ const ProductList = ({
             <ProductCard product={product} />
             <div className="absolute left-1/2 -translate-x-1/2 bottom-[-10px] opacity-0 group-hover:opacity-100 group-hover:bottom-[-20px] transition-all duration-300 z-10">
               <button
-                className="bg-red-500 text-white py-1 px-12 rounded-lg shadow-md hover:bg-red-600 transition text-xs sm:text-sm"
+                className="bg-pink-500 text-white py-1 px-12 rounded-lg shadow-md hover:bg-pink-600 transition text-xs sm:text-sm"
                 onClick={e => {
                   e.stopPropagation();
                   handleAddToCart(product);

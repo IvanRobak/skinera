@@ -3,18 +3,23 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+interface ContactFormData {
+  name: string;
+  phone: string;
+}
+
 const ContactForm = () => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<ContactFormData>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
 
   // Обробка відправки форми
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
 
     try {
@@ -35,8 +40,8 @@ const ContactForm = () => {
       } else {
         setResponseMessage('❌ Помилка. Спробуйте ще раз.');
       }
-    } catch (error) {
-      setResponseMessage('❌ Помилка. Перевірте інтернет-з’єднання.');
+    } catch {
+      setResponseMessage('❌ Помилка. Перевірте інтернет-зʼєднання.');
     } finally {
       setIsSubmitting(false);
     }
@@ -44,26 +49,22 @@ const ContactForm = () => {
 
   return (
     <div className="text-center">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Записатись на прийом</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-md rounded-lg p-6 space-y-4"
-      >
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Записатись на прийом</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Ім'я */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
-            Ім'я
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
+            Імʼя
           </label>
           <input
             id="name"
             type="text"
             placeholder="Ваше ім'я"
-            {...register('name', { required: 'Ім’я обов’язкове' })}
-            className={`w-full px-4 py-2 border border-gray-300 rounded-lg placeholder-gray-500  focus:outline-none focus:ring-2 ${
-              errors.name ? 'border-red-500 focus:ring-red-400' : 'focus:ring-pink-400'
+            {...register('name', { required: 'Імʼя обовʼязкове' })}
+            className={`w-full px-4 py-3 border border-gray-200 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${
+              errors.name ? 'border-red-500 focus:ring-red-400' : ''
             }`}
           />
-
           {errors.name && (
             <p className="text-red-500 text-sm mt-1 flex items-center gap-2">
               <svg
@@ -87,7 +88,7 @@ const ContactForm = () => {
 
         {/* Телефон */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="phone">
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="phone">
             Телефон
           </label>
           <input
@@ -95,14 +96,14 @@ const ContactForm = () => {
             type="tel"
             placeholder="+38 096 456 789"
             {...register('phone', {
-              required: 'Телефон обов’язковий',
+              required: 'Телефон обовʼязковий',
               pattern: {
                 value: /^\+?3?8?(0\d{9})$/,
                 message: 'Введіть коректний номер телефону',
               },
             })}
-            className={`w-full px-4 py-2  mb-5 border border-gray-300 rounded-lg placeholder-gray-500  focus:outline-none focus:ring-2 ${
-              errors.phone ? 'border-red-500 focus:ring-red-400' : 'focus:ring-pink-400'
+            className={`w-full px-4 py-3 border border-gray-200 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${
+              errors.phone ? 'border-red-500 focus:ring-red-400' : ''
             }`}
           />
           {errors.phone && (
@@ -130,13 +131,21 @@ const ContactForm = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-lg hover:from-pink-600 hover:to-purple-600 shadow-lg transform hover:scale-105 transition-transform duration-300"
+          className="w-full bg-purple-600 text-white py-3 px-6 rounded-full hover:bg-purple-700 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Надсилання...' : 'Записатись'}
         </button>
 
         {/* Повідомлення про статус */}
-        {responseMessage && <p className="mt-4 text-gray-800">{responseMessage}</p>}
+        {responseMessage && (
+          <p
+            className={`mt-4 text-sm ${
+              responseMessage.includes('✅') ? 'text-green-600' : 'text-red-600'
+            }`}
+          >
+            {responseMessage}
+          </p>
+        )}
       </form>
     </div>
   );
