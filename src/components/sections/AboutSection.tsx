@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import ModalButton from '../common/ModalButton';
+import ContactForm from '../forms/ContactForm';
 
 const AboutSection = () => {
   return (
@@ -133,9 +135,11 @@ const AboutSection = () => {
 
         {/* Call to Action */}
         <div className="text-center">
-          <button className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-lg hover:shadow-xl">
-            Записатись на консультацію
-          </button>
+          <ModalButton
+            buttonText="Записатись на прийом"
+            modalContent={<ContactForm />}
+            className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-lg hover:shadow-xl"
+          />
         </div>
       </div>
     </section>
