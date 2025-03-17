@@ -5,10 +5,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useCartStore } from '../store/cartStore'; // Імпортуй Zustand
 import Cart from '../Cart';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { usePathname } from 'next/navigation';
 
 const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cart = useCartStore(state => state.cart); // Отримуємо кошик із Zustand
+  const pathname = usePathname();
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -16,51 +19,52 @@ const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
     setIsCartOpen(!isCartOpen);
   };
 
+  const isActive = (path: string) => pathname === path;
+
+  const navItems = [
+    { path: '/about', label: 'Про нас' },
+    { path: '/products', label: 'Товари' },
+    { path: '/services', label: 'Послуги' },
+    { path: '/reviews', label: 'Відгуки' },
+    { path: '/contacts', label: 'Контакти' },
+  ];
+
   return (
     <>
       <nav
         className={`${
-          isMobile ? 'flex flex-col bg-pink-600 w-full text-center' : 'hidden md:flex space-x-6'
+          isMobile ? 'flex flex-col space-y-1 py-3' : 'hidden md:flex items-center space-x-1'
         }`}
       >
-        <Link
-          href="/about"
-          className={`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}
-        >
-          Про нас
-        </Link>
-        <Link
-          href="/products"
-          className={`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}
-        >
-          Товари
-        </Link>
-        <Link
-          href="/services"
-          className={`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}
-        >
-          Послуги
-        </Link>
-        <Link
-          href="/reviews"
-          className={`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}
-        >
-          Відгуки
-        </Link>
-        <Link
-          href="/contacts"
-          className={`hover:text-yellow-300 transition ${isMobile ? 'py-2' : ''}`}
-        >
-          Контакти
-        </Link>
+        {navItems.map(({ path, label }) => (
+          <Link
+            key={path}
+            href={path}
+            className={`px-4 py-2 rounded-full transition-colors ${
+              isActive(path)
+                ? 'text-purple-600 bg-purple-50 font-medium'
+                : 'text-gray-700 hover:text-purple-600 hover:bg-gray-50'
+            } ${isMobile ? 'text-center' : ''}`}
+          >
+            {label}
+          </Link>
+        ))}
+
         <button
-          className={`hover:text-yellow-300 transition ${
-            isMobile ? 'py-2' : ''
-          } flex items-center gap-2`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-gray-700 hover:text-purple-600 hover:bg-gray-50 transition-colors ${
+            isMobile ? 'justify-center' : ''
+          }`}
           onClick={toggleCart}
         >
-          <span>🛒</span>
-          <span className="text-sm">{totalItems}</span>
+          <div className="relative">
+            <ShoppingBagIcon className="w-5 h-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </div>
+          <span className="sr-only">Кошик</span>
         </button>
       </nav>
       {/* Модальне вікно кошика */}

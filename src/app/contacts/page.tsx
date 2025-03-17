@@ -2,8 +2,7 @@ import ContactsSection from '@/components/sections/ContactsSection';
 
 export default function ContactsPage() {
   return (
-    <main>
-      <h1 className="text-center text-4xl font-bold mt-16">Де ми знаходимось</h1>
+    <main className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-white">
       <ContactsSection />
     </main>
   );
