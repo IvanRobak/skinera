@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import ProductCard from '@/components/products/ProductCard';
 import { useCartStore } from '../store/cartStore';
+import { toast } from 'react-toastify';
 
 interface Product {
   id: number;
@@ -141,15 +142,19 @@ export default function ProductDetails() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() =>
+                onClick={() => {
                   useCartStore.getState().addToCart({
                     id: product.id,
                     name: product.name,
                     price: product.price,
                     image_url: product.image_url,
                     quantity: 1,
-                  })
-                }
+                  });
+                  toast.success('Товар додано до кошика!', {
+                    position: 'top-right',
+                    autoClose: 1000,
+                  });
+                }}
                 className="flex-1 bg-gray-200 text-gray-800 py-4 px-8 rounded-lg hover:bg-gray-300 transition duration-300 shadow-md"
               >
                 Додати до кошика
