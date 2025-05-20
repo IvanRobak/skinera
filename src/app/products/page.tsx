@@ -1,7 +1,27 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import ProductList from '@/components/products/ProductList';
+import dynamic from 'next/dynamic';
+
+// Lazy load the ProductList component
+const ProductList = dynamic(() => import('@/components/products/ProductList'), {
+  loading: () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 sm:gap-6 p-4 sm:p-6">
+      {Array(12)
+        .fill(0)
+        .map((_, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-lg flex flex-col h-full">
+            <div className="w-full h-[350px] sm:h-48 md:h-64 bg-gray-200 animate-pulse rounded-lg"></div>
+            <div className="flex-grow p-4 text-center">
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-3/4 mx-auto mb-2"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-1/4 mx-auto"></div>
+            </div>
+          </div>
+        ))}
+    </div>
+  ),
+  ssr: false,
+});
 
 interface Product {
   id: number;

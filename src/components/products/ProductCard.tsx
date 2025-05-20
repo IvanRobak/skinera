@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useState } from 'react';
 
 interface Product {
   id: number;
@@ -12,6 +13,7 @@ interface Product {
 
 const ProductCard = ({ product }: { product: Product }) => {
   const router = useRouter();
+  const [imageLoading, setImageLoading] = useState(true);
 
   return (
     <div
@@ -19,14 +21,22 @@ const ProductCard = ({ product }: { product: Product }) => {
       onClick={() => router.push(`/products/${product.id}`)}
     >
       {/* Контейнер для зображення з підложкою */}
-      <div className="w-full h-[350px] sm:h-48 md:h-64 bg-gray-100 p-2 sm:p-4 flex items-center justify-center rounded-lg overflow-hidden shadow-md">
+      <div className="w-full h-[350px] sm:h-48 md:h-64 bg-gray-100 p-2 sm:p-4 flex items-center justify-center rounded-lg overflow-hidden shadow-md relative">
+        {imageLoading && (
+          <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+            <div className="w-16 h-16 border-t-4 border-pink-500 border-solid rounded-full animate-spin"></div>
+          </div>
+        )}
         <Image
           src={product.image_url}
           alt={product.name}
           width={200}
           height={200}
-          className="object-contain h-full w-full "
-          priority={true}
+          className={`object-contain h-full w-full transition-opacity duration-300 ${
+            imageLoading ? 'opacity-0' : 'opacity-100'
+          }`}
+          loading="lazy"
+          onLoadingComplete={() => setImageLoading(false)}
         />
       </div>
 
