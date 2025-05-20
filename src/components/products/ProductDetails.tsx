@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import ProductCard from '@/components/products/ProductCard';
+import DescriptionRenderer from '@/components/common/DescriptionRenderer';
 import { useCartStore } from '../store/cartStore';
 import { toast } from 'react-toastify';
 
@@ -207,9 +208,7 @@ export default function ProductDetails() {
             className="text-gray-600"
           >
             {activeTab === 'description' && product.description && (
-              <div>
-                <p className="leading-relaxed">{product.description}</p>
-              </div>
+              <DescriptionRenderer description={product.description} />
             )}
             {activeTab === 'characteristics' && (
               <ul className="list-disc pl-5 space-y-2">
@@ -243,7 +242,13 @@ export default function ProductDetails() {
               <p className="leading-relaxed">{product.instructions}</p>
             )}
             {activeTab === 'ingredients' && product.ingredients && (
-              <p className="leading-relaxed">{product.ingredients}</p>
+              <ul className="list-disc pl-5">
+                {product.ingredients.split(',').map((ingredient, index) => (
+                  <li key={index} className="leading-relaxed">
+                    {ingredient.trim()}
+                  </li>
+                ))}
+              </ul>
             )}
           </motion.div>
         </div>
