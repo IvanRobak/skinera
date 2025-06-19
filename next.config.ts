@@ -21,11 +21,12 @@ const nextConfig: NextConfig = {
 
   poweredByHeader: false,
 
+  serverExternalPackages: ['mongodb'],
+
   experimental: {
     optimizeCss: true,
     optimizeServerReact: true,
     webVitalsAttribution: ['CLS', 'LCP'],
-    serverComponentsExternalPackages: ['mongodb'],
   },
 
   async headers() {
@@ -100,8 +101,6 @@ const nextConfig: NextConfig = {
   },
 
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
-
-  swcMinify: true,
 
   productionBrowserSourceMaps: false,
 
