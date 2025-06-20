@@ -41,7 +41,7 @@ export default function ServicesPage() {
         pageDescription="Повний спектр послуг для вашої краси та здоров'я"
         pageUrl="https://skinera.com.ua/services"
       />
-      <main className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-white">
+      <main className="bg-gradient-to-b from-purple-50 via-white to-white">
         <ServicesSection />
         <div className="text-center bg-gray-50 py-8">
           <ModalButton

@@ -20,39 +20,29 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="bg-gray-50 py-12">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg">
           {/* Header */}
           <div className="px-4 py-5 border-b border-gray-200 sm:px-6">
-            <h3 className="text-2xl font-bold leading-6 text-gray-900">
-              Особистий кабінет
-            </h3>
+            <h3 className="text-2xl font-bold leading-6 text-gray-900">Особистий кабінет</h3>
           </div>
 
           {/* User Info */}
           <div className="px-4 py-5 sm:p-6">
             <div className="space-y-6">
               <div>
-                <h4 className="text-lg font-medium text-gray-900">
-                  Інформація про користувача
-                </h4>
+                <h4 className="text-lg font-medium text-gray-900">Інформація про користувача</h4>
                 <div className="mt-4 border rounded-md p-4 space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-500">
                       Імʼя користувача
                     </label>
-                    <div className="mt-1 text-sm text-gray-900">
-                      {session.user?.name}
-                    </div>
+                    <div className="mt-1 text-sm text-gray-900">{session.user?.name}</div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">
-                      Email
-                    </label>
-                    <div className="mt-1 text-sm text-gray-900">
-                      {session.user?.email}
-                    </div>
+                    <label className="block text-sm font-medium text-gray-500">Email</label>
+                    <div className="mt-1 text-sm text-gray-900">{session.user?.email}</div>
                   </div>
                 </div>
               </div>
