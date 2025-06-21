@@ -157,7 +157,7 @@ const ProductsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto py-10">
-      <h1 className="text-3xl font-bold text-center m-10">Наші Товари</h1>
+      <h1 className="text-5xl font-bold text-gray-800 text-center m-10">Наші Товари</h1>
       <div className="mb-6 flex flex-col md:flex-row justify-end items-center gap-4 px-15 sm:px-30 md:px-6">
         <input
           type="text"

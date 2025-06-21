@@ -43,7 +43,7 @@ export default function ServicesPage() {
       />
       <main className="bg-gradient-to-b from-purple-50 via-white to-white">
         <ServicesSection />
-        <div className="text-center bg-gray-50 py-8">
+        <div className="text-center  py-8">
           <ModalButton
             buttonText="Записатись на прийом"
             modalContent={<ContactForm />}

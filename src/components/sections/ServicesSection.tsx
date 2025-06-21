@@ -2,8 +2,8 @@ import Image from 'next/image';
 
 const ServicesSection = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-6xl mx-auto px-4">
+    <section className=" mt-20 bg-gradient-to-b from-white to-gray-50 ">
+      <div className="max-w-6xl mx-auto px-4 ">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-800 mb-6">Обирайте найкращі послуги</h1>
           <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
