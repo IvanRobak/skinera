@@ -202,9 +202,9 @@ export default function MassagePage() {
             <h2 className="text-3xl font-bold mb-4">Готові розслабитися?</h2>
             <p className="text-xl mb-6">Запишіться на масаж та відчуйте справжню насолоду</p>
             <ModalButton
-              buttonText={<span className="text-purple-800 font-bold">Записатись на масаж</span>}
+              buttonText="Записатись на масаж"
               modalContent={<ContactForm />}
-              className="bg-white px-8 py-3 rounded-full text-lg hover:bg-gray-100 transition duration-300 shadow-lg hover:shadow-xl"
+              className="px-8 py-3 rounded-full text-lg font-semibold transition duration-300 shadow-lg hover:shadow-xl"
             />
           </div>
         </div>

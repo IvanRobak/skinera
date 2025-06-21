@@ -18,7 +18,9 @@ const ModalButton: React.FC<ModalButtonProps> = ({ buttonText, modalContent, cla
   return (
     <>
       <button
-        className={`bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 ${className}`}
+        className={`bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 ${
+          className || ''
+        }`}
         onClick={openModal}
       >
         {buttonText}
