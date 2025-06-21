@@ -72,7 +72,13 @@ const ReviewsSection = () => {
             >
               <div className="flex items-start gap-4">
                 <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                  <Image src={review.image} alt={review.author} fill className="object-cover" />
+                  <Image
+                    src={review.image}
+                    alt={review.author}
+                    width={64}
+                    height={64}
+                    className="object-cover w-full h-full"
+                  />
                 </div>
                 <div className="flex-grow">
                   <StarRating rating={review.rating} />

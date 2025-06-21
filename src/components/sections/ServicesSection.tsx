@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const ServicesSection = () => {
   return (
@@ -15,12 +16,14 @@ const ServicesSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {/* Догляд за обличчям */}
           <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-            <div className="relative h-48">
+            <div className="relative h-48 flex items-center justify-center">
               <Image
                 src="/images/face-care.png"
                 alt="Догляд за обличчям"
-                fill
-                className="object-cover"
+                width={384}
+                height={192}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover w-full h-full"
               />
             </div>
             <div className="p-6">
@@ -39,12 +42,14 @@ const ServicesSection = () => {
 
           {/* Лазерна епіляція */}
           <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-            <div className="relative h-48">
+            <div className="relative h-48 flex items-center justify-center">
               <Image
                 src="/images/laser-epilation.png"
                 alt="Лазерна епіляція"
-                fill
-                className="object-cover"
+                width={384}
+                height={192}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover w-full h-full"
               />
             </div>
             <div className="p-6">
@@ -60,23 +65,48 @@ const ServicesSection = () => {
           </div>
 
           {/* Масаж */}
-          <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-            <div className="relative h-48">
-              <Image src="/images/massage.png" alt="Масаж" fill className="object-cover" />
+          <Link href="/services/massage" className="block">
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
+              <div className="relative h-48 flex items-center justify-center">
+                <Image
+                  src="/images/massage.png"
+                  alt="Масаж"
+                  width={384}
+                  height={192}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-3">Масаж</h3>
+                <p className="text-gray-600 mb-4">
+                  Розслаблюючі та лікувальні масажі для вашого тіла
+                </p>
+                <ul className="text-gray-600 space-y-2">
+                  <li>• Класичний масаж</li>
+                  <li>• Антицелюлітний масаж</li>
+                  <li>• Лімфодренажний масаж</li>
+                  <li>• Спортивний масаж</li>
+                </ul>
+                <div className="mt-4 text-purple-600 font-medium flex items-center">
+                  <span>Дізнатися більше</span>
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-3">Масаж</h3>
-              <p className="text-gray-600 mb-4">
-                Розслаблюючі та лікувальні масажі для вашого тіла
-              </p>
-              <ul className="text-gray-600 space-y-2">
-                <li>• Класичний масаж</li>
-                <li>• Антицелюлітний масаж</li>
-                <li>• Лімфодренажний масаж</li>
-                <li>• Спортивний масаж</li>
-              </ul>
-            </div>
-          </div>
+          </Link>
         </div>
 
         {/* Додаткова інформація */}

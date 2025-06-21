@@ -22,6 +22,8 @@ interface CartStore {
   decrementQuantity: (productId: number) => void;
   clearCart: () => void;
   getTotal: () => number;
+  hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -29,6 +31,12 @@ export const useCartStore = create<CartStore>()(
     persist(
       (set, get) => ({
         cart: [],
+        hasHydrated: false,
+        setHasHydrated: (state: boolean) => {
+          set({
+            hasHydrated: state,
+          });
+        },
         addToCart: (product: CartItem) =>
           set(state => {
             const existingProduct = state.cart.find(item => item.id === product.id);
@@ -76,8 +84,11 @@ export const useCartStore = create<CartStore>()(
         getTotal: () => get().cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
       }),
       {
-        name: 'cart-storage', // Ім'я для localStorage
-        storage: createJSONStorage(() => localStorage), // Використовуємо createJSONStorage з localStorage
+        name: 'cart-storage',
+        storage: createJSONStorage(() => localStorage),
+        onRehydrateStorage: () => state => {
+          state?.setHasHydrated(true);
+        },
       }
     ),
     { name: 'Cart Store' }

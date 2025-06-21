@@ -11,9 +11,11 @@ import { usePathname } from 'next/navigation';
 const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cart = useCartStore(state => state.cart); // Отримуємо кошик із Zustand
+  const hasHydrated = useCartStore(state => state.hasHydrated);
   const pathname = usePathname();
 
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  // Ensure hydration is complete before showing cart count
+  const totalItems = hasHydrated ? cart.reduce((sum, item) => sum + item.quantity, 0) : 0;
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
@@ -58,7 +60,7 @@ const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
         >
           <div className="relative">
             <ShoppingBagIcon className="w-5 h-5" />
-            {totalItems > 0 && (
+            {hasHydrated && totalItems > 0 && (
               <span className="absolute -top-2 -right-2 bg-pink-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                 {totalItems}
               </span>
@@ -68,7 +70,7 @@ const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
         </button>
       </nav>
       {/* Модальне вікно кошика */}
-      {isCartOpen && (
+      {isCartOpen && hasHydrated && (
         <Cart
           cart={cart}
           onUpdateQuantity={(productId, newQuantity) =>

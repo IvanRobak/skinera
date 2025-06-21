@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['mongodb'],
 
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Temporarily disabled
     optimizeServerReact: true,
     webVitalsAttribution: ['CLS', 'LCP'],
   },
