@@ -84,8 +84,8 @@ export default function MassagePage() {
         pageDescription="Розслаблюючі та лікувальні масажі для вашого тіла"
         pageUrl="https://skinera.com.ua/services/massage"
       />
-      <main className="bg-gradient-to-b from-purple-50 via-white to-white">
-        <div className="max-w-6xl mx-auto px-4 pt-20 pb-16">
+      <div>
+        <div className="max-w-6xl mx-auto px-4 pt-20 pb-16 mt-20">
           {/* Hero Section */}
           <div className="text-center mb-16">
             <h1 className="text-5xl font-bold text-gray-800 mb-6">Професійний масаж у Львові</h1>
@@ -208,7 +208,7 @@ export default function MassagePage() {
             />
           </div>
         </div>
-      </main>
+      </div>
     </>
   );
 }
