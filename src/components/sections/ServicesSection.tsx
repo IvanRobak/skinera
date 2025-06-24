@@ -15,30 +15,48 @@ const ServicesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {/* Догляд за обличчям */}
-          <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
-            <div className="relative h-48 flex items-center justify-center">
-              <Image
-                src="/images/face-care.png"
-                alt="Догляд за обличчям"
-                width={384}
-                height={192}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover w-full h-full"
-              />
+          <Link href="/services/face-care" className="block">
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
+              <div className="relative h-48 flex items-center justify-center">
+                <Image
+                  src="/images/face-care.png"
+                  alt="Догляд за обличчям"
+                  width={384}
+                  height={192}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-3">Догляд за обличчям</h3>
+                <p className="text-gray-600 mb-4">
+                  Професійні процедури для чистоти та здоровʼя вашої шкіри
+                </p>
+                <ul className="text-gray-600 space-y-2">
+                  <li>• Чистка обличчя</li>
+                  <li>• Пілінг</li>
+                  <li>• Маски</li>
+                  <li>• Масаж обличчя</li>
+                </ul>
+                <div className="mt-4 text-purple-600 font-medium flex items-center">
+                  <span>Дізнатися більше</span>
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-3">Догляд за обличчям</h3>
-              <p className="text-gray-600 mb-4">
-                Професійні процедури для чистоти та здоровʼя вашої шкіри
-              </p>
-              <ul className="text-gray-600 space-y-2">
-                <li>• Чистка обличчя</li>
-                <li>• Пілінг</li>
-                <li>• Маски</li>
-                <li>• Масаж обличчя</li>
-              </ul>
-            </div>
-          </div>
+          </Link>
 
           {/* Лазерна епіляція */}
           <Link href="/services/laser-hair-removal" className="block">
