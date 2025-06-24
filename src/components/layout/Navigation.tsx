@@ -8,7 +8,7 @@ import Cart from '../Cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { usePathname } from 'next/navigation';
 
-const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
+const Navigation = ({ isMobile, onNavigate }: { isMobile?: boolean; onNavigate?: () => void }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cart = useCartStore(state => state.cart); // Отримуємо кошик із Zustand
   const hasHydrated = useCartStore(state => state.hasHydrated);
@@ -47,6 +47,7 @@ const Navigation = ({ isMobile }: { isMobile?: boolean }) => {
                 ? 'text-purple-600 bg-purple-50 font-medium'
                 : 'text-gray-700 hover:text-purple-600 hover:bg-gray-50'
             } ${isMobile ? 'text-center' : ''}`}
+            onClick={() => isMobile && onNavigate?.()}
           >
             {label}
           </Link>

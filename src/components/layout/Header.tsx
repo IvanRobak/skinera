@@ -79,12 +79,13 @@ const Header = () => {
       {/* Мобільне меню */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
-          <Navigation isMobile />
+          <Navigation isMobile onNavigate={() => setIsMenuOpen(false)} />
           {session ? (
             <div className="px-4 py-3 border-t border-gray-100">
               <Link
                 href="/account"
                 className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-purple-600 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
               >
                 <UserIcon className="w-5 h-5" />
                 <span>{session.user?.name}</span>
@@ -95,6 +96,7 @@ const Header = () => {
               <Link
                 href="/auth/signin"
                 className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-purple-600 transition-colors w-full"
+                onClick={() => setIsMenuOpen(false)}
               >
                 <UserIcon className="w-5 h-5" />
                 <span>Увійти</span>
@@ -102,6 +104,7 @@ const Header = () => {
               <Link
                 href="/auth/register"
                 className="flex items-center justify-center px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-md hover:shadow-lg w-full"
+                onClick={() => setIsMenuOpen(false)}
               >
                 <span>Реєстрація</span>
               </Link>
