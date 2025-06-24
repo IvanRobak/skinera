@@ -147,8 +147,11 @@ export default function FaceCarePage() {
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">Консультація</h3>
                 <p className="text-gray-600 text-sm">Аналіз типу шкіри та її стану</p>
               </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="text-center ">
+                <div
+                  className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ backgroundColor: '#dcfce7' }}
+                >
                   <span className="text-2xl font-bold text-green-600">2</span>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">Очищення</h3>
