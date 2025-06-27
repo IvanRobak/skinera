@@ -79,10 +79,10 @@ const ProductList = ({
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 sm:gap-6 p-4 sm:p-6">
+    <div className="w-full flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-4 gap-10 sm:gap-6 p-4 sm:p-6 sm:justify-items-center">
       {products.length > 0 ? (
         products.map(product => (
-          <div key={product.id} className="relative group">
+          <div key={product.id} className="relative group w-full max-w-xs">
             <ProductCard product={product} />
             <div className="absolute left-1/2 -translate-x-1/2 bottom-[-10px] opacity-0 group-hover:opacity-100 group-hover:bottom-[-20px] transition-all duration-300 z-10">
               <button
@@ -98,7 +98,9 @@ const ProductList = ({
           </div>
         ))
       ) : (
-        <p className="text-center col-span-full text-gray-600 text-lg">❌ Нічого не знайдено</p>
+        <p className="text-center w-full sm:col-span-full text-gray-600 text-lg">
+          ❌ Нічого не знайдено
+        </p>
       )}
     </div>
   );
