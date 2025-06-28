@@ -37,8 +37,8 @@ export default function Register() {
 
       // Redirect to login page after successful registration
       router.push('/auth/signin?registered=true');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -60,10 +60,7 @@ export default function Register() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
-            <Link
-              href="/auth/signin"
-              className="font-medium text-pink-600 hover:text-pink-500"
-            >
+            <Link href="/auth/signin" className="font-medium text-pink-600 hover:text-pink-500">
               sign in to your account
             </Link>
           </p>
@@ -134,9 +131,7 @@ export default function Register() {
             </div>
           </div>
 
-          {error && (
-            <div className="text-red-500 text-sm text-center">{error}</div>
-          )}
+          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
 
           <div>
             <button

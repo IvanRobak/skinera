@@ -1,6 +1,5 @@
-const { MongoClient } = require('mongodb');
-const fs = require('fs');
-require('dotenv').config({ path: '.env.local' });
+import { MongoClient } from 'mongodb';
+import fs from 'fs';
 
 async function importProducts() {
   const uri = process.env.MONGODB_URI;
