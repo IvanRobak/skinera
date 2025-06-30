@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import ModalButton from '../common/ModalButton';
 import ContactForm from '../forms/ContactForm';
 
@@ -15,51 +14,6 @@ const AboutSection = () => {
             Ми прагнемо створити простір, де краса та здоровʼя поєднуються з професіоналізмом та
             турботою про кожного клієнта
           </p>
-        </div>
-
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300">
-            <div className="flex justify-center mb-6">
-              <Image
-                src="/images/face-care.png"
-                alt="Догляд за обличчям"
-                width={128}
-                height={128}
-                className="w-32 h-32 object-cover rounded-full shadow-lg transform hover:scale-105 transition duration-300"
-              />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Догляд за обличчям</h3>
-            <p className="text-gray-600">Професійні процедури для здоровʼя та краси вашої шкіри</p>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300">
-            <div className="flex justify-center mb-6">
-              <Image
-                src="/images/laser-epilation.png"
-                alt="Лазерна епіляція"
-                width={128}
-                height={128}
-                className="w-32 h-32 object-cover rounded-full shadow-lg transform hover:scale-105 transition duration-300"
-              />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Лазерна епіляція</h3>
-            <p className="text-gray-600">Безпечне та ефективне видалення небажаного волосся</p>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300">
-            <div className="flex justify-center mb-6">
-              <Image
-                src="/images/massage.png"
-                alt="Масаж"
-                width={128}
-                height={128}
-                className="w-32 h-32 object-cover rounded-full shadow-lg transform hover:scale-105 transition duration-300"
-              />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Масаж</h3>
-            <p className="text-gray-600">Розслаблюючі та лікувальні масажні процедури</p>
-          </div>
         </div>
 
         {/* Values Section */}
