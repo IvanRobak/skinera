@@ -1,3 +1,4 @@
+import AdvantagesSection from '@/components/sections/AdvantagesSection';
 import './global.css';
 import dynamic from 'next/dynamic';
 
@@ -27,6 +28,7 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
+      <AdvantagesSection />
       <ReviewsSection />
       <ContactSection />
     </div>

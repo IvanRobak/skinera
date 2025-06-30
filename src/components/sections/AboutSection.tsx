@@ -3,7 +3,7 @@ import ContactForm from '../forms/ContactForm';
 
 const AboutSection = () => {
   return (
-    <section className="pb-10 mt-20 bg-gradient-to-b from-white to-gray-50">
+    <section>
       <div className="max-w-6xl mx-auto px-4 ">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -17,7 +17,7 @@ const AboutSection = () => {
         </div>
 
         {/* Values Section */}
-        <div className="bg-white rounded-2xl shadow-md p-8 mb-16">
+        <div className="bg-white rounded-2xl shadow-md p-8 ">
           <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Наші цінності</h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
@@ -54,9 +54,9 @@ const AboutSection = () => {
                   <path
                     d="M19.0294 13.9267L24.0001 2.66666M12.4214 14.176L6.66675 2.66666M17.0161 13.3973L11.7801 2.66666M19.1467 2.66666L17.7601 5.99999M8.00008 21.3333C8.00008 23.4551 8.84294 25.4899 10.3432 26.9902C11.8435 28.4905 13.8783 29.3333 16.0001 29.3333C18.1218 29.3333 20.1566 28.4905 21.6569 26.9902C23.1572 25.4899 24.0001 23.4551 24.0001 21.3333C24.0001 19.2116 23.1572 17.1768 21.6569 15.6765C20.1566 14.1762 18.1218 13.3333 16.0001 13.3333C13.8783 13.3333 11.8435 14.1762 10.3432 15.6765C8.84294 17.1768 8.00008 19.2116 8.00008 21.3333Z"
                     stroke="#005FFF"
-                    stroke-width="2.1"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                   <path
                     d="M14 20L16.6667 18V24.6667"
