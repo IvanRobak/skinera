@@ -5,7 +5,7 @@ import ContactForm from '@/components/forms/ContactForm';
 import StructuredData from '@/components/seo/StructuredData';
 
 export const metadata: Metadata = {
-  title: 'Масаж - Розслаблюючі та лікувальні масажі у Львові',
+  title: 'Масаж - Розслаблюючий та лікувальний масаж  у Львові',
   description:
     'Професійні масажні послуги в салоні Skinera: класичний масаж, антицелюлітний масаж, лімфодренажний масаж, спортивний масаж. Досвідчені масажисти у Львові.',
   keywords: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Масаж - Skinera',
-    description: 'Розслаблюючі та лікувальні масажі для вашого тіла',
+    description: 'Розслаблючий та лікувальний масаж для вашого тіла',
     images: [
       {
         url: '/images/massage.png',
@@ -81,7 +81,7 @@ export default function MassagePage() {
       <StructuredData
         type="services"
         pageTitle="Масаж - Skinera"
-        pageDescription="Розслаблюючі та лікувальні масажі для вашого тіла"
+        pageDescription="Розслаблюючий та лікувальний масаж для вашого тіла"
         pageUrl="https://skinera.com.ua/services/massage"
       />
       <div>
@@ -90,7 +90,7 @@ export default function MassagePage() {
           <div className="text-center mb-16">
             <h1 className="text-5xl font-bold text-gray-800 mb-6">Професійний масаж у Львові</h1>
             <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto mb-8">
-              Розслаблюючі та лікувальні масажі для вашого тіла. Досвідчені масажисти,
+              Розслаблюючий та лікувальний масаж для вашого тіла. Досвідчені масажисти,
               індивідуальний підхід та комфортна атмосфера в салоні Skinera.
             </p>
             <div className="relative w-full max-w-4xl mx-auto h-64 md:h-96 rounded-2xl overflow-hidden shadow-2xl">

@@ -139,7 +139,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({
           itemOffered: {
             '@type': 'Service',
             name: 'Лазерна епіляція',
-            description: 'Сучасний метод позбавлення небажаного волосся',
+            description: 'Сучасний метод позбавлення від небажаного волосся',
             category: 'Laser Hair Removal',
             offers: {
               '@type': 'Offer',
@@ -153,7 +153,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({
           itemOffered: {
             '@type': 'Service',
             name: 'Масаж',
-            description: 'Розслаблюючі та лікувальні масажі для вашого тіла',
+            description: 'Розслаблюючий та лікувальний масаж для вашого тіла',
             category: 'Massage Therapy',
             offers: {
               '@type': 'Offer',

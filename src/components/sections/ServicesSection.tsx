@@ -19,7 +19,7 @@ const ServicesSection = () => {
             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
               <div className="relative h-48 flex items-center justify-center">
                 <Image
-                  src="/images/face-care.png"
+                  src="/images/cosmetologist-doing-face-treatment-applying-face-mask.jpg"
                   alt="Догляд за обличчям"
                   width={384}
                   height={192}
@@ -29,7 +29,7 @@ const ServicesSection = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-2xl font-semibold text-gray-800 mb-3">Догляд за обличчям</h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-4 font-semibold">
                   Професійні процедури для чистоти та здоровʼя вашої шкіри
                 </p>
                 <ul className="text-gray-600 space-y-2">
@@ -63,7 +63,7 @@ const ServicesSection = () => {
             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
               <div className="relative h-48 flex items-center justify-center">
                 <Image
-                  src="/images/laser-epilation.png"
+                  src="/images/laser-epilation-hair-removal-therapy.jpg"
                   alt="Лазерна епіляція"
                   width={384}
                   height={192}
@@ -73,7 +73,9 @@ const ServicesSection = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-2xl font-semibold text-gray-800 mb-3">Лазерна епіляція</h3>
-                <p className="text-gray-600 mb-4">Сучасний метод позбавлення небажаного волосся</p>
+                <p className="text-gray-600 mb-4 font-semibold">
+                  Сучасний метод позбавлення від небажаного волосся
+                </p>
                 <ul className="text-gray-600 space-y-2">
                   <li>• Обличчя</li>
                   <li>• Руки</li>
@@ -105,7 +107,7 @@ const ServicesSection = () => {
             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
               <div className="relative h-48 flex items-center justify-center">
                 <Image
-                  src="/images/massage.png"
+                  src="/images/woman-getting-back-massage-from-masseur.jpg"
                   alt="Масаж"
                   width={384}
                   height={192}
@@ -115,8 +117,8 @@ const ServicesSection = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-2xl font-semibold text-gray-800 mb-3">Масаж</h3>
-                <p className="text-gray-600 mb-4">
-                  Розслаблюючі та лікувальні масажі для вашого тіла
+                <p className="text-gray-600 mb-4 font-semibold">
+                  Розслаблюючий та лікувальний масаж для вашого тіла
                 </p>
                 <ul className="text-gray-600 space-y-2">
                   <li>• Класичний масаж</li>
