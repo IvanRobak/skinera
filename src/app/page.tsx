@@ -5,10 +5,6 @@ const HeroSection = dynamic(() => import('@/components/sections/HeroSection'), {
   loading: () => <div className="w-full h-screen bg-gray-100 animate-pulse" />,
 });
 
-const AboutSection = dynamic(() => import('@/components/sections/AboutSection'), {
-  loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
-});
-
 const ServicesSection = dynamic(() => import('@/components/sections/ServicesSection'), {
   loading: () => <div className="w-full h-[800px] bg-gray-100 animate-pulse" />,
 });
@@ -25,7 +21,6 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center min-h-screen w-full">
       <HeroSection />
-      <AboutSection />
       <ServicesSection />
       <ReviewsSection />
       <ContactSection />
