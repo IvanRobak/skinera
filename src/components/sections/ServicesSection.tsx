@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const ServicesSection = () => {
   return (
-    <section className=" mt-20  ">
+    <section>
       <div className="max-w-6xl mx-auto px-4 ">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-800 mb-6">Обирайте найкращі послуги</h1>

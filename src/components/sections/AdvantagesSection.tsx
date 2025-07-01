@@ -4,7 +4,7 @@ const AdvantagesSection = () => {
       <div className="max-w-6xl mx-auto px-4">
         {/* Title */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6">Наші переваги</h2>
+          <h2 className="text-5xl font-bold text-gray-800 mb-6">Наші переваги</h2>
         </div>
 
         {/* Three Cards */}

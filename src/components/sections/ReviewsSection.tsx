@@ -54,7 +54,7 @@ const StarRating = ({ rating }: { rating: number }) => {
 
 const ReviewsSection = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section className="bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-800 mb-6">Нам довіряють</h1>
