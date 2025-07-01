@@ -7,7 +7,7 @@ const reviews = [
     author: 'Ольга',
     service: 'Догляд за обличчям',
     rating: 5,
-    image: '/images/avatar1.jpg',
+    size: '256px',
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ const reviews = [
     author: 'Марина',
     service: 'Лазерна епіляція',
     rating: 5,
-    image: '/images/avatar2.jpg',
+    size: '256px',
   },
   {
     id: 3,
@@ -23,7 +23,7 @@ const reviews = [
     author: 'Ірина',
     service: 'Масаж',
     rating: 5,
-    image: '/images/avatar3.jpg',
+    size: '256px',
   },
   {
     id: 4,
@@ -31,21 +31,26 @@ const reviews = [
     author: 'Світлана',
     service: 'Догляд за обличчям',
     rating: 5,
-    image: '/images/avatar4.jpg',
+    size: '256px',
   },
 ];
 
 const StarRating = ({ rating }: { rating: number }) => {
   return (
-    <div className="flex gap-1 mb-3">
+    <div className="flex gap-3 mb-4 items-center justify-center">
       {[...Array(5)].map((_, index) => (
         <svg
           key={index}
-          className={`w-5 h-5 ${index < rating ? 'text-yellow-400' : 'text-gray-300'}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
+          width="32"
+          height="29"
+          viewBox="0 0 32 29"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          <path
+            d="M16 0L19.5922 11.0557H31.2169L21.8123 17.8885L25.4046 28.9443L16 22.1115L6.59544 28.9443L10.1877 17.8885L0.783095 11.0557H12.4078L16 0Z"
+            fill={index < rating ? '#FFC500' : '#E5E7EB'}
+          />
         </svg>
       ))}
     </div>
@@ -53,67 +58,79 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 const ReviewsSection = () => {
+  // Function to calculate staircase positions
+  const getStaircasePosition = (index: number) => {
+    const baseTop = 160; // Starting from top
+    const baseLeft = 0; // Starting from left
+    const verticalStep = 60; // How much to move down each step
+    const horizontalStep = 300; // How much to move right each step
+
+    const top = baseTop + index * verticalStep;
+    const left = baseLeft + index * horizontalStep;
+
+    return {
+      top: `${top}px`,
+      left: `${left}px`,
+    };
+  };
+
   return (
-    <section className="bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-800 mb-6">Нам довіряють</h1>
-          <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+    <section
+      className="relative overflow-hidden"
+      style={{
+        // backgroundColor: '#F5F5F5',
+        height: '882px',
+        width: '1440px',
+        margin: '0 auto',
+        marginTop: '64px',
+      }}
+    >
+      {/* Background with Rectangle */}
+      <div className="absolute left-0 top-0 h-full">
+        <Image
+          src="/images/Rectangle.png"
+          alt="Background"
+          width={1400}
+          height={882}
+          className="object-cover"
+          style={{ width: '100%', height: '100%' }}
+          priority
+        />
+      </div>
+
+      {/* Content Container - 1152px centered */}
+      <div className="relative z-10 mx-auto" style={{ width: '1152px', height: '100%' }}>
+        {/* Header positioned on the right */}
+        <div className="absolute right-0 top-20 max-w-md">
+          <h2 className="text-5xl font-bold text-gray-800 mb-6">Нам довіряють</h2>
+          <p className="text-gray-700 text-lg leading-relaxed">
             Думка кожного клієнта важлива для нас. Ми цінуємо ваш відгук та постійно працюємо над
             покращенням якості послуг
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          {reviews.map(review => (
-            <div
-              key={review.id}
-              className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300"
-            >
-              <div className="flex items-start gap-4">
-                <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                  <Image
-                    src={review.image}
-                    alt={review.author}
-                    width={64}
-                    height={64}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="flex-grow">
-                  <StarRating rating={review.rating} />
-                  <p className="text-gray-700 text-lg mb-4">{review.text}</p>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-semibold text-gray-800">{review.author}</p>
-                      <p className="text-purple-600 text-sm">{review.service}</p>
-                    </div>
-                    <svg className="w-8 h-8 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                    </svg>
-                  </div>
-                </div>
+        {/* Reviews Cards - Staircase Layout */}
+        <div className="relative h-full">
+          {reviews.map((review, index) => {
+            const position = getStaircasePosition(index);
+            return (
+              <div
+                key={review.id}
+                className="absolute bg-white rounded-2xl shadow-xl py-6 px-4 hover:scale-105 transition-transform duration-300"
+                style={{
+                  width: review.size,
+                  top: position.top,
+                  left: position.left,
+                  zIndex: 10 + index,
+                }}
+              >
+                <h3 className="text-2xl font-semibold text-gray-800 mb-6">{review.author}</h3>
+                <StarRating rating={review.rating} />
+                <p className="text-gray-700 text-base leading-relaxed mb-6">{review.text}</p>
+                <p className="text-purple-600 font-medium text-lg">{review.service}</p>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Статистика */}
-        <div className="bg-white rounded-2xl shadow-md p-8 mb-16">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold text-purple-600 mb-2">500+</div>
-              <p className="text-gray-600">Задоволених клієнтів</p>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-purple-600 mb-2">98%</div>
-              <p className="text-gray-600">Позитивних відгуків</p>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-purple-600 mb-2">5.0</div>
-              <p className="text-gray-600">Середня оцінка</p>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
