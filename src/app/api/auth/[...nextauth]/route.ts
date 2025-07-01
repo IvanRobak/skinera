@@ -8,18 +8,18 @@ const handler = NextAuth({
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text' },
+        email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) {
+        if (!credentials?.email || !credentials?.password) {
           throw new Error('Missing credentials');
         }
 
         const client = await MongoClient.connect(process.env.MONGODB_URI as string);
         const users = client.db().collection('users');
 
-        const user = await users.findOne({ username: credentials.username });
+        const user = await users.findOne({ email: credentials.email });
         await client.close();
 
         if (!user) {
@@ -34,7 +34,8 @@ const handler = NextAuth({
 
         return {
           id: user._id.toString(),
-          name: user.username, 
+          name: user.name,
+          surname: user.surname,
           email: user.email
         };
       },

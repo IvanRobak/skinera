@@ -4,10 +4,9 @@ import { MongoClient } from 'mongodb';
 
 export async function POST(req: Request) {
   try {
-    const { username, email, password, name } = await req.json();
-
+    const { surname, email, password, name } = await req.json();
     // Validate input
-    if (!username || !email || !password || !name) {
+    if (!surname || !email || !password || !name) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -20,9 +19,7 @@ export async function POST(req: Request) {
     const db = client.db();
 
     // Check if user already exists
-    const existingUser = await db.collection('users').findOne({
-      $or: [{ email }, { username }],
-    });
+    const existingUser = await db.collection('users').findOne({ email });
 
     if (existingUser) {
       await client.close();
@@ -31,13 +28,13 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
+    console.log("Hashing pass")
     // Hash password
     const hashedPassword = await hash(password, 12);
 
     // Create user
     const result = await db.collection('users').insertOne({
-      username,
+      surname,
       email,
       password: hashedPassword,
       name,

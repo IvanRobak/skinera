@@ -1,6 +1,7 @@
 import './global.css';
 import dynamic from 'next/dynamic';
 
+
 const HeroSection = dynamic(() => import('@/components/sections/HeroSection'), {
   loading: () => <div className="w-full h-screen bg-gray-100 animate-pulse" />,
 });
