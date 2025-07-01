@@ -3,7 +3,7 @@ import ContactForm from '../forms/ContactForm';
 
 const AboutSection = () => {
   return (
-    <section>
+    <section className="py-20">
       <div className="max-w-6xl mx-auto px-4 ">
         {/* Hero Section */}
         <div className="text-center mb-16">
