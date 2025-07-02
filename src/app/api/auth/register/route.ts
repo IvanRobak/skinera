@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   try {
     const { surname, email, password, name } = await req.json();
     // Validate input
-    if (!surname || !email || !password || !name) {
+    if (!email || !password || !name) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -24,11 +24,10 @@ export async function POST(req: Request) {
     if (existingUser) {
       await client.close();
       return NextResponse.json(
-        { error: 'User already exists' },
+        { error: "Користувач з таким email вже існує вибіріть інший електронний адрес" },
         { status: 400 }
       );
     }
-    console.log("Hashing pass")
     // Hash password
     const hashedPassword = await hash(password, 12);
 
