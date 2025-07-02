@@ -1,146 +1,133 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { RegisterSchema, RegisterFields } from '@/scripts/zod-schemas';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FiAlertCircle } from "react-icons/fi";
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
+
+
 
 export default function Register() {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    name: '',
-  });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  
+  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({
+    resolver: zodResolver(RegisterSchema)
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
+  const onSubmit: SubmitHandler<RegisterFields> = async (formData) => {
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Something went wrong');
+      setError('root', {
+        message: data?.error || 'Щось пішло не так. Спробуйте ще раз.',
+      });
+      return;
       }
 
-      // Redirect to login page after successful registration
-      router.push('/auth/signin?registered=true');
+      router.push('/auth/signin/?registered=true');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
+      console.error("Error creating new user", err)
     }
-  };
+  }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  useEffect(() => {
+    if (errors.root) {
+      toast.error(`${errors.root?.message}`, {
+        position: 'top-right',
+        autoClose: 2500,
+      });
+    }
+  }, [errors.root]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
+            Створити свій аканут
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link href="/auth/signin" className="font-medium text-pink-600 hover:text-pink-500">
-              sign in to your account
-            </Link>
-          </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex flex-col gap-4 -space-y-px">
             <div>
-              <label htmlFor="username" className="sr-only">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="name" className="sr-only">
-                Full Name
+              <label htmlFor="name" className="text-xs font-semibold">
+                Ім'я*
               </label>
               <input
                 id="name"
-                name="name"
                 type="text"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
+                className="appearance-none rounded-md relative block w-full px-4 py-3 border border-gray-300 placeholder-grayCustom text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                placeholder="Введіть своє ім'я"
+                {...register("name")}
               />
+              {errors.email &&
+                <div className="text-red-500 text-sm flex items-center gap-2 mt-3">
+                  <FiAlertCircle />
+                  {errors.email.message}
+                </div>}
             </div>
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
+              <label htmlFor="email" className="text-xs font-semibold">
+                Email*
               </label>
               <input
                 id="email"
-                name="email"
                 type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={formData.email}
-                onChange={handleChange}
+                className="appearance-none rounded-md relative block w-full px-4 py-3 border border-gray-300 placeholder-grayCustom text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                placeholder="Введіть свій email"
+                {...register("email")}
               />
+              {errors.email &&
+                <div className="text-red-500 text-sm flex items-center gap-2 mt-3">
+                  <FiAlertCircle />
+                  {errors.email.message}
+                </div>}
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
+              <label htmlFor="password" className="text-xs font-semibold">
+                Пароль*
               </label>
               <input
                 id="password"
-                name="password"
                 type="password"
-                autoComplete="new-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
+                className="appearance-none rounded-md relative block w-full px-4 py-3 border border-gray-300 placeholder-grayCustom text-gray-900 rounded-b-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                placeholder="Введіть пароль"
+                {...register('password')}
               />
+              <p className='text-[10px] text-grayCustom mt-1'>Має бути щонайменше 8 символів</p>
+              {errors.password &&
+                <div className="text-red-500 text-sm flex items-center gap-2 mt-3">
+                  <FiAlertCircle />
+                  {errors.password.message}
+                </div>}
             </div>
           </div>
-
-          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
 
           <div>
             <button
               type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-base font-semibold rounded-2xl text-white bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
+              // disabled={isSubmitting || !isFormValid} Need to do
             >
-              {loading ? 'Creating account...' : 'Sign up'}
+              {isSubmitting ? 'Створення аккаунту...' : 'Створити акаунт'}
             </button>
+            <p className="mt-6 text-center text-[10px] text-grayCustom font-bold">
+              Вже маєте аканут?{' '}
+              <Link href="/auth/signin" className="text-purple-600 hover:text-purple-500">
+                Увійти
+              </Link>
+            </p>
           </div>
         </form>
       </div>

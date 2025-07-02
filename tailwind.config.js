@@ -10,6 +10,7 @@ module.exports = {
             colors: {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
+                grayCustom: '#8F8F8F',
             },
         },
     },
