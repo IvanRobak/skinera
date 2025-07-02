@@ -7,7 +7,6 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 
-
 const HeroSection = dynamic(() => import('@/components/sections/HeroSection'), {
   loading: () => <div className="w-full h-screen bg-gray-100 animate-pulse" />,
 });
@@ -20,9 +19,9 @@ const ServicesSection = dynamic(() => import('@/components/sections/ServicesSect
   loading: () => <div className="w-full h-[800px] bg-gray-100 animate-pulse" />,
 });
 
-const ReviewsSection = dynamic(() => import('@/components/sections/ReviewsSection'), {
-  loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
-});
+// const ReviewsSection = dynamic(() => import('@/components/sections/ReviewsSection'), {
+//   loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
+// });
 
 const ContactSection = dynamic(() => import('@/components/sections/ContactsSection'), {
   loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
@@ -50,7 +49,7 @@ export default function Home() {
       <AboutSection />
       <ServicesSection />
       <AdvantagesSection />
-      <ReviewsSection />
+      {/* <ReviewsSection /> */}
       <ContactSection />
     </div>
   );
