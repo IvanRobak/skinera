@@ -19,9 +19,9 @@ const ServicesSection = dynamic(() => import('@/components/sections/ServicesSect
   loading: () => <div className="w-full h-[800px] bg-gray-100 animate-pulse" />,
 });
 
-// const ReviewsSection = dynamic(() => import('@/components/sections/ReviewsSection'), {
-//   loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
-// });
+const ReviewsSection = dynamic(() => import('@/components/sections/ReviewsSection'), {
+  loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
+});
 
 const ContactSection = dynamic(() => import('@/components/sections/ContactsSection'), {
   loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
@@ -49,7 +49,7 @@ export default function Home() {
       <AboutSection />
       <ServicesSection />
       <AdvantagesSection />
-      {/* <ReviewsSection /> */}
+      <ReviewsSection />
       <ContactSection />
     </div>
   );
