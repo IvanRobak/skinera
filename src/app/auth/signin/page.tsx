@@ -21,7 +21,7 @@ export default function SignInForm() {
 
   useEffect(() => {
     if (isNewlyRegistered && !shownRef.current) {
-      toast.success('Ви успішно увійшли!', {
+      toast.success('Вітаємо, Ви усішно створили аккаунт!', {
         position: 'top-right',
         autoClose: 2500,
       });

@@ -71,10 +71,10 @@ export default function Register() {
                 placeholder="Введіть своє ім'я"
                 {...register("name")}
               />
-              {errors.email &&
+              {errors.name &&
                 <div className="text-red-500 text-sm flex items-center gap-2 mt-3">
                   <FiAlertCircle />
-                  {errors.email.message}
+                  {errors.name.message}
                 </div>}
             </div>
             <div>
