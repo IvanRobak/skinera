@@ -1,6 +1,12 @@
+'use client';
+
 import AdvantagesSection from '@/components/sections/AdvantagesSection';
 import './global.css';
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
+
 
 const HeroSection = dynamic(() => import('@/components/sections/HeroSection'), {
   loading: () => <div className="w-full h-screen bg-gray-100 animate-pulse" />,
@@ -23,6 +29,21 @@ const ContactSection = dynamic(() => import('@/components/sections/ContactsSecti
 });
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const isLoginSuccess = searchParams.get('login') === 'success';
+
+  const shownRef = useRef(false);
+
+  useEffect(() => {
+    if (isLoginSuccess && !shownRef.current) {
+      toast.success('Ви успішно увійшли!', {
+        position: 'top-right',
+        autoClose: 2500,
+      });
+      shownRef.current = true;
+    }
+  }, [isLoginSuccess]);
+
   return (
     <div className="flex flex-col items-center min-h-screen w-full">
       <HeroSection />
