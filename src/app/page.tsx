@@ -54,6 +54,7 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
+      <AdvantagesSection />
       <ReviewsSection />
       <ContactSection />
     </div>
