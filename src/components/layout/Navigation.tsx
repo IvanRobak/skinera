@@ -11,8 +11,6 @@ const Navigation = ({ isMobile, onNavigate }: { isMobile?: boolean; onNavigate?:
 
   const navItems = [
     { path: '/products', label: 'Товари' },
-    { path: '/services', label: 'Послуги' },
-    { path: '/reviews', label: 'Відгуки' },
     { path: '/contacts', label: 'Контакти' },
   ];
 
