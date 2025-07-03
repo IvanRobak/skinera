@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { UserIcon } from '@heroicons/react/24/outline';
+import CartButton from './CartButton';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,8 +26,9 @@ const Header = () => {
         </Link>
 
         {/* Меню для великих екранів */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-8">
           <Navigation />
+          <CartButton />
           {session ? (
             <Link
               href="/account"
@@ -80,6 +82,9 @@ const Header = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
           <Navigation isMobile onNavigate={() => setIsMenuOpen(false)} />
+          <div className="px-4 py-3 border-t border-gray-100">
+            <CartButton isMobile />
+          </div>
           {session ? (
             <div className="px-4 py-3 border-t border-gray-100">
               <Link
