@@ -41,16 +41,17 @@ const ProductList = ({
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const url = new URL('/api/products', window.location.origin);
-        if (searchQuery) url.searchParams.append('search', searchQuery);
-        if (selectedBrand) url.searchParams.append('brand', selectedBrand);
-        if (selectedCategory) url.searchParams.append('category', selectedCategory);
-        if (selectedCountry) url.searchParams.append('country', selectedCountry);
-        if (sortOption && sortOption !== 'default') url.searchParams.append('sort', sortOption);
-        url.searchParams.append('page', page.toString());
-        url.searchParams.append('limit', limit.toString());
+        const params = new URLSearchParams();
+        if (searchQuery) params.append('search', searchQuery);
+        if (selectedBrand) params.append('brand', selectedBrand);
+        if (selectedCategory) params.append('category', selectedCategory);
+        if (selectedCountry) params.append('country', selectedCountry);
+        if (sortOption && sortOption !== 'default') params.append('sort', sortOption);
+        params.append('page', page.toString());
+        params.append('limit', limit.toString());
 
-        const res = await fetch(url.toString());
+        const url = `/api/products?${params.toString()}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         setProducts(data.products);

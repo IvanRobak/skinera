@@ -3,8 +3,8 @@ import ModalButton from '../common/ModalButton';
 
 const ContactSection = () => {
   return (
-    <section className="py-20">
-      <div className="max-w-6xl mx-auto px-4">
+    <section className="py-20 w-full">
+      <div className="max-w-6xl mx-auto px-4 flex flex-col items-center ">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-800 mb-6">Де ми знаходимось</h1>
           <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
@@ -13,10 +13,10 @@ const ContactSection = () => {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-md p-8 mb-16">
+        <div className="bg-white rounded-2xl shadow-md p-8 w-[90%]">
           <div className="flex flex-col md:flex-row justify-between gap-8">
             {/* Контактна інформація */}
-            <div className="md:w-1/2 flex flex-col">
+            <div className="md:w-1/2 flex flex-col items-start justify-between">
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Контактна інформація</h2>
                 <div className="space-y-4">
@@ -97,16 +97,17 @@ const ContactSection = () => {
                   </div>
                 </div>
               </div>
-
-              <ModalButton
-                buttonText="Записатись на прийом"
-                modalContent={<ContactForm />}
-                className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-lg hover:shadow-xl w-full md:w-auto"
-              />
+              <div className="flex justify-center ">
+                <ModalButton
+                  buttonText="Записатись на прийом"
+                  modalContent={<ContactForm />}
+                  className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-lg hover:shadow-xl "
+                />
+              </div>
             </div>
 
             {/* Карта */}
-            <div className="md:w-1/2">
+            <div className="md:w-1/2 w-full">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Ми на мапі</h2>
               <div className="rounded-xl overflow-hidden shadow-lg">
                 <div className="relative" style={{ paddingBottom: '75%', height: 0 }}>
