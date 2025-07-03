@@ -62,7 +62,7 @@ export default function Register() {
           <div className="flex flex-col gap-4 -space-y-px">
             <div>
               <label htmlFor="name" className="text-xs font-semibold">
-                Ім'я*
+                Ім&apos;я*
               </label>
               <input
                 id="name"

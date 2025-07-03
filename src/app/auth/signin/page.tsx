@@ -1,7 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FiAlertCircle } from 'react-icons/fi';
@@ -9,7 +9,7 @@ import { SignInSchema } from '@/scripts/zod-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 
-export default function SignInForm() {
+function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isNewlyRegistered = searchParams.get('registered') === 'true';
@@ -119,5 +119,13 @@ export default function SignInForm() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function SignIn() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignInForm />
+    </Suspense>
   );
 }

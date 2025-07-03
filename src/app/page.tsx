@@ -3,7 +3,7 @@
 import './global.css';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import { toast } from 'react-toastify';
 
 
@@ -27,10 +27,9 @@ const ContactSection = dynamic(() => import('@/components/sections/ContactsSecti
   loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
 });
 
-export default function Home() {
+function LoginSuccessToast() {
   const searchParams = useSearchParams();
   const isLoginSuccess = searchParams.get('login') === 'success';
-
   const shownRef = useRef(false);
 
   useEffect(() => {
@@ -43,13 +42,20 @@ export default function Home() {
     }
   }, [isLoginSuccess]);
 
+  return null;
+}
+
+export default function Home() {
   return (
     <div className="flex flex-col items-center min-h-screen w-full">
-      <HeroSection />
-      <AboutSection />
-      <ServicesSection />
-      <ReviewsSection />
-      <ContactSection />
+      <Suspense fallback={null}>
+        <LoginSuccessToast />
+      </Suspense>
+        <HeroSection />
+        <AboutSection />
+        <ServicesSection />
+        <ReviewsSection />
+        <ContactSection />
     </div>
   );
 }
