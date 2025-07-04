@@ -183,8 +183,8 @@ const ProductsPage = () => {
         </select>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
-        <aside className="md:w-1/4 p-6 bg-white rounded-lg shadow-md space-y-6">
-          <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-pink-500 pb-2">
+        <aside className="md:w-1/4 p-6 bg-white rounded-lg shadow-md space-y-6 h-fit">
+          <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-D4D4D4 pb-2">
             Фільтри
           </h2>
 

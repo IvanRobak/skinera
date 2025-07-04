@@ -15,7 +15,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-lg flex flex-col h-full cursor-pointer w-full"
+      className="bg-white rounded-lg shadow-lg flex flex-col h-72 cursor-pointer w-full "
       onClick={() => router.push(`/products/${product.id}`)}
     >
       {/* Контейнер для зображення з підложкою */}
