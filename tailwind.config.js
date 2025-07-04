@@ -11,7 +11,11 @@ module.exports = {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
                 grayCustom: '#8F8F8F',
+                pinkCustom: '#FFE9F5',
             },
+            boxShadow: {
+                '3xl': '0 -7px 50px -20px rgba(0, 0, 0, 0.3)',
+            }
         },
     },
     plugins: [
