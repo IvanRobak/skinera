@@ -126,8 +126,8 @@ const ProductsPage = () => {
           onClick={() => handlePageChange(i)}
           className={`px-3 py-1 mx-1 rounded ${
             pagination.page === i
-              ? 'bg-pink-500 text-white'
-              : 'bg-white text-gray-700 hover:bg-pink-100'
+              ? 'bg-purple-600 text-white'
+              : 'bg-white text-gray-700 hover:bg-purple-100'
           } transition-colors duration-200`}
         >
           {i}

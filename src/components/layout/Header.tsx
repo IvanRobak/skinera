@@ -13,7 +13,7 @@ const Header = () => {
   const { data: session } = useSession();
 
   return (
-    <header className="bg-white shadow-md fixed top-0 w-full z-10">
+    <header className="bg-white shadow-md fixed top-0 w-full z-50">
       <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
         {/* Логотип */}
         <Link href="/" className="flex items-center space-x-3 cursor-pointer">
