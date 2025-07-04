@@ -107,7 +107,7 @@ const ReviewsSection = () => {
             alt="Background"
             width={1400}
             height={882}
-            className="object-cover"
+            className="object-cover object-right"
             style={{ width: '54%', height: '100%' }}
             priority
           />
