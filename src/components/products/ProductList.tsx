@@ -64,7 +64,7 @@ const ProductList = ({
     <div className="w-full flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-4 gap-10 sm:gap-6 p-4 sm:p-6 sm:justify-items-center">
       {products.length > 0 ? (
         products.map(product => (
-          <div key={product.id} className="relative group w-full max-w-xs">
+          <div key={product.id} className="w-full max-w-xs">
             <ProductCard product={product} />
           </div>
         ))
