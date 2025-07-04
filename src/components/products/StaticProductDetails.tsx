@@ -17,7 +17,7 @@ export default function StaticProductDetails({
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         {/* Product header */}
-        <div className="text-center py-8 bg-gradient-to-r from-pink-50 to-white border-b border-gray-200">
+        <div className="text-center py-8 bg-gradient-to-r from-purple-50 to-white border-b border-gray-200">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
           <p className="text-sm text-gray-500 mt-2">
             {product.brand} | {product.country}
@@ -42,7 +42,7 @@ export default function StaticProductDetails({
 
           {/* Product info and purchase buttons */}
           <div className="w-full md:w-1/2 flex flex-col justify-center items-start space-y-6">
-            <p className="text-3xl font-bold text-pink-600">{product.price} ₴</p>
+            <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
             <AddToCartButton product={product} />
             <div className="space-y-3 text-gray-600">
               <p className="flex items-center gap-2">
@@ -86,7 +86,7 @@ function ProductDetailsTabs({ product }: { product: Product }) {
         {/* Description */}
         {product.description && (
           <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-pink-500 pb-2 inline-block">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-D4D4D4 pb-2 inline-block w-full">
               Опис
             </h3>
             <div className="text-gray-600">
@@ -97,7 +97,7 @@ function ProductDetailsTabs({ product }: { product: Product }) {
 
         {/* Characteristics */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-pink-500 pb-2 inline-block">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-D4D4D4 pb-2 inline-block w-full">
             Характеристики
           </h3>
           <ul className="list-disc pl-5 space-y-2 text-gray-600">
@@ -131,7 +131,7 @@ function ProductDetailsTabs({ product }: { product: Product }) {
         {/* Instructions */}
         {product.instructions && (
           <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-pink-500 pb-2 inline-block">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-D4D4D4 pb-2 inline-block w-full">
               Як використовувати
             </h3>
             <p className="leading-relaxed text-gray-600">{product.instructions}</p>
@@ -141,7 +141,7 @@ function ProductDetailsTabs({ product }: { product: Product }) {
         {/* Ingredients */}
         {product.ingredients && (
           <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-pink-500 pb-2 inline-block">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-D4D4D4 pb-2 inline-block w-full">
               Склад
             </h3>
             <ul className="list-disc pl-5 text-gray-600">

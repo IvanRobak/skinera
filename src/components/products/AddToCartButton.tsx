@@ -40,18 +40,18 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={handleAddToCart}
-        className="flex-1 bg-gray-200 text-gray-800 py-4 px-8 rounded-lg hover:bg-gray-300 transition duration-300 shadow-md"
+        onClick={handleBuyNow}
+        className="flex-1 bg-purple-500 text-white py-4 px-8 rounded-lg hover:bg-purple-600 transition duration-300 shadow-md font-bold"
       >
-        Додати до кошика
+        Купити зараз
       </motion.button>
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={handleBuyNow}
-        className="flex-1 bg-pink-500 text-white py-4 px-8 rounded-lg hover:bg-pink-600 transition duration-300 shadow-md"
+        onClick={handleAddToCart}
+        className="flex-1 bg-gray-200 text-gray-800 py-4 px-8 rounded-lg hover:bg-gray-300 transition duration-300 shadow-md"
       >
-        Купити зараз
+        Додати до кошика
       </motion.button>
     </div>
   );

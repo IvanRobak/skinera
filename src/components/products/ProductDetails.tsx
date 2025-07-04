@@ -138,8 +138,15 @@ export default function ProductDetails() {
 
           {/* Інформація та кнопка покупки */}
           <div className="w-full md:w-1/2 flex flex-col justify-center items-start space-y-6">
-            <p className="text-3xl font-bold text-pink-600">{product.price} ₴</p>
+            <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
             <div className="flex gap-4 w-full">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex-1 bg-purple-500 text-white py-4 px-8 rounded-lg hover:bg-purple-600 transition duration-300 shadow-md"
+              >
+                Купити зараз
+              </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -160,27 +167,20 @@ export default function ProductDetails() {
               >
                 Додати до кошика
               </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex-1 bg-pink-500 text-white py-4 px-8 rounded-lg hover:bg-pink-600 transition duration-300 shadow-md"
-              >
-                Купити зараз
-              </motion.button>
             </div>
             <div className="space-y-3 text-gray-600">
               <p className="flex items-center gap-2">
-                <span className="text-pink-500">🚚</span> Доставка: {product.delivery}
+                <span className="text-purple-500">🚚</span> Доставка: {product.delivery}
               </p>
               <p className="flex items-center gap-2">
-                <span className="text-pink-500">✔️</span> Наявність: {product.availability}
+                <span className="text-purple-500">✔️</span> Наявність: {product.availability}
               </p>
             </div>
           </div>
         </div>
 
         {/* Вкладки для текстового контенту */}
-        <div className="p-8 border-t border-gray-200">
+        <div className="p-8 border-t border-gray-200 w-full">
           <div className="flex border-b border-gray-200 mb-6">
             {['description', 'characteristics', 'instructions', 'ingredients'].map(tab => (
               <button
@@ -188,7 +188,7 @@ export default function ProductDetails() {
                 onClick={() => setActiveTab(tab)}
                 className={`py-3 px-6 text-sm font-medium ${
                   activeTab === tab
-                    ? 'border-b-2 border-pink-500 text-pink-600'
+                    ? 'border-b-2 border-purple-500 text-purple-600'
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
               >

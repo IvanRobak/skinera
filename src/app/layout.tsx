@@ -4,8 +4,6 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './global.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import FloatingButton from '@/components/common/FloatingButton';
-import FloatingSocialButtons from '@/components/common/FloatingSocialButtons';
 import { ToastContainer } from 'react-toastify';
 import ClientSessionProvider from '@/components/ClientSessionProvider';
 import StructuredData from '@/components/seo/StructuredData';
@@ -108,8 +106,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main className="flex-grow">
             {children}
-            <FloatingButton />
-            <FloatingSocialButtons />
             <ToastContainer />
           </main>
           <Footer />
