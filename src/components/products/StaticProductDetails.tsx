@@ -15,48 +15,50 @@ export default function StaticProductDetails({
 }: StaticProductDetailsProps) {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Product header */}
-        <div className="text-center py-8 bg-gradient-to-r from-purple-50 to-white border-b border-gray-200">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
-          <p className="text-sm text-gray-500 mt-2">
-            {product.brand} | {product.country}
-          </p>
-        </div>
-
-        {/* Main content */}
-        <div className="flex flex-col md:flex-row gap-8 p-8">
-          {/* Product image */}
-          <div className="w-full md:w-1/2 flex justify-center">
-            <div className="relative w-full max-w-sm h-[400px] group">
+      <div className=" max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Product image and details tabs */}
+        <div className="flex p-8">
+          <div className="flex flex-col  gap-8 p-8">
+            {/* Product image */}
+            {/* <div className="w-full md:w-1/2 flex justify-center"> */}
+            <div className="relative w-full  h-[800px] group  bg-gray-50 ">
               <Image
                 src={product.image_url}
                 alt={product.name}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-contain transition-transform duration-300 group-hover:scale-110"
+                className="object-contain transition-transform duration-300 group-hover:scale-110 p-16"
                 priority
               />
             </div>
+            {/* </div> */}
+            {/* Product details tabs */}
+            <ProductDetailsTabs product={product} />
           </div>
-
           {/* Product info and purchase buttons */}
-          <div className="w-full md:w-1/2 flex flex-col justify-center items-start space-y-6">
-            <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
-            <AddToCartButton product={product} />
-            <div className="space-y-3 text-gray-600">
-              <p className="flex items-center gap-2">
-                <span className="text-pink-500">🚚</span> Доставка: {product.delivery}
-              </p>
-              <p className="flex items-center gap-2">
-                <span className="text-pink-500">✔️</span> Наявність: {product.availability}
-              </p>
+          <div className="flex flex-col items-start md:flex-row gap-8 p-8">
+            {/* Product info and purchase buttons */}
+            <div className="w-full  flex flex-col justify-center items-start space-y-6">
+              {/* Product header */}
+              <div className="text-center py-8 ">
+                <h1 className="text-2xl  font-bold text-gray-900">{product.name}</h1>
+                <p className="text-sm text-gray-500 mt-2">
+                  {product.brand} | {product.country}
+                </p>
+              </div>
+              <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
+              <AddToCartButton product={product} />
+              <div className="space-y-3 text-gray-600">
+                <p className="flex items-center gap-2">
+                  <span className="text-pink-500">🚚</span> Доставка: {product.delivery}
+                </p>
+                <p className="flex items-center gap-2">
+                  <span className="text-pink-500">✔️</span> Наявність: {product.availability}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Product details tabs */}
-        <ProductDetailsTabs product={product} />
 
         {/* Related products */}
         {relatedProducts.length > 0 && (
@@ -81,7 +83,7 @@ export default function StaticProductDetails({
 
 function ProductDetailsTabs({ product }: { product: Product }) {
   return (
-    <div className="p-8 border-t border-gray-200">
+    <div className="p-8 ">
       <div className="space-y-8">
         {/* Description */}
         {product.description && (
