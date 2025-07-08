@@ -6,7 +6,10 @@ import Image from 'next/image';
 interface Product {
   id: number;
   image_url: string;
-  name: string;
+  name: {
+    en: string;
+    ua: string;
+  };
   price: number;
 }
 
@@ -22,7 +25,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <div className="w-full h-[350px] sm:h-48 md:h-64 bg-gray-100 p-2 sm:p-4 flex items-center justify-center rounded-lg overflow-hidden shadow-md relative">
         <Image
           src={product.image_url}
-          alt={product.name}
+          alt={product.name.en}
           width={200}
           height={200}
           className="object-contain h-full w-full"
@@ -32,7 +35,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* Контейнер для назви та ціни */}
       <div className="flex-grow p-4 text-center">
-        <h2 className="text-gray-600 text-sm font-medium line-clamp-2 mb-2">{product.name}</h2>
+        <h2 className="text-gray-600 text-sm font-medium line-clamp-2 mb-2">{product.name.en}</h2>
         <p className="text-gray-600 font-bold">{product.price} ₴</p>
       </div>
     </div>

@@ -15,10 +15,14 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   const handleAddToCart = () => {
     addToCart({
       id: product.id,
-      name: product.name,
+      name: {
+        en:  product.name.en,
+        ua: product.name.ua,
+      },
       price: product.price,
       image_url: product.image_url,
       quantity: 1,
+      capacity: product.capacity,
     });
     toast.success('Товар додано до кошика!', {
       position: 'top-right',
