@@ -11,7 +11,10 @@ import { toast } from 'react-toastify';
 
 interface Product {
   id: number;
-  name: string;
+  name: {
+    en: string;
+    ua: string;
+  };
   price: number;
   image_url: string;
   category: string;
@@ -32,6 +35,7 @@ interface Product {
   ingredients: string;
   availability: string;
   delivery: string;
+  capacity: number;
 }
 
 export default function ProductDetails() {
@@ -114,7 +118,7 @@ export default function ProductDetails() {
       >
         {/* Заголовок продукту */}
         <div className="text-center py-8 bg-gradient-to-r from-pink-50 to-white border-b border-gray-200">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name.en}</h1>
           <p className="text-sm text-gray-500 mt-2">
             {product.brand} | {product.country}
           </p>
@@ -127,7 +131,7 @@ export default function ProductDetails() {
             <div className="relative w-full max-w-sm h-[400px] group">
               <Image
                 src={product.image_url}
-                alt={product.name}
+                alt={product.name.en}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-contain transition-transform duration-300 group-hover:scale-110"
@@ -153,7 +157,11 @@ export default function ProductDetails() {
                 onClick={() => {
                   useCartStore.getState().addToCart({
                     id: product.id,
-                    name: product.name,
+                    name: {
+                      en : product.name.en,
+                      ua: product.name.ua,
+                    },
+                    capacity: product.capacity,
                     price: product.price,
                     image_url: product.image_url,
                     quantity: 1,

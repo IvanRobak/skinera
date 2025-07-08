@@ -18,7 +18,7 @@ export default function StaticProductDetails({
       <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         {/* Product header */}
         <div className="text-center py-8 bg-gradient-to-r from-purple-50 to-white border-b border-gray-200">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name.en}</h1>
           <p className="text-sm text-gray-500 mt-2">
             {product.brand} | {product.country}
           </p>
@@ -31,7 +31,7 @@ export default function StaticProductDetails({
             <div className="relative w-full max-w-sm h-[400px] group">
               <Image
                 src={product.image_url}
-                alt={product.name}
+                alt={product.name.en}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-contain transition-transform duration-300 group-hover:scale-110"
@@ -42,6 +42,7 @@ export default function StaticProductDetails({
 
           {/* Product info and purchase buttons */}
           <div className="w-full md:w-1/2 flex flex-col justify-center items-start space-y-6">
+            <h2 className='text-3xl font-bold'>{product.name.en}</h2>
             <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
             <AddToCartButton product={product} />
             <div className="space-y-3 text-gray-600">

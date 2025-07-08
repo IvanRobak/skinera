@@ -26,7 +26,7 @@ const Header = () => {
         </Link>
 
         {/* Меню для великих екранів */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center">
           <Navigation />
           <CartButton />
           {session ? (
