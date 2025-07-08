@@ -3,7 +3,10 @@ import { ObjectId } from 'mongodb';
 
 export interface Product {
   id: number;
-  name: string;
+  name: {
+    en: string;
+    ua: string;
+  };
   price: number;
   image_url: string;
   category: string;
@@ -24,6 +27,7 @@ export interface Product {
   ingredients: string;
   availability: string;
   delivery: string;
+  capacity: number;
 }
 
 export async function getAllProducts(): Promise<Product[]> {

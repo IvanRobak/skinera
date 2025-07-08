@@ -1,13 +1,9 @@
 // components/Cart.tsx
 'use client';
 
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image_url?: string;
-}
+import { useRouter } from "next/navigation";
+import { CartItem } from "./store/cartStore";
+
 
 interface CartProps {
   cart: CartItem[];
@@ -17,6 +13,12 @@ interface CartProps {
 }
 
 const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) => {
+  const router = useRouter();
+  const handleButtonClick = () => {
+    router.push('/cart');
+    onClose()
+  }
+
   if (!cart.length) {
     return (
       <div
@@ -71,7 +73,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
                 className="flex justify-between items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
               >
                 <div className="flex-1">
-                  <h4 className="font-medium text-gray-800">{item.name}</h4>
+                  <h4 className="font-medium text-gray-800">{item.name.en}</h4>
                   <p className="text-purple-600 font-medium">{item.price} ₴</p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -108,7 +110,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
               {cart.reduce((sum, item) => sum + item.price * item.quantity, 0)} ₴
             </span>
           </div>
-          <button className="w-full bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 transition-colors shadow-md hover:shadow-lg">
+          <button className="w-full bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 transition-colors shadow-md hover:shadow-lg" onClick={handleButtonClick}>
             Оформити замовлення
           </button>
         </div>

@@ -28,12 +28,16 @@ const ProductList = dynamic(() => import('@/components/products/ProductList'), {
 
 interface Product {
   id: number;
-  name: string;
+  name: {
+    en : string;
+    ua: string;
+  }
   price: number;
   image_url: string;
   category: string;
   brand: string;
   country: string;
+  capacity: number;
 }
 
 interface PaginationData {
