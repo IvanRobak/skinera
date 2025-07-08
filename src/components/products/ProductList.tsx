@@ -65,7 +65,7 @@ const ProductList = ({
   }, [sortOption, searchQuery, selectedBrand, selectedCategory, selectedCountry, page, limit]);
 
   return (
-    <div className="w-full flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-4 gap-10 sm:gap-6 p-4 sm:p-6 sm:justify-items-center">
+    <div className="w-full flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-3 gap-10 sm:gap-6 p-4 sm:p-6 sm:justify-items-center">
       {products.length > 0 ? (
         products.map(product => (
           <div key={product.id} className="w-full max-w-xs">
