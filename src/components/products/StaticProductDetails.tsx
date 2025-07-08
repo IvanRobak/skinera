@@ -28,20 +28,23 @@ export default function StaticProductDetails({
         <div className="flex flex-col md:flex-row gap-8 p-8">
           {/* Product image */}
           <div className="w-full md:w-1/2 flex justify-center">
+          
+            {/* </div> */}
+            {/* Product details tabs */}
+            <ProductDetailsTabs product={product} />
+          </div>
+          {/* Product info and purchase buttons */}
+          <div className="w-full md:w-1/2 flex flex-col items-start space-y-6">
             <div className="relative w-full max-w-sm h-[400px] group">
               <Image
                 src={product.image_url}
                 alt={product.name.en}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-contain transition-transform duration-300 group-hover:scale-110"
+                className="object-contain transition-transform duration-300 group-hover:scale-110 p-16"
                 priority
               />
             </div>
-          </div>
-
-          {/* Product info and purchase buttons */}
-          <div className="w-full md:w-1/2 flex flex-col justify-center items-start space-y-6">
             <h2 className='text-3xl font-bold'>{product.name.en}</h2>
             <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
             <AddToCartButton product={product} />
@@ -55,9 +58,6 @@ export default function StaticProductDetails({
             </div>
           </div>
         </div>
-
-        {/* Product details tabs */}
-        <ProductDetailsTabs product={product} />
 
         {/* Related products */}
         {relatedProducts.length > 0 && (
@@ -82,7 +82,7 @@ export default function StaticProductDetails({
 
 function ProductDetailsTabs({ product }: { product: Product }) {
   return (
-    <div className="p-8 border-t border-gray-200">
+    <div className="p-8 ">
       <div className="space-y-8">
         {/* Description */}
         {product.description && (

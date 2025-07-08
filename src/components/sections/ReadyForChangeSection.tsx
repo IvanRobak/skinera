@@ -1,0 +1,28 @@
+import Image from 'next/image';
+import ModalButton from '@/components/common/ModalButton';
+import ContactForm from '@/components/forms/ContactForm';
+
+export default function ReadyForChangeSection() {
+  return (
+    <section className="relative mt-16 max-w-[1440px] mx-auto h-[367px]">
+      <Image
+        src="/images/ready-for-change.png"
+        alt="Лазерна епіляція у салоні Skinera"
+        fill
+        className="object-cover"
+        priority
+      />
+      <div className="relative z-10 pl-36 pt-[70px] flex flex-col items-start">
+        <h2 className="text-3xl text-white font-semibold mb-4">Готова до перетвореня?</h2>
+        <p className="text-xl text-white mb-6">
+          Запишіться на безкоштовну консультацію та першу процедуру
+        </p>
+        <ModalButton
+          buttonText="Записатись на епіляцію"
+          modalContent={<ContactForm />}
+          className="px-8 py-3 rounded-full text-lg font-semibold transition duration-300 shadow-lg hover:shadow-xl"
+        />
+      </div>
+    </section>
+  );
+}
