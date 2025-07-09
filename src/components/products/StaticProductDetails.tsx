@@ -1,8 +1,10 @@
+'use client';
 import Image from 'next/image';
 import { Product } from '@/lib/products';
 import ProductCard from '@/components/products/ProductCard';
 import DescriptionRenderer from '@/components/common/DescriptionRenderer';
 import AddToCartButton from '@/components/products/AddToCartButton';
+import { useState } from 'react';
 
 interface StaticProductDetailsProps {
   product: Product;
@@ -14,38 +16,31 @@ export default function StaticProductDetails({
   relatedProducts,
 }: StaticProductDetailsProps) {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Product header */}
-        <div className="text-center py-8 bg-gradient-to-r from-purple-50 to-white border-b border-gray-200">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name.en}</h1>
-          <p className="text-sm text-gray-500 mt-2">
-            {product.brand} | {product.country}
-          </p>
-        </div>
-
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
         {/* Main content */}
         <div className="flex flex-col md:flex-row gap-8 p-8">
-          {/* Product image */}
-          <div className="w-full md:w-1/2 flex justify-center">
-          
-            {/* </div> */}
-            {/* Product details tabs */}
-            <ProductDetailsTabs product={product} />
-          </div>
-          {/* Product info and purchase buttons */}
-          <div className="w-full md:w-1/2 flex flex-col items-start space-y-6">
-            <div className="relative w-full max-w-sm h-[400px] group">
-              <Image
-                src={product.image_url}
-                alt={product.name.en}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-contain transition-transform duration-300 group-hover:scale-110 p-16"
-                priority
-              />
+          {/* Left side - Image and Details */}
+          <div className="w-full md:w-1/2 flex flex-col">
+            {/* Product image */}
+            <div className="flex justify-center mb-6">
+              <div className="relative w-full max-w-sm h-[500px] group">
+                <Image
+                  src={product.image_url}
+                  alt={product.name.en}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-contain transition-transform duration-300 group-hover:scale-110 p-8"
+                  priority
+                />
+              </div>
             </div>
-            <h2 className='text-3xl font-bold'>{product.name.en}</h2>
+            {/* Product details accordion */}
+            <ProductDetailsAccordion product={product} />
+          </div>
+          {/* Right side - Product info and purchase buttons */}
+          <div className="w-full md:w-1/2 flex flex-col items-start space-y-6 mt-12 md:sticky md:top-20 md:self-start md:max-h-screen">
+            <h2 className="text-3xl font-bold">{product.name.en}</h2>
             <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
             <AddToCartButton product={product} />
             <div className="space-y-3 text-gray-600">
@@ -80,28 +75,117 @@ export default function StaticProductDetails({
   );
 }
 
-function ProductDetailsTabs({ product }: { product: Product }) {
+function ProductDetailsAccordion({ product }: { product: Product }) {
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+  const [allExpanded, setAllExpanded] = useState(false);
+
+  const toggleSection = (section: string) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  const toggleAll = () => {
+    const newState = !allExpanded;
+    setAllExpanded(newState);
+    setOpenSections({
+      description: newState,
+      characteristics: newState,
+      instructions: newState,
+      ingredients: newState,
+    });
+  };
+
+  const AccordionItem = ({
+    id,
+    title,
+    children,
+    isOpen,
+  }: {
+    id: string;
+    title: string;
+    children: React.ReactNode;
+    isOpen: boolean;
+  }) => (
+    <div className="border-b border-gray-200 last:border-b-0">
+      <button
+        onClick={() => toggleSection(id)}
+        className="w-full flex items-center justify-between py-4 px-6 text-left hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-inset"
+        aria-expanded={isOpen}
+        aria-controls={`${id}-content`}
+      >
+        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+        <svg
+          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div
+        id={`${id}-content`}
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+        aria-hidden={!isOpen}
+      >
+        <div className="px-6 pb-4 text-gray-600">{children}</div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="p-8 ">
-      <div className="space-y-8">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      {/* Expand/Collapse All Button */}
+      <div className="p-4 bg-gray-50 border-b border-gray-200">
+        <button
+          onClick={toggleAll}
+          className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2"
+        >
+          {allExpanded ? (
+            <>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+              </svg>
+              Згорнути все
+            </>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Розгорнути все
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Accordion Items */}
+      <div>
         {/* Description */}
         {product.description && (
-          <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-D4D4D4 pb-2 inline-block w-full">
-              Опис
-            </h3>
-            <div className="text-gray-600">
-              <DescriptionRenderer description={product.description} />
-            </div>
-          </div>
+          <AccordionItem id="description" title="Опис" isOpen={openSections.description || false}>
+            <DescriptionRenderer description={product.description} />
+          </AccordionItem>
         )}
 
         {/* Characteristics */}
-        <div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-D4D4D4 pb-2 inline-block w-full">
-            Характеристики
-          </h3>
-          <ul className="list-disc pl-5 space-y-2 text-gray-600">
+        <AccordionItem
+          id="characteristics"
+          title="Характеристики"
+          isOpen={openSections.characteristics || false}
+        >
+          <ul className="space-y-2">
             <li>
               <strong>Класифікація:</strong> {product.characteristics.cosmetic_classification}
             </li>
@@ -127,32 +211,30 @@ function ProductDetailsTabs({ product }: { product: Product }) {
               <strong>Гіпоалергенність:</strong> {product.characteristics.hypoallergenic}
             </li>
           </ul>
-        </div>
+        </AccordionItem>
 
         {/* Instructions */}
         {product.instructions && (
-          <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-D4D4D4 pb-2 inline-block w-full">
-              Як використовувати
-            </h3>
-            <p className="leading-relaxed text-gray-600">{product.instructions}</p>
-          </div>
+          <AccordionItem
+            id="instructions"
+            title="Як використовувати"
+            isOpen={openSections.instructions || false}
+          >
+            <p className="leading-relaxed">{product.instructions}</p>
+          </AccordionItem>
         )}
 
         {/* Ingredients */}
         {product.ingredients && (
-          <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-D4D4D4 pb-2 inline-block w-full">
-              Склад
-            </h3>
-            <ul className="list-disc pl-5 text-gray-600">
+          <AccordionItem id="ingredients" title="Склад" isOpen={openSections.ingredients || false}>
+            <ul className="list-disc pl-5 space-y-1">
               {product.ingredients.split(',').map((ingredient, index) => (
                 <li key={index} className="leading-relaxed">
                   {ingredient.trim()}
                 </li>
               ))}
             </ul>
-          </div>
+          </AccordionItem>
         )}
       </div>
     </div>
