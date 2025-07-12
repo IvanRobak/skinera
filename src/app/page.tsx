@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, Suspense } from 'react';
 import { toast } from 'react-toastify';
 
-const HeroSection = dynamic(() => import('@/components/sections/HeroSection'), {
+const HeroSectionPrimary = dynamic(() => import('@/components/sections/HeroSectionPrimary'), {
   loading: () => <div className="w-full h-screen bg-gray-100 animate-pulse" />,
 });
 
@@ -51,7 +51,7 @@ export default function Home() {
       <Suspense fallback={null}>
         <LoginSuccessToast />
       </Suspense>
-      <HeroSection />
+      <HeroSectionPrimary />
       <AboutSection />
       <ServicesSection />
       <AdvantagesSection />

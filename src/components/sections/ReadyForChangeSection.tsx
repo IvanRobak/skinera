@@ -1,12 +1,12 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import ModalButton from '@/components/common/ModalButton';
 import ContactForm from '@/components/forms/ContactForm';
 
-export default function ReadyForChangeSection() {
+export default function ReadyForChangeSection({imgUrl } : {imgUrl : StaticImageData}) {
   return (
-    <section className="relative mt-16 max-w-[1440px] mx-auto h-[367px]">
+    <section className="relative mt-16 mx-auto h-[367px]">
       <Image
-        src="/images/ready-for-change.png"
+        src={imgUrl}
         alt="Лазерна епіляція у салоні Skinera"
         fill
         className="object-cover"

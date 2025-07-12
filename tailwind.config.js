@@ -15,6 +15,9 @@ module.exports = {
             },
             boxShadow: {
                 '3xl': '0 -7px 50px -20px rgba(0, 0, 0, 0.3)',
+            },
+            screens: {
+                "md": '800px'
             }
         },
     },
