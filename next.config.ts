@@ -1,11 +1,12 @@
 /** @type {import('next').NextConfig} */
+import type { Configuration } from 'webpack';
 
 const nextConfig = {
   images: {
     domains: ['images.prom.ua'],
   },
-  webpack(config) {
-    config.module.rules.push({
+  webpack(config : Configuration) {
+    config?.module?.rules?.push({
       test: /\.svg$/i,
       use: ["@svgr/webpack"],
     });
