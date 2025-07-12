@@ -5,7 +5,10 @@ import WhyChooseUsSection from '@/components/sections/WhyChooseUsSection';
 import LaserPricesSection from '@/components/sections/LaserPricesSection';
 import LaserFaqSection from '@/components/sections/LaserFaqSection';
 import ReadyForChangeSection from '@/components/sections/ReadyForChangeSection';
-import Image from 'next/image';
+
+import readyForChangeImg from '../../../../public/images/ready-for-change.png'
+import HeroSection from '@/components/sections/HeroSection';
+import { heroSectionData, whyChooseUsData } from '@/mockData/laser-hair-removal-mock';
 
 export default function LaserHairRemovalPage() {
   return (
@@ -17,30 +20,14 @@ export default function LaserHairRemovalPage() {
         pageUrl="https://skinera.com.ua/services/laser-hair-removal"
       />
       <div>
-        <section className="relative mt-16 max-w-[1440px] mx-auto h-[709px]">
-          <Image
-            src="/images/laser-hair-remove.png"
-            alt="Лазерна епіляція у салоні Skinera"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="relative max-w-6xl px-4 pt-44 m-auto text-white">
-            <h1 className="font-bold mb-8 text-6xl text-center">Лазерна епіляція у Львові</h1>
-            <p className="font-bold text-2xl text-center">
-              Безболісне та ефективне видалення небажаного волосся. Сучасне обладнання, досвідчені
-              спеціалісти та індивідуальний підхід до кожного клієнта в салоні Skinera.
-            </p>
-          </div>
-        </section>
-
+        <HeroSection data={heroSectionData} />
         <div className="max-w-6xl mx-auto">
-          <WhyChooseUsSection />
+          <WhyChooseUsSection data={whyChooseUsData} />
           <LaserPricesSection />
           <LaserFaqSection />
         </div>
 
-        <ReadyForChangeSection />
+        <ReadyForChangeSection imgUrl={readyForChangeImg} />
       </div>
     </>
   );

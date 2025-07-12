@@ -1,6 +1,6 @@
 export default function LaserPricesSection() {
   return (
-    <section className="relative my-32">
+    <section className="relative my-32 mx-auto">
       {/* Blurred background heading */}
       <h1 className="absolute left-1/2 top-[-80px] -translate-x-1/2 text-9xl font-semibold text-black select-none pointer-events-none z-0">
         Ціни
