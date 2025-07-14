@@ -7,7 +7,7 @@ import spaCompositionImg from '../../../../public/images/spa-composition.png'
 
 
 import SkinCareSection from '@/components/sections/SkinCareSection';
-import { heroSectionData, proceduresTypesData, whyChooseUsData, skinCareData } from '@/mockData/face-care-mock';
+import { heroSectionData, proceduresTypesData, whyChooseUsData, skinCareData, pricesData } from '@/mockData/face-care-mock';
 import ProceduresTypesSection from '@/components/sections/ProceduresTypesSection';
 import HeroSection from '@/components/sections/HeroSection';
 
@@ -24,14 +24,14 @@ export default function FaceCarePage() {
       />
       <div>
        <HeroSection data={heroSectionData} />
-        <div className='max-w-6xl mx-auto py-20'>
+        <div className='flex flex-col gap-32 max-w-6xl mx-auto py-20'>
           <ProceduresTypesSection data={proceduresTypesData} />
           <WhyChooseUsSection data={whyChooseUsData} />
-          <LaserPricesSection />
+          <LaserPricesSection data={pricesData} />
           <SkinCareSection data={skinCareData}/>
         </div>
           <ReadyForChangeSection imgUrl={spaCompositionImg}/>
-        </div>
+      </div>
     </>
   );
 }

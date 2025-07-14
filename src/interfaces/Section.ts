@@ -30,3 +30,11 @@ export interface WhyChooseUsDataInterface {
     SvgIcon: FC<SVGProps<SVGSVGElement>>,
     svgIconColor: string;
 }
+
+export interface SectionPriceInterface {
+    sectionTitle : string;
+    procedure : {
+        titles : string[];
+        prices: number[];
+    }
+}

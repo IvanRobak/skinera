@@ -20,9 +20,9 @@ export default function MassagePage() {
       />
       <div>
         <HeroSection data={heroSectionData} />
-        <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col gap-32 py-20 max-w-6xl mx-auto">
           <ProceduresTypesSection data={proceduresTypesData} />
-          <MassagePricesSection />
+          <MassagePricesSection />    {/* Need to replace */}
         </div>
         <ReadyForChangeSection imgUrl={readyForChange} />
       </div>

@@ -4,7 +4,7 @@ import ContactForm from '@/components/forms/ContactForm';
 
 export default function ReadyForChangeSection({imgUrl } : {imgUrl : StaticImageData}) {
   return (
-    <section className="relative mt-16 mx-auto h-[367px]">
+    <section className=" max-w-[1440px]  h-[367px] relative mx-auto">
       <Image
         src={imgUrl}
         alt="Лазерна епіляція у салоні Skinera"

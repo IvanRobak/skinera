@@ -8,7 +8,7 @@ import ReadyForChangeSection from '@/components/sections/ReadyForChangeSection';
 
 import readyForChangeImg from '../../../../public/images/ready-for-change.png'
 import HeroSection from '@/components/sections/HeroSection';
-import { heroSectionData, whyChooseUsData } from '@/mockData/laser-hair-removal-mock';
+import { heroSectionData, pricesData, whyChooseUsData } from '@/mockData/laser-hair-removal-mock';
 
 export default function LaserHairRemovalPage() {
   return (
@@ -21,12 +21,11 @@ export default function LaserHairRemovalPage() {
       />
       <div>
         <HeroSection data={heroSectionData} />
-        <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col gap-32 py-20 max-w-6xl mx-auto">
           <WhyChooseUsSection data={whyChooseUsData} />
-          <LaserPricesSection />
+          <LaserPricesSection data={pricesData}/>
           <LaserFaqSection />
         </div>
-
         <ReadyForChangeSection imgUrl={readyForChangeImg} />
       </div>
     </>

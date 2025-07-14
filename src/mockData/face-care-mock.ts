@@ -77,3 +77,27 @@ export const skinCareData : SkinCareDataInterface = {
        {title: 'Комбінована шкіра', description: 'Комплексний догляд за різними зонами', Icon : ArrowIcon},
       ]
   }
+
+export const pricesData = [
+      {
+        sectionTitle: 'Чистка обличчя',
+        procedure : {
+          titles : ['Ультразвукова', 'Комбінована', 'Механічна', 'Чистка + пілінг азелеїновий', 'Чистка + пілінг PRX-T33', 'Аква чистка'],
+          prices: [800, 1000, 900, 1800, 2300, 1200]
+        }
+      },
+      {
+        sectionTitle: 'Доглядові процедури',
+        procedure : {
+          titles : ['Ферментотерапія (Glymed)', 'Карбоксітерапія', 'Антикуперозна процедура', 'Антиоксидантна процедура з віт. C'],
+          prices: [1500, 1000, 1000, 1000],
+        }
+      },
+      {
+        sectionTitle: 'Пілінги',
+        procedure : {
+          titles : ['Азелеїновий / Мигдалевий', 'Appeex', 'Жовтий', 'Kemikum', 'PRX-T33 (20мл)', 'BioRePeel', 'TCA (Glymed)', 'Retix C EYE'],
+          prices: [1000, 2000, 1800, 1800, 2000, 2200, 2500, 2000],
+        }
+      }
+]
