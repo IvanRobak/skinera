@@ -17,7 +17,7 @@ const Header = () => {
       <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
         {/* Логотип */}
         <Link href="/" className="flex items-center space-x-3 cursor-pointer">
-          <div className="bg-purple-600 rounded-full p-1">
+          <div className="bg-brand-600 rounded-full p-1">
             <Image src="/icon/icon.svg" alt="Skinera Logo" width={32} height={32} />
           </div>
           <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
@@ -32,7 +32,7 @@ const Header = () => {
           {session ? (
             <Link
               href="/account"
-              className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-purple-600 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors"
             >
               <UserIcon className="w-5 h-5" />
               <span>{session.user?.name}</span>
@@ -41,14 +41,14 @@ const Header = () => {
             <div className="flex items-center space-x-3">
               <Link
                 href="/auth/signin"
-                className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-purple-600 transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors"
               >
                 <UserIcon className="w-5 h-5" />
                 <span>Увійти</span>
               </Link>
               <Link
                 href="/auth/register"
-                className="px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-md hover:shadow-lg"
+                className="px-6 py-2 bg-brand-600 text-white rounded-full hover:bg-brand-700 transition-colors shadow-md hover:shadow-lg"
               >
                 <span>Реєстрація</span>
               </Link>
@@ -89,7 +89,7 @@ const Header = () => {
             <div className="px-4 py-3 border-t border-gray-100">
               <Link
                 href="/account"
-                className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-purple-600 transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <UserIcon className="w-5 h-5" />
@@ -100,7 +100,7 @@ const Header = () => {
             <div className="px-4 py-3 border-t border-gray-100 space-y-2">
               <Link
                 href="/auth/signin"
-                className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-purple-600 transition-colors w-full"
+                className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors w-full"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <UserIcon className="w-5 h-5" />
@@ -108,7 +108,7 @@ const Header = () => {
               </Link>
               <Link
                 href="/auth/register"
-                className="flex items-center justify-center px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-md hover:shadow-lg w-full"
+                className="flex items-center justify-center px-6 py-2 bg-brand-600 text-white rounded-full hover:bg-brand-700 transition-colors shadow-md hover:shadow-lg w-full"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span>Реєстрація</span>

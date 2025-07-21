@@ -1,9 +1,8 @@
 // components/Cart.tsx
 'use client';
 
-import { useRouter } from "next/navigation";
-import { CartItem } from "./store/cartStore";
-
+import { useRouter } from 'next/navigation';
+import { CartItem } from './store/cartStore';
 
 interface CartProps {
   cart: CartItem[];
@@ -16,8 +15,8 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
   const router = useRouter();
   const handleButtonClick = () => {
     router.push('/cart');
-    onClose()
-  }
+    onClose();
+  };
 
   if (!cart.length) {
     return (
@@ -33,7 +32,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
             <h3 className="text-xl font-bold text-gray-800 mb-4">Ваш кошик порожній</h3>
             <p className="text-gray-600 mb-6">Додайте товари до кошика, щоб зробити замовлення</p>
             <button
-              className="w-full bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 transition-colors shadow-md hover:shadow-lg"
+              className="w-full bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-colors shadow-md hover:shadow-lg"
               onClick={onClose}
             >
               Продовжити покупки
@@ -56,7 +55,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
       >
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-gray-800">
-            Кошик <span className="text-purple-600">({totalItems})</span>
+            Кошик <span className="text-brand-600">({totalItems})</span>
           </h3>
           <button
             className="text-gray-400 hover:text-gray-600 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
@@ -74,19 +73,19 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
               >
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-800">{item.name.en}</h4>
-                  <p className="text-purple-600 font-medium">{item.price} ₴</p>
+                  <p className="text-brand-600 font-medium">{item.price} ₴</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center bg-white rounded-full shadow-sm border border-gray-200">
                     <button
-                      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-purple-600 transition-colors"
+                      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brand-600 transition-colors"
                       onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
                     >
                       -
                     </button>
                     <span className="w-8 text-center text-gray-800">{item.quantity}</span>
                     <button
-                      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-purple-600 transition-colors"
+                      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brand-600 transition-colors"
                       onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                     >
                       +
@@ -106,11 +105,14 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
         <div className="mt-6 pt-6 border-t border-gray-200">
           <div className="flex justify-between items-center mb-6">
             <span className="text-gray-600">Загальна сума:</span>
-            <span className="text-xl font-bold text-purple-600">
+            <span className="text-xl font-bold text-brand-600">
               {cart.reduce((sum, item) => sum + item.price * item.quantity, 0)} ₴
             </span>
           </div>
-          <button className="w-full bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 transition-colors shadow-md hover:shadow-lg" onClick={handleButtonClick}>
+          <button
+            className="w-full bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-colors shadow-md hover:shadow-lg"
+            onClick={handleButtonClick}
+          >
             Оформити замовлення
           </button>
         </div>

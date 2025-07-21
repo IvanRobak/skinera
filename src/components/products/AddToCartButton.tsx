@@ -16,7 +16,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
     addToCart({
       id: product.id,
       name: {
-        en:  product.name.en,
+        en: product.name.en,
         ua: product.name.ua,
       },
       price: product.price,
@@ -45,7 +45,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={handleBuyNow}
-        className="flex-1 bg-purple-500 text-white py-4 px-8 rounded-lg hover:bg-purple-600 transition duration-300 shadow-md font-bold"
+        className="flex-1 bg-brand-500 text-white py-4 px-8 rounded-lg hover:bg-brand-600 transition duration-300 shadow-md font-bold"
       >
         Купити зараз
       </motion.button>

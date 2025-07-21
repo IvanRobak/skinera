@@ -41,7 +41,7 @@ export default function StaticProductDetails({
           {/* Right side - Product info and purchase buttons */}
           <div className="w-full md:w-1/2 flex flex-col items-start space-y-6 mt-12 md:sticky md:top-20 md:self-start md:max-h-screen">
             <h2 className="text-3xl font-bold">{product.name.en}</h2>
-            <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
+            <p className="text-3xl font-bold text-brand-600">{product.price} ₴</p>
             <AddToCartButton product={product} />
             <div className="space-y-3 text-gray-600">
               <p className="flex items-center gap-2">
@@ -145,7 +145,7 @@ function ProductDetailsAccordion({ product }: { product: Product }) {
       <div className="p-4 bg-gray-50 border-b border-gray-200">
         <button
           onClick={toggleAll}
-          className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2"
+          className="text-sm text-brand-600 hover:text-brand-700 font-medium flex items-center gap-2"
         >
           {allExpanded ? (
             <>

@@ -21,9 +21,9 @@ const AboutSection = () => {
           <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Наші цінності</h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
-                  className="w-8 h-8 text-purple-600"
+                  className="w-8 h-8 text-brand-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -97,7 +97,7 @@ const AboutSection = () => {
             <ModalButton
               buttonText="Записатись на прийом"
               modalContent={<ContactForm />}
-              className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-lg hover:shadow-xl mt-12"
+              className="bg-brand-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl mt-12"
             />
           </div>
         </div>

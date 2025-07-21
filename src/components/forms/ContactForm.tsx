@@ -131,7 +131,7 @@ const ContactForm = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-purple-600 text-white py-3 px-6 rounded-full hover:bg-purple-700 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-brand-600 text-white py-3 px-6 rounded-full hover:bg-brand-700 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Надсилання...' : 'Записатись'}
         </button>

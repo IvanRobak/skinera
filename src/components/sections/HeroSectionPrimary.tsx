@@ -35,7 +35,7 @@ const HeroSectionPrimary = () => {
             <ModalButton
               buttonText="Записатись на прийом"
               modalContent={<ContactForm />}
-              className="bg-purple-600 text-white px-4 md:px-6 lg:px-8 py-2 md:py-3 rounded-full text-sm md:text-base lg:text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-lg hover:shadow-xl"
+              className="bg-brand-600 text-white px-4 md:px-6 lg:px-8 py-2 md:py-3 rounded-full text-sm md:text-base lg:text-lg font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
             />
             <a
               href="/services"
