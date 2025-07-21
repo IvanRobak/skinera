@@ -4,7 +4,7 @@ interface Props {
   data: SectionPriceInterface[];
 }
 
-export default function LaserPricesSection({ data }: Props) {
+export default function PricesSection({ data }: Props) {
   return (
     <section
       className="relative p-10 pb-20 w-screen left-1/2 -translate-x-1/2 pt-36"

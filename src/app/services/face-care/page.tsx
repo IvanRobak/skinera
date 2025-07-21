@@ -1,4 +1,4 @@
-import LaserPricesSection from '@/components/sections/LaserPricesSection';
+import PricesSection from '@/components/sections/PricesSection';
 import ReadyForChangeSection from '@/components/sections/ReadyForChangeSection';
 import WhyChooseUsSection from '@/components/sections/WhyChooseUsSection';
 import StructuredData from '@/components/seo/StructuredData';
@@ -30,7 +30,7 @@ export default function FaceCarePage() {
         <div className="flex flex-col gap-32 max-w-6xl mx-auto">
           <ProceduresTypesSection data={proceduresTypesData} />
           <WhyChooseUsSection data={whyChooseUsData} />
-          <LaserPricesSection data={pricesData} />
+          <PricesSection data={pricesData} />
           <SkinCareSection data={skinCareData} />
         </div>
         <ReadyForChangeSection imgUrl={spaCompositionImg} />
