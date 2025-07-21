@@ -28,14 +28,6 @@ const Footer = () => {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/about"
-                    className="text-gray-600 hover:text-purple-600 transition-colors"
-                  >
-                    Про нас
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href="/services"
                     className="text-gray-600 hover:text-purple-600 transition-colors"
                   >
@@ -48,14 +40,6 @@ const Footer = () => {
                     className="text-gray-600 hover:text-purple-600 transition-colors"
                   >
                     Товари
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/reviews"
-                    className="text-gray-600 hover:text-purple-600 transition-colors"
-                  >
-                    Відгуки
                   </Link>
                 </li>
               </ul>

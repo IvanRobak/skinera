@@ -20,7 +20,7 @@ export default function MassagePage() {
       />
       <div>
         <HeroSection data={heroSectionData} />
-        <div className="flex flex-col gap-32 py-20 max-w-6xl mx-auto">
+        <div className="flex flex-col gap-32 pb-20 max-w-6xl mx-auto">
           <ProceduresTypesSection data={proceduresTypesData} />
           <PricesSection data={massagePricingData} />
         </div>

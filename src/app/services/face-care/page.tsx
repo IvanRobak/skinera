@@ -27,7 +27,7 @@ export default function FaceCarePage() {
       />
       <div>
         <HeroSection data={heroSectionData} />
-        <div className="flex flex-col gap-32 max-w-6xl mx-auto">
+        <div className="flex flex-col gap-20 max-w-6xl mx-auto mb-20">
           <ProceduresTypesSection data={proceduresTypesData} />
           <WhyChooseUsSection data={whyChooseUsData} />
           <PricesSection data={pricesData} />
