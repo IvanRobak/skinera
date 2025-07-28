@@ -99,7 +99,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
         <div className="w-full max-w-4xl mx-auto">
           <PhotoSlider
             images={images}
-            aspectRatio="landscape"
             showNavigation={true}
             showIndicators={true}
             initialIndex={selectedImageIndex}

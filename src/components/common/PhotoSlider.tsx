@@ -82,7 +82,7 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
           {/* Previous image (left side) */}
           {images.length > 1 && (
             <motion.div
-              key={`prev-${getPrevIndex()}`}
+              key={`prev-${currentIndex}`}
               className="absolute left-0 w-1/4 h-4/5 cursor-pointer z-10"
               onClick={goToPrevious}
               initial={{ opacity: 0, x: -50 }}
@@ -112,7 +112,7 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
             <motion.div
               className="flex h-full"
               animate={{
-                x: `-${currentIndex * 100}%`,
+                x: `-${currentIndex * (100 / images.length)}%`,
               }}
               transition={{
                 type: 'spring',
@@ -156,7 +156,7 @@ const PhotoSlider: React.FC<PhotoSliderProps> = ({
           {/* Next image (right side) */}
           {images.length > 1 && (
             <motion.div
-              key={`next-${getNextIndex()}`}
+              key={`next-${currentIndex}`}
               className="absolute right-0 w-1/4 h-4/5 cursor-pointer z-10"
               onClick={goToNext}
               initial={{ opacity: 0, x: 50 }}

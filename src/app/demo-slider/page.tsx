@@ -108,7 +108,6 @@ export default function SliderDemoPage() {
           <div className="max-w-4xl mx-auto">
             <PhotoSlider
               images={heroSliderImages}
-              aspectRatio="landscape"
               showNavigation={true}
               showIndicators={true}
               autoPlay={true}
@@ -147,7 +146,6 @@ export default function SliderDemoPage() {
               <div className="max-w-md">
                 <PhotoSlider
                   images={beforeAfterImages}
-                  aspectRatio="square"
                   showNavigation={true}
                   showIndicators={true}
                   className="rounded-xl overflow-hidden shadow-lg"
@@ -160,7 +158,6 @@ export default function SliderDemoPage() {
               <div className="max-w-sm mx-auto">
                 <PhotoSlider
                   images={beforeAfterImages.slice(0, 2)}
-                  aspectRatio="portrait"
                   showNavigation={true}
                   showIndicators={true}
                   autoPlay={true}

@@ -46,7 +46,6 @@ const SkinCareSection = ({ data }: Props) => {
         <div className="w-full lg:w-[637px] lg:h-[440px] mx-auto">
           <PhotoSlider
             images={skinCareImages}
-            aspectRatio="landscape"
             showNavigation={true}
             showIndicators={true}
             autoPlay={true}
