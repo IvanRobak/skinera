@@ -1,0 +1,189 @@
+'use client';
+import { useState } from 'react';
+// import DeliveryInfoForm from './DeliveryInfoForm';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ClientInfoFormFields, ClientInfoFormSchema } from '@/scripts/zod-schemas';
+import DeliveryInfoForm from './DeliveryInfoForm';
+
+const ClientInfoForm = () => {
+  const [firstCurrentStep, setFirstCurrentStep] = useState(true);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<ClientInfoFormFields>({
+    resolver: zodResolver(ClientInfoFormSchema),
+    shouldFocusError: false,
+  });
+  console.log(errors);
+
+  const name = watch('name');
+  const surname = watch('surname');
+  const number = watch('number');
+  const email = watch('email');
+
+  const onSubmit: SubmitHandler<ClientInfoFormFields> = () => {
+    try {
+      setFirstCurrentStep(false);
+    } catch (err) {
+      console.error('Error creating new user', err);
+    }
+  };
+
+  return (
+    <div id="new-customer" aria-labelledby="tab-1">
+      <div className="flex mb-12">
+        <h3
+          className={`font-semibold text-xl mr-11 cursor-pointer transition-colors duration-200 ${
+            firstCurrentStep ? 'text-[#5b24c9]' : 'text-[#a6a2a2]'
+          }`}
+          onClick={() => setFirstCurrentStep(true)}
+        >
+          1 Особисті дані
+        </h3>
+        <h3
+          className={`font-semibold text-xl transition-colors duration-200 ${
+            !firstCurrentStep ? 'text-[#5b24c9]' : 'text-[#a6a2a2]'
+          }`}
+        >
+          2 Інформація про доставку
+        </h3>
+      </div>
+      {firstCurrentStep ? (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex gap-10">
+            <div className="flex flex-col gap-12  w-[50%]">
+              <div className="relative">
+                <input
+                  id="name"
+                  type="text"
+                  placeholder=" "
+                  className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+                  {...register('name')}
+                />
+                <label
+                  htmlFor="name"
+                  className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+                                                  peer-focus:-top-6 peer-focus:text-[13px]
+                                                   ${
+                                                     name
+                                                       ? '-top-6 left-0 text-[13px]'
+                                                       : ' top-0 left-0 text-sm'
+                                                   }
+                                                  `}
+                >
+                  Ваше Ім&apos;я*
+                </label>
+                <span
+                  className={`absolute left-0 bottom-0 h-[1px] w-0 ${
+                    errors.name ? 'bg-red-500 w-full' : 'bg-purple-600'
+                  }
+                                                        transition-all duration-500 ease-in-out 
+                                                        origin-left peer-focus:w-full z-10`}
+                ></span>
+              </div>
+
+              <div className="relative">
+                <input
+                  id="surname"
+                  type="text"
+                  placeholder=" "
+                  className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+                  {...register('surname')}
+                />
+                <label
+                  htmlFor="surname"
+                  className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+                                                  peer-focus:-top-6 peer-focus:text-[13px]
+                                                   ${
+                                                     surname
+                                                       ? '-top-6 left-0 text-[13px]'
+                                                       : ' top-0 left-0 text-sm'
+                                                   }
+                                                  `}
+                >
+                  Ваше Прізвище*
+                </label>
+                <span
+                  className={`absolute left-0 bottom-0 h-[1px] w-0 ${
+                    errors.surname ? 'bg-red-500 w-full' : 'bg-purple-600'
+                  }
+                                                        transition-all duration-500 ease-in-out 
+                                                        origin-left peer-focus-within:w-full z-10`}
+                ></span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-12  w-[50%]">
+              <div className="relative">
+                <input
+                  type="text"
+                  id="number"
+                  placeholder=" "
+                  className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+                  {...register('number')}
+                />
+                <label
+                  htmlFor="number"
+                  className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+                                                  peer-focus:-top-6 peer-focus:text-[13px] ${
+                                                    number
+                                                      ? '-top-6 left-0 text-[13px]'
+                                                      : ' top-0 left-0 text-sm'
+                                                  }`}
+                >
+                  Телефон*
+                </label>
+                <span
+                  className={`absolute left-0 bottom-0 h-[1px] w-0 ${
+                    errors.number ? 'bg-red-500 w-full' : 'bg-purple-600'
+                  }
+                                                        transition-all duration-500 ease-in-out 
+                                                        origin-left peer-focus-within:w-full z-10`}
+                ></span>
+              </div>
+              <div className="relative ">
+                <input
+                  type="text"
+                  id="email"
+                  placeholder=" "
+                  className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none autofill:outline-none"
+                  {...register('email')}
+                />
+                <label
+                  htmlFor="email"
+                  className={`absolute text-gray-400 pointer-events-none transition-all duration-200
+                                                  peer-focus:-top-6 peer-focus:text-[13px] ${
+                                                    email
+                                                      ? '-top-6 left-0 text-[13px]'
+                                                      : ' top-0 left-0 text-sm'
+                                                  }`}
+                >
+                  E-mail*
+                </label>
+                <span
+                  className={`absolute left-0 bottom-0 h-[1px] w-0 ${
+                    errors.email ? 'bg-red-500 w-full' : 'bg-purple-600'
+                  }
+                                                        transition-all duration-500 ease-in-out 
+                                                        origin-left peer-focus-within:w-full z-10`}
+                ></span>
+              </div>
+              <button type="submit" className="text-white bg-black min-h-12 hover:bg-gray-900">
+                Далі
+              </button>
+            </div>
+          </div>
+        </form>
+      ) : (
+        <div>
+          <DeliveryInfoForm />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ClientInfoForm;

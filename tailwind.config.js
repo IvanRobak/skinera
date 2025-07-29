@@ -18,6 +18,9 @@ module.exports = {
             },
             screens: {
                 "md": '800px'
+            },
+            backgroundImage: {
+                'arrow-down': "url('/components/svgs/arrow-down.svg')"
             }
         },
     },
