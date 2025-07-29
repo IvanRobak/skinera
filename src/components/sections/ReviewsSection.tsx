@@ -103,7 +103,7 @@ const ReviewsSection = () => {
         {/* Background with Rectangle - kept unchanged */}
         <div className="absolute left-0 top-0 h-full w-full">
           <Image
-            src="/images/Rectangle.png"
+            src="/images/Rectangle4.png"
             alt="Background"
             width={1400}
             height={882}

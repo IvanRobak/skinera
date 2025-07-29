@@ -20,7 +20,7 @@ const CartButton = ({ isMobile }: { isMobile?: boolean }) => {
   return (
     <>
       <button
-        className={`flex items-center gap-2 px-4 py-2 rounded-full text-gray-700 hover:text-purple-600 hover:bg-gray-50 transition-colors ${
+        className={`flex items-center gap-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 hover:bg-gray-50 transition-colors ${
           isMobile ? 'justify-center' : ''
         }`}
         onClick={toggleCart}
@@ -28,7 +28,7 @@ const CartButton = ({ isMobile }: { isMobile?: boolean }) => {
         <div className="relative">
           <ShoppingBagIcon className="w-5 h-5" />
           {hasHydrated && totalItems > 0 && (
-            <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+            <span className="absolute -top-2 -right-2 bg-brand-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               {totalItems}
             </span>
           )}

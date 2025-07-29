@@ -29,9 +29,9 @@ const ProductList = dynamic(() => import('@/components/products/ProductList'), {
 interface Product {
   id: number;
   name: {
-    en : string;
+    en: string;
     ua: string;
-  }
+  };
   price: number;
   image_url: string;
   category: string;
@@ -130,8 +130,8 @@ const ProductsPage = () => {
           onClick={() => handlePageChange(i)}
           className={`px-3 py-1 mx-1 rounded ${
             pagination.page === i
-              ? 'bg-purple-600 text-white'
-              : 'bg-white text-gray-700 hover:bg-purple-100'
+              ? 'bg-brand-600 text-white'
+              : 'bg-white text-gray-700 hover:bg-brand-100'
           } transition-colors duration-200`}
         >
           {i}

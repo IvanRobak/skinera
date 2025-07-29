@@ -10,7 +10,7 @@ const Footer = () => {
             {/* Логотип та опис */}
             <div className="col-span-1">
               <Link href="/" className="flex items-center space-x-2 mb-4">
-                <div className="bg-purple-600 rounded-full p-1">
+                <div className="bg-brand-600 rounded-full p-1">
                   <Image src="/icon/icon.svg" alt="Skinera Logo" width={32} height={32} />
                 </div>
                 <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 ">
@@ -28,14 +28,6 @@ const Footer = () => {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/about"
-                    className="text-gray-600 hover:text-purple-600 transition-colors"
-                  >
-                    Про нас
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href="/services"
                     className="text-gray-600 hover:text-purple-600 transition-colors"
                   >
@@ -48,14 +40,6 @@ const Footer = () => {
                     className="text-gray-600 hover:text-purple-600 transition-colors"
                   >
                     Товари
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/reviews"
-                    className="text-gray-600 hover:text-purple-600 transition-colors"
-                  >
-                    Відгуки
                   </Link>
                 </li>
               </ul>
@@ -86,21 +70,21 @@ const Footer = () => {
               <div className="flex space-x-4">
                 <a
                   href="#"
-                  className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 hover:bg-purple-200 transition-colors"
+                  className="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 hover:bg-brand-100 transition-colors"
                   aria-label="Instagram"
                 >
                   <Image src="/icon/icon_instagram.svg" alt="Instagram" width={22} height={22} />
                 </a>
                 <a
                   href="#"
-                  className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 hover:bg-purple-200 transition-colors"
+                  className="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 hover:bg-brand-100 transition-colors"
                   aria-label="Facebook"
                 >
                   <Image src="/icon/iconoir_facebook.svg" alt="Facebook" width={22} height={22} />
                 </a>
                 <a
                   href="#"
-                  className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 hover:bg-purple-200 transition-colors"
+                  className="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 hover:bg-brand-100 transition-colors"
                   aria-label="Telegram"
                 >
                   <Image

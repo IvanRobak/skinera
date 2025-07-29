@@ -3,10 +3,10 @@
 import StructuredData from '@/components/seo/StructuredData';
 import ReadyForChangeSection from '@/components/sections/ReadyForChangeSection';
 
-import MassagePricesSection from '@/components/sections/MassagePricesSection';
-import readyForChange from '../../../../public/images/ready-for-change.png'
+import PricesSection from '@/components/sections/PricesSection';
+import readyForChange from '../../../../public/images/ready-for-change.png';
 import HeroSection from '@/components/sections/HeroSection';
-import { heroSectionData, proceduresTypesData } from '@/mockData/massage-mock';
+import { heroSectionData, proceduresTypesData, massagePricingData } from '@/mockData/massage-mock';
 import ProceduresTypesSection from '@/components/sections/ProceduresTypesSection';
 
 export default function MassagePage() {
@@ -20,9 +20,9 @@ export default function MassagePage() {
       />
       <div>
         <HeroSection data={heroSectionData} />
-        <div className="flex flex-col gap-32 py-20 max-w-6xl mx-auto">
+        <div className="flex flex-col gap-32 pb-20 max-w-6xl mx-auto">
           <ProceduresTypesSection data={proceduresTypesData} />
-          <MassagePricesSection />    {/* Need to replace */}
+          <PricesSection data={massagePricingData} />
         </div>
         <ReadyForChangeSection imgUrl={readyForChange} />
       </div>

@@ -4,7 +4,6 @@ import { Product } from '@/lib/products';
 import ProductCard from '@/components/products/ProductCard';
 import DescriptionRenderer from '@/components/common/DescriptionRenderer';
 import AddToCartButton from '@/components/products/AddToCartButton';
-import { useState } from 'react';
 
 interface StaticProductDetailsProps {
   product: Product;
@@ -21,7 +20,7 @@ export default function StaticProductDetails({
         {/* Main content */}
         <div className="flex flex-col md:flex-row gap-8 p-8">
           {/* Left side - Image and Details */}
-          <div className="w-full md:w-1/2 flex flex-col">
+          <div className="w-full md:w-3/5 flex flex-col">
             {/* Product image */}
             <div className="flex justify-center mb-6">
               <div className="relative w-full max-w-sm h-[500px] group">
@@ -39,9 +38,9 @@ export default function StaticProductDetails({
             <ProductDetailsAccordion product={product} />
           </div>
           {/* Right side - Product info and purchase buttons */}
-          <div className="w-full md:w-1/2 flex flex-col items-start space-y-6 mt-12 md:sticky md:top-20 md:self-start md:max-h-screen">
-            <h2 className="text-3xl font-bold">{product.name.en}</h2>
-            <p className="text-3xl font-bold text-purple-600">{product.price} ₴</p>
+          <div className="w-full md:w-2/5 flex flex-col items-start space-y-6 mt-12 md:sticky md:top-20 md:self-start md:max-h-screen">
+            <h2 className="text-2xl font-bold">{product.name.en}</h2>
+            <p className="text-3xl font-bold text-brand-600">{product.price} ₴</p>
             <AddToCartButton product={product} />
             <div className="space-y-3 text-gray-600">
               <p className="flex items-center gap-2">
@@ -76,115 +75,28 @@ export default function StaticProductDetails({
 }
 
 function ProductDetailsAccordion({ product }: { product: Product }) {
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
-  const [allExpanded, setAllExpanded] = useState(false);
-
-  const toggleSection = (section: string) => {
-    setOpenSections(prev => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
-
-  const toggleAll = () => {
-    const newState = !allExpanded;
-    setAllExpanded(newState);
-    setOpenSections({
-      description: newState,
-      characteristics: newState,
-      instructions: newState,
-      ingredients: newState,
-    });
-  };
-
-  const AccordionItem = ({
-    id,
-    title,
-    children,
-    isOpen,
-  }: {
-    id: string;
-    title: string;
-    children: React.ReactNode;
-    isOpen: boolean;
-  }) => (
+  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="border-b border-gray-200 last:border-b-0">
-      <button
-        onClick={() => toggleSection(id)}
-        className="w-full flex items-center justify-between py-4 px-6 text-left hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-inset"
-        aria-expanded={isOpen}
-        aria-controls={`${id}-content`}
-      >
-        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-        <svg
-          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div
-        id={`${id}-content`}
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
-        aria-hidden={!isOpen}
-      >
-        <div className="px-6 pb-4 text-gray-600">{children}</div>
+      <div className="py-4 px-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-3">{title}</h3>
+        <div className="text-gray-600">{children}</div>
       </div>
     </div>
   );
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-      {/* Expand/Collapse All Button */}
-      <div className="p-4 bg-gray-50 border-b border-gray-200">
-        <button
-          onClick={toggleAll}
-          className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-2"
-        >
-          {allExpanded ? (
-            <>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-              </svg>
-              Згорнути все
-            </>
-          ) : (
-            <>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              Розгорнути все
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Accordion Items */}
+      {/* Sections - Always Open */}
       <div>
         {/* Description */}
         {product.description && (
-          <AccordionItem id="description" title="Опис" isOpen={openSections.description || false}>
+          <Section title="Опис">
             <DescriptionRenderer description={product.description} />
-          </AccordionItem>
+          </Section>
         )}
 
         {/* Characteristics */}
-        <AccordionItem
-          id="characteristics"
-          title="Характеристики"
-          isOpen={openSections.characteristics || false}
-        >
+        <Section title="Характеристики">
           <ul className="space-y-2">
             <li>
               <strong>Класифікація:</strong> {product.characteristics.cosmetic_classification}
@@ -211,22 +123,18 @@ function ProductDetailsAccordion({ product }: { product: Product }) {
               <strong>Гіпоалергенність:</strong> {product.characteristics.hypoallergenic}
             </li>
           </ul>
-        </AccordionItem>
+        </Section>
 
         {/* Instructions */}
         {product.instructions && (
-          <AccordionItem
-            id="instructions"
-            title="Як використовувати"
-            isOpen={openSections.instructions || false}
-          >
+          <Section title="Як використовувати">
             <p className="leading-relaxed">{product.instructions}</p>
-          </AccordionItem>
+          </Section>
         )}
 
         {/* Ingredients */}
         {product.ingredients && (
-          <AccordionItem id="ingredients" title="Склад" isOpen={openSections.ingredients || false}>
+          <Section title="Склад">
             <ul className="list-disc pl-5 space-y-1">
               {product.ingredients.split(',').map((ingredient, index) => (
                 <li key={index} className="leading-relaxed">
@@ -234,7 +142,7 @@ function ProductDetailsAccordion({ product }: { product: Product }) {
                 </li>
               ))}
             </ul>
-          </AccordionItem>
+          </Section>
         )}
       </div>
     </div>

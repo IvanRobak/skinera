@@ -10,9 +10,9 @@ const AdvantagesSection = () => {
         {/* Three Cards */}
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-white rounded-2xl shadow-md p-8 text-center hover:shadow-lg transition-shadow duration-300">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <svg
-                className="w-8 h-8 text-purple-600"
+                className="w-8 h-8 text-brand-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

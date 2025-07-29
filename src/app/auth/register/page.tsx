@@ -125,14 +125,14 @@ export default function Register() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-base font-semibold rounded-2xl text-white bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-base font-semibold rounded-2xl text-white bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 disabled:opacity-50"
               // disabled={isSubmitting || !isFormValid} Need to do
             >
               {isSubmitting ? 'Створення аккаунту...' : 'Створити акаунт'}
             </button>
             <p className="mt-6 text-center text-[10px] text-grayCustom font-bold">
               Вже маєте аканут?{' '}
-              <Link href="/auth/signin" className="text-purple-600 hover:text-purple-500">
+              <Link href="/auth/signin" className="text-brand-600 hover:text-brand-500">
                 Увійти
               </Link>
             </p>

@@ -26,8 +26,8 @@ const Navigation = ({ isMobile, onNavigate }: { isMobile?: boolean; onNavigate?:
           href={path}
           className={`px-4 py-2 rounded-full transition-colors ${
             isActive(path)
-              ? 'text-purple-600 bg-purple-50 font-medium'
-              : 'text-gray-700 hover:text-purple-600 hover:bg-gray-50'
+              ? 'text-brand-600 bg-brand-50 font-medium'
+              : 'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
           } ${isMobile ? 'text-center' : ''}`}
           onClick={() => isMobile && onNavigate?.()}
         >
