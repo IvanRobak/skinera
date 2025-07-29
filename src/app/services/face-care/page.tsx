@@ -56,6 +56,7 @@ const faceCareProceduresGallery = [
 ];
 import ProceduresTypesSection from '@/components/sections/ProceduresTypesSection';
 import HeroSection from '@/components/sections/HeroSection';
+import ProcedureStepsSection from '@/components/sections/ProcedureStepsSection';
 
 export default function FaceCarePage() {
   return (
@@ -80,7 +81,7 @@ export default function FaceCarePage() {
             columns={3}
             showTitles={true}
           />
-
+          <ProcedureStepsSection />
           <PricesSection data={pricesData} />
           <SkinCareSection data={skinCareData} />
         </div>

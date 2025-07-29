@@ -10,6 +10,7 @@ import ReadyForChangeSection from '@/components/sections/ReadyForChangeSection';
 import readyForChangeImg from '../../../../public/images/ready-for-change.png';
 import HeroSection from '@/components/sections/HeroSection';
 import { heroSectionData, pricesData, whyChooseUsData } from '@/mockData/laser-hair-removal-mock';
+import ProcedureStepsSection from '@/components/sections/ProcedureStepsSection';
 
 // Gallery data for laser hair removal procedures
 const laserHairRemovalGallery = [
@@ -73,7 +74,7 @@ export default function LaserHairRemovalPage() {
             columns={3}
             showTitles={true}
           />
-
+          <ProcedureStepsSection />
           <PricesSection data={pricesData} />
           <LaserFaqSection />
         </div>
