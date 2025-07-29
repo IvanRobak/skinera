@@ -1,6 +1,7 @@
 'use client';
 
 import AdvantagesSection from '@/components/sections/AdvantagesSection';
+import ServiceGallerySection from '@/components/sections/ServiceGallerySection';
 import './global.css';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
@@ -26,6 +27,46 @@ const ReviewsSection = dynamic(() => import('@/components/sections/ReviewsSectio
 const ContactSection = dynamic(() => import('@/components/sections/ContactsSection'), {
   loading: () => <div className="w-full h-[600px] bg-gray-100 animate-pulse" />,
 });
+
+// Gallery data for main page showcasing all services
+const mainPageGallery = [
+  {
+    src: '/images/cosmetologist-doing-face-treatment-applying-face-mask.jpg',
+    alt: 'Професійний догляд за обличчям',
+    title: 'Догляд за обличчям',
+    description: 'Професійні процедури для здорової та сяючої шкіри',
+  },
+  {
+    src: '/images/laser-epilation-hair-removal-therapy.jpg',
+    alt: 'Лазерна епіляція',
+    title: 'Лазерна епіляція',
+    description: 'Безболісне та ефективне видалення небажаного волосся',
+  },
+  {
+    src: '/images/woman-getting-back-massage-from-masseur.jpg',
+    alt: 'Професійний масаж',
+    title: 'Масажні процедури',
+    description: 'Розслаблення та оздоровлення всього організму',
+  },
+  {
+    src: '/images/woman-visiting-cosmetologist-making-rejuvenation-procedures.jpg',
+    alt: 'Омолоджуючі процедури',
+    title: 'Омолодження шкіри',
+    description: 'Сучасні методи відновлення молодості шкіри',
+  },
+  {
+    src: '/images/spa-composition.png',
+    alt: 'SPA атмосфера центру',
+    title: 'SPA атмосфера',
+    description: 'Розслаблююча обстановка та професійний сервіс',
+  },
+  {
+    src: '/images/ready-for-change.png',
+    alt: 'Результати наших процедур',
+    title: 'Видимі результати',
+    description: "Досягнення ваших цілей краси та здоров'я",
+  },
+];
 
 function LoginSuccessToast() {
   const searchParams = useSearchParams();
@@ -56,6 +97,15 @@ export default function Home() {
       <ServicesSection />
       <AdvantagesSection />
       <ReviewsSection />
+      {/* Photo Gallery Section */}
+      <ServiceGallerySection
+        title="Наші послуги в дії"
+        subtitle="Переглянуте фото наших процедур та результатів роботи. Кожна послуга виконується досвідченими спеціалістами з використанням сучасного обладнання в комфортній атмосфері."
+        images={mainPageGallery}
+        columns={3}
+        showTitles={true}
+        className="bg-gray-50"
+      />
       <ContactSection />
     </div>
   );
