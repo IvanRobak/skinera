@@ -25,7 +25,7 @@ export default function LaserFaqSection() {
   ];
 
   return (
-    <section className="bg-gray-50 rounded-2xl p-8 mt-8">
+    <section className="bg-gray-50 rounded-2xl p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Часті запитання</h2>
       <div className="flex flex-col gap-6">
         {faqData.map((faq, idx) => (

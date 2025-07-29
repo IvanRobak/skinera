@@ -38,7 +38,7 @@ export default function ContactsPage() {
         pageDescription="Наша адреса, телефон та графік роботи"
         pageUrl="https://skinera.com.ua/contacts"
       />
-      <main className="bg-gradient-to-b from-purple-50 via-white to-white">
+      <main className="bg-gradient-to-b from-purple-50 via-white to-white pt-20">
         <ContactsSection />
       </main>
     </>
