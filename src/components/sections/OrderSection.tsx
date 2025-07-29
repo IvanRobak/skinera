@@ -12,7 +12,7 @@ const OrderSection = () => {
   const updateQuantity = useCartStore(state => state.updateQuantity);
 
   const deleteProduct = (id: number) => {
-    router.push('/home');
+    router.push('/');
     setTimeout(() => {
       removeFromCart(id);
     }, 5000);
