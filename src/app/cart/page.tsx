@@ -45,7 +45,7 @@ function Cart() {
             </div>
             {/* Price block */}
             <div className="min-w-[120px]">
-              <div className="text-brand-600 font-semibold text-lg">{item.price} грн</div>
+              <div className="text-purple-600 font-semibold text-lg">{item.price} грн</div>
             </div>
             {/* Quantity */}
             <div>
@@ -82,12 +82,12 @@ function Cart() {
         <div className="flex justify-between my-6">
           <Link
             href={'/'}
-            className="max-w-64 bg-brand-500 text-white py-4 px-8 rounded-lg hover:bg-brand-600 transition duration-300 shadow-md"
+            className="max-w-64 bg-purple-500 text-white py-4 px-8 rounded-lg hover:bg-purple-600 transition duration-300 shadow-md"
           >
             Назад до магазину
           </Link>
           <Link
-            href={'#'}
+            href={'/checkout'}
             className=" bg-gray-200 text-gray-800 py-4 px-8 rounded-lg hover:bg-gray-300 transition duration-300 shadow-md"
           >
             Замовити

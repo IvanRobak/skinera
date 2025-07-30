@@ -20,5 +20,13 @@ export const SignInSchema = z.object({
         .max(20, { message: 'Пароль має бути не більше 20 символів' }),
 }).required()
 
+export const ClientInfoFormSchema = z.object({
+  name: z.string().min(3, { message: `Поле ім'я обов'язкове` }),
+  surname: z.string().min(3, { message: `Поле прізвище обов'язкове` }),
+  number: z.string().min(3, { message: `Поле номер телефону обов'язкове` }),
+  email: z.string().min(1, { message: `Поле електронна адреса обов'язкове` }).email(),
+}).required();
+
+export type ClientInfoFormFields = z.infer<typeof ClientInfoFormSchema>
 export type RegisterFields = z.infer<typeof RegisterSchema>
 export type SignInSchema = z.infer<typeof SignInSchema>
