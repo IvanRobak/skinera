@@ -26,20 +26,48 @@ const ProcedureStepsSection = () => {
 
   return (
     <section className="relative w-screen left-1/2 -translate-x-1/2 pt-16 pb-24">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 py-10 relative ">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold text-gray-800 mb-6">Етапи процедури</h2>
         </div>
 
         {/* Steps Container */}
-        <div className="relative max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto ">
           {/* Desktop Layout - 2x2 Grid */}
           <div className="hidden lg:grid lg:grid-cols-2 lg:grid-rows-2 lg:gap-x-32 lg:gap-y-20">
+            {/* CUSTOMIZABLE CONNECTING LINE - Adjust coordinates as needed */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none z-0"
+              viewBox="0 0 800 400"
+            >
+              <path
+                d="M 110 140 L 110 225 L 370 225 L 370 90 L 550 90 L 550 108 "
+                stroke="#D1D5DB"
+                strokeWidth="2"
+                strokeDasharray="8,6"
+                fill="none"
+                opacity="0.9"
+              />
+            </svg>
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none z-0"
+              viewBox="0 0 800 400"
+            >
+              <path
+                d="M 550 213 L 550 250 L 400 250 L 400 385 L 110 385 L 110 250"
+                stroke="#D1D5DB"
+                strokeWidth="2"
+                strokeDasharray="8,6"
+                fill="none"
+                opacity="0.9"
+              />
+            </svg>
+
             {/* Step 1 - Top Left */}
             <div className="relative flex items-center justify-end ">
-              <div className="text-center max-w-xs h-full">
-                <div className="flex items-center justify-end gap-6 relative h-full">
-                  <div className="bg-gray-200/70 rounded-lg py-6 px-8 z-10 h-full">
+              <div className="text-center max-w-xs h-full w-full">
+                <div className="flex items-center justify-end gap-6 relative h-full w-full">
+                  <div className="bg-gray-200/70 rounded-lg py-6 px-8 z-10 h-full w-full">
                     <h3 className="text-2xl font-bold text-gray-800 mb-2 ">{steps[0].title}</h3>
                     <p className="text-lg text-gray-600">{steps[0].description}</p>
                   </div>
