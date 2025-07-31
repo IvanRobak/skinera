@@ -33,6 +33,51 @@ const ProcedureStepsSection = () => {
 
         {/* Steps Container */}
         <div className="max-w-5xl mx-auto ">
+          {/* Mobile Layout - Single Column */}
+          <div className="lg:hidden flex flex-col gap-y-20 px-8">
+            {steps.map((step, index) => (
+              <div key={step.number} className="relative">
+                {/* Step Number */}
+                <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-brand-300 p-4 z-0 absolute left-[10%] top-0 transform -translate-x-1/2 -translate-y-1/2">
+                  <span className="text-2xl font-bold text-gray-700">{step.number}</span>
+                </div>
+
+                {/* Step Content Container with SVG */}
+                <div className="w-4/5 mx-auto relative">
+                  {/* Mobile SVG - positioned relative to each step content background */}
+                  {index < steps.length - 1 && (
+                    <svg
+                      className="absolute top-full left-1/2 transform -translate-x-1/2 pointer-events-none z-0"
+                      width="200"
+                      height="80"
+                      viewBox="0 0 200 80"
+                      style={{ overflow: 'visible' }}
+                    >
+                      {/* Connecting line from current step to next */}
+                      <path
+                        d="M 100 0 L 100 40 L 100 80"
+                        stroke="#D1D5DB"
+                        strokeWidth="4"
+                        strokeDasharray="8,6"
+                        fill="none"
+                        opacity="0.8"
+                      />
+                    </svg>
+                  )}
+
+                  {/* Step Content */}
+                  <div
+                    id={`step-content-${index}`}
+                    className="bg-gray-200/70 rounded-lg py-6 px-8 pt-10 text-center relative z-10"
+                  >
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{step.title}</h3>
+                    <p className="text-lg text-gray-600">{step.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* Desktop Layout - 2x2 Grid */}
           <div className="hidden lg:grid lg:grid-cols-2 lg:grid-rows-2 lg:gap-x-32 lg:gap-y-20">
             {/* CUSTOMIZABLE CONNECTING LINE - Adjust coordinates as needed */}
