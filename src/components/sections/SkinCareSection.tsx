@@ -1,6 +1,6 @@
 import React from 'react';
-import PhotoSlider from '@/components/common/PhotoSlider';
 import { SkinCareDataInterface } from '@/interfaces/Section';
+import Swiper from '../common/Swiper';
 
 interface Props {
   data: SkinCareDataInterface;
@@ -41,21 +41,14 @@ const SkinCareSection = ({ data }: Props) => {
   return (
     <section>
       <h2 className="font-bold text-3xl text-center mb-11">Працюємо з усіма типами шкіри</h2>
-      <div className="flex flex-col lg:flex-row gap-11 items-center">
+      <div className="flex flex-col lg:flex-row gap-11">
         {/* Enhanced Photo Slider */}
-        <div className="w-full lg:w-[637px] lg:h-[440px] mx-auto">
-          <PhotoSlider
-            images={skinCareImages}
-            showNavigation={true}
-            showIndicators={true}
-            autoPlay={true}
-            autoPlayInterval={4000}
-            className="rounded-2xl overflow-hidden shadow-lg"
-          />
+        <div className="py-3">
+          <Swiper images={skinCareImages} />
         </div>
 
         {/* Content remains the same */}
-        <div className="flex-1 min-w-[300px] lg:min-w-[459px] grid grid-cols-1 gap-4 px-3">
+        <div className="flex-1 min-w-[300px] lg:min-w-[459px] grid grid-cols-1 gap-6 pb-11">
           {listData.map(
             (
               item: {
