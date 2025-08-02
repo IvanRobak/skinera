@@ -3,12 +3,19 @@ import type { Configuration } from 'webpack';
 
 const nextConfig = {
   images: {
-    domains: ['images.prom.ua'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
-  webpack(config : Configuration) {
+  webpack(config: Configuration) {
     config?.module?.rules?.push({
       test: /\.svg$/i,
-      use: ["@svgr/webpack"],
+      use: ['@svgr/webpack'],
     });
 
     return config;
@@ -19,10 +26,10 @@ const nextConfig = {
       rules: {
         '*.svg': {
           loaders: ['@svgr/webpack'],
-          as: '*.js'
-        }
+          as: '*.js',
+        },
       },
-    }
+    },
   },
 };
 
