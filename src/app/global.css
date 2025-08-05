@@ -18,12 +18,10 @@ input:-webkit-autofill:active {
   box-shadow: 0 0 0px 1000px white inset !important;
 }
 
-input:-webkit-autofill~label {
+input:-webkit-autofill ~ label {
   top: -1.5rem;
   font-size: 13px;
 }
-
-
 
 @layer utilities {
   .orders-container::-webkit-scrollbar {
@@ -33,7 +31,6 @@ input:-webkit-autofill~label {
 
   .orders-container::-webkit-scrollbar-thumb {
     background: #a6a2a2;
-    ;
     height: 7px;
   }
 
@@ -41,5 +38,4 @@ input:-webkit-autofill~label {
     background: gray;
     /* Example: change color on hover */
   }
-
 }

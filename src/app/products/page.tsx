@@ -86,16 +86,19 @@ const ProductsPage = () => {
 
       // Update filters only on first load
       if (allCategories.length === 0) {
-        const initialData = await fetch('/api/products').then(res => res.json());
-        setAllCategories(
-          Array.from(new Set(initialData.products.map((product: Product) => product.category)))
-        );
-        setAllBrands(
-          Array.from(new Set(initialData.products.map((product: Product) => product.brand)))
-        );
-        setAllCountries(
-          Array.from(new Set(initialData.products.map((product: Product) => product.country)))
-        );
+        try {
+          const filtersResponse = await fetch('/api/products/filters');
+          if (filtersResponse.ok) {
+            const filtersData = await filtersResponse.json();
+            setAllCategories(filtersData.categories || []);
+            setAllBrands(filtersData.brands || []);
+            setAllCountries(filtersData.countries || []);
+          } else {
+            console.error('Помилка завантаження фільтрів:', filtersResponse.status);
+          }
+        } catch (filterError) {
+          console.error('Помилка завантаження фільтрів:', filterError);
+        }
       }
     } catch (error) {
       console.error('Помилка завантаження продуктів:', error);
