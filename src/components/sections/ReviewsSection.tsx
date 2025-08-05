@@ -1,4 +1,7 @@
 import Image from 'next/image';
+import { motion, useInView } from 'framer-motion'
+import { CounterStat } from '../common/CounterStat';
+import { useRef } from 'react';
 
 const reviews = [
   {
@@ -39,24 +42,34 @@ const reviews = [
 const statistics = [
   {
     id: 1,
-    number: '500+',
+    number: 500,
+    symb: '+',
     description: 'Задоволених клієнтів',
-    color: 'text-purple-600',
   },
   {
     id: 2,
-    number: '98%',
+    number: 98,
+    symb: '%',
     description: 'Позитивних відгуків',
-    color: 'text-purple-600',
   },
   {
     id: 3,
-    number: '5.0',
+    number: 5.0,
+    symb: '',
     description: 'Середня оцінка',
-    color: 'text-purple-600',
   },
 ];
 
+const defaultAnimations = {
+  hidden: {
+    opacity: 0,
+    y: 20
+  },
+  visible: {
+    opacity: 1,
+    y: 0
+  }
+}
 const StarRating = ({ rating }: { rating: number }) => {
   return (
     <div className="flex gap-3 mb-4 items-center justify-center">
@@ -80,6 +93,8 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 const ReviewsSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { amount: 0.2, once: true });
   // Function to calculate staircase positions for desktop
   const getStaircasePosition = (index: number) => {
     const baseTop = 160; // Starting from top
@@ -98,9 +113,7 @@ const ReviewsSection = () => {
 
   return (
     <div className="w-full">
-      {/* Reviews Section */}
       <section className="relative overflow-hidden w-full max-w-[1440px] mx-auto mt-16 lg:h-[882px] h-auto">
-        {/* Background with Rectangle - kept unchanged */}
         <div className="absolute left-0 top-0 h-full w-full">
           <Image
             src="/images/Rectangle4.png"
@@ -111,11 +124,15 @@ const ReviewsSection = () => {
             style={{ width: '54%', height: '100%' }}
             priority
           />
+
+          <div className="hidden lg:block absolute left-0 top-0 h-full w-32 pointer-events-none z-20"
+            style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.8) 60%, transparent 100%)', filter: 'blur(24px)' }} />
+
+          <div className="hidden lg:block absolute right-0 top-0 h-full w-32 pointer-events-none z-20"
+            style={{ background: 'linear-gradient(to left, rgba(255,255,255,0.8) 60%, transparent 100%)', filter: 'blur(24px)' }} />
         </div>
 
-        {/* Content Container - responsive */}
         <div className="relative z-10 mx-auto w-full max-w-[1152px] px-4 lg:px-0 lg:h-full">
-          {/* Header - responsive positioning */}
           <div className="lg:absolute lg:right-0 lg:top-20 lg:max-w-md mb-8 lg:mb-0 pt-8 lg:pt-0">
             <h2 className="text-3xl lg:text-5xl font-bold text-gray-800 mb-4 lg:mb-6">
               Нам довіряють
@@ -126,15 +143,17 @@ const ReviewsSection = () => {
             </p>
           </div>
 
-          {/* Reviews Cards - Responsive Layout */}
-          {/* Desktop: Staircase Layout */}
-          <div className="hidden lg:block relative h-full">
+
+          <motion.div initial='hidden' animate={isInView ? 'visible' : 'hidden'} className="hidden lg:block relative h-full">
             {reviews.map((review, index) => {
               const position = getStaircasePosition(index);
               return (
-                <div
+                <motion.div
                   key={review.id}
+                  ref={ref}
                   className="absolute bg-white rounded-2xl shadow-xl py-6 px-4 hover:scale-105 transition-transform duration-300"
+                  variants={defaultAnimations}
+                  transition={{ duration: 0.7, delay: index * 0.3, ease: 'easeInOut' }}
                   style={{
                     width: review.size,
                     top: position.top,
@@ -146,12 +165,12 @@ const ReviewsSection = () => {
                   <StarRating rating={review.rating} />
                   <p className="text-gray-700 text-base leading-relaxed mb-6">{review.text}</p>
                   <p className="text-purple-600 font-medium text-lg">{review.service}</p>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
 
-          {/* Mobile/Tablet: Grid Layout (2 columns) */}
+
           <div className="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 pb-8">
             {reviews.map(review => (
               <div
@@ -172,12 +191,7 @@ const ReviewsSection = () => {
         <div className="max-w-6xl mx-auto px-4 lg:px-0 bg-white rounded-2xl py-10 mt-6 shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             {statistics.map(stat => (
-              <div key={stat.id} className="flex flex-col items-center">
-                <h3 className={`text-6xl lg:text-7xl font-medium ${stat.color} mb-4`}>
-                  {stat.number}
-                </h3>
-                <p className="text-gray-700 text-lg lg:text-xl font-normal">{stat.description}</p>
-              </div>
+              <CounterStat number={stat.number} symb={stat.symb} description={stat.description} key={stat.id} />
             ))}
           </div>
         </div>

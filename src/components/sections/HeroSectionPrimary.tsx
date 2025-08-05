@@ -1,63 +1,171 @@
-import ContactForm from '../forms/ContactForm';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useState, useEffect, useCallback } from 'react';
 import ModalButton from '../common/ModalButton';
+import ContactForm from '../forms/ContactForm';
+
+const mockSliderData = [
+  {
+
+    title: 'Вакуумно-роликовий массаж RF-ліфтинг',
+    description: 'Вакумно-роликовий массаж RF-ліфтинг',
+    action: 'Aкція',
+    photo: {
+      src: '/images/woman-getting-back-massage.jpg',
+      alt: 'Процедура нанесення маски для обличчя для жінки',
+      title: 'Маска для обличчя',
+      description: 'Глибоке зволоження та живлення шкіри',
+    },
+  },
+  {
+    title: 'Індивідуальний підхід до вашої краси',
+    description:
+      'У Skinera ми створюємо персоналізовані програми догляду, що враховують саме ваш тип шкіри та потреби. Результат — помітне оновлення та впевненість у собі.',
+    photo: {
+      src: '/images/woman-visiting-cosmetologist.jpg',
+      alt: 'Лазерна епіляція ніг у салоні краси',
+      title: 'Лазерна епіляція',
+      description: 'Безболісне видалення волосся з тривалим ефектом',
+    },
+  },
+  {
+    title: 'Сучасні методики та сертифіковані фахівці',
+    description:
+      'Ми використовуємо лише перевірені косметологічні технології та засоби. Довірте свою шкіру професіоналам з досвідом та турботою.',
+    photo: {
+      src: '/images/cosmetologist-doing-face-treatment.jpg',
+      alt: 'Ультразвукова чистка обличчя у косметолога',
+      title: 'Ультразвукова чистка',
+      description: 'Делікатне очищення пор та покращення текстури шкіри',
+    },
+  },
+];
 
 const HeroSectionPrimary = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const onSetCurrentSlide = useCallback(() => {
+    const currentIndex = currentSlide === mockSliderData.length - 1 ? 0 : currentSlide + 1;
+    setCurrentSlide(currentIndex);
+  }, [currentSlide])
+
+  const onSetPreviousSlide = () => {
+    const currentIndex = currentSlide === 0 ? mockSliderData.length - 1 : currentSlide - 1;
+    setCurrentSlide(currentIndex);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isHovered) {
+        onSetCurrentSlide();
+      }
+    }, 4500); 
+
+    return () => clearInterval(interval);
+  }, [currentSlide, isHovered, onSetCurrentSlide]);
+
   return (
-    <section
-      className="relative overflow-hidden w-full hero-bg"
-      style={{
-        paddingTop: '380px',
-        marginTop: '64px',
-        height: '761px',
-        maxWidth: '1440px',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-      {/* Dark Overlay */}
-      <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
+    <section className="w-full mt-[64px]">
+      <div
+        className="w-full overflow-hidden relative group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="relative w-full aspect-[2.39/1]">
+          {mockSliderData.map((item, index) => {
+            const isActive = index === currentSlide;
 
-      <div className="max-w-6xl mx-auto px-4 relative h-full flex">
-        <div className="w-full">
-          <h1 className="text-3xl md:text-4xl lg:text-6xl font-extrabold mb-4 md:mb-6 text-white animate-fade-in">
-            Ласкаво просимо до Skinera!
-          </h1>
-          <p
-            className="text-sm md:text-lg lg:text-xl text-white mb-6 md:mb-8 max-w-3xl mx-auto"
-            style={{ marginLeft: '0' }}
-          >
-            Відкрийте для себе професійний догляд за шкірою та красою. Наші експерти допоможуть вам
-            виглядати та почуватися неперевершено.
-          </p>
+            return (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-700 ease-in-out  ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                  }`}
+              >
+                <Image
+                  fill
+                  src={item.photo.src}
+                  alt={item.photo.alt}
+                  className="object-cover brightness-80"
+                />
 
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-            <ModalButton
-              buttonText="Записатись на прийом"
-              modalContent={<ContactForm />}
-              className="bg-brand-600 text-white px-4 md:px-6 lg:px-8 py-2 md:py-3 rounded-full text-sm md:text-base lg:text-lg font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
-            />
-            <a
-              href="/services"
-              className="px-4 md:px-6 lg:px-8 py-2 md:py-3 rounded-full text-sm md:text-base lg:text-lg font-semibold text-white hover:text-gray-200 transition duration-300 border-2 border-white hover:border-gray-200"
-            >
-              Наші послуги
-            </a>
-          </div>
+                <div className="absolute inset-0 z-5 pointer-events-none bg-black/35" />
+
+                {isActive && (
+                  <div className='relative z-11'>
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6 }}
+                      className="text-white px-4 sm:px-6 md:px-8 lg:px-12 pt-16 sm:pt-20 md:pt-32  lg:pt-56 max-w-4xl mx-auto lg:mx-0 lg:max-w-[900px] lg:pl-44 "
+                    >
+                      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 sm:mb-8 md:mb-10 lg:mb-12 leading-tight text-center md:text-left">
+                        {item.title}
+                      </h1>
+                      <div className="flex justify-center md:justify-start">
+                        <ModalButton
+                          buttonText="Записатись на прийом"
+                          modalContent={<ContactForm />}
+                          className="bg-brand-600 text-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-4 rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
+                        />
+                      </div>
+                    </motion.div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
+
+        {/* Кнопки навігації слайдера */}
+        <motion.button
+          initial={{ opacity: 0, x: 50 }}
+          animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
+          transition={{ duration: 0.2, ease: 'linear' }}
+          onClick={onSetPreviousSlide}
+          className="absolute top-1/2 left-6 z-30 -translate-y-1/2 w-16 h-16 flex items-center justify-center rounded-full bg-gray-300 hover:bg-pink-600 active:bg-pink-700 text-black shadow-xl transition-colors duration-300 ease-in-out"
+          aria-label="Попередній слайд"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-8 h-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </motion.button>
+
+        <motion.button
+          initial={{ opacity: 0, x: -50 }}
+          animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
+          transition={{ duration: 0.2, ease: 'linear' }}
+          onClick={onSetCurrentSlide}
+          className="absolute top-1/2 right-6 z-30 -translate-y-1/2 w-16 h-16 flex items-center justify-center rounded-full bg-gray-300 hover:bg-pink-600 active:bg-pink-700 text-black shadow-xl transition-colors duration-300 ease-in-out"
+          aria-label="Попередній слайд"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-8 h-8 rotate-180"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </motion.button>
       </div>
-
-      <style jsx>{`
-        .hero-bg {
-          background-image: url(/images/woman-visiting-cosmetologist-making-rejuvenation-procedures.jpg);
-        }
-
-        @media (max-width: 1023px) {
-          .hero-bg {
-            background-image: url(/images/woman-visiting-cosmetologist-making-rejuvenation-procedures1024.jpg);
-          }
-        }
-      `}</style>
     </section>
   );
 };

@@ -1,10 +1,14 @@
+import { motion } from 'framer-motion';
+import AnimatedText from '../common/AnimatedText';
+
 const AdvantagesSection = () => {
   return (
     <section className="py-20">
       <div className="max-w-6xl mx-auto px-4">
         {/* Title */}
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-gray-800 mb-6">Наші переваги</h2>
+          {/* <h2 className="text-5xl font-bold text-gray-800 mb-6">Наші переваги</h2> */}
+          <AnimatedText className={'text-5xl font-bold text-gray-800 mb-6'} text='Наші Переваги'/>
         </div>
 
         {/* Three Cards */}
@@ -17,7 +21,10 @@ const AdvantagesSection = () => {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path
+                <motion.path
+                  initial={{ pathLength : 0 }}
+                  animate={{ pathLength : 1 }}
+                  transition={{ duration : 3, ease: 'easeInOut'}}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
@@ -37,7 +44,10 @@ const AdvantagesSection = () => {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path
+                <motion.path
+                 initial={{ pathLength : 0 }}
+                  animate={{ pathLength : 1 }}
+                  transition={{ duration : 3, ease: 'easeInOut'}}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
@@ -57,7 +67,10 @@ const AdvantagesSection = () => {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path
+                <motion.path
+                 initial={{ pathLength : 0 }}
+                  animate={{ pathLength : 1 }}
+                  transition={{ duration : 3, ease: 'easeInOut'}}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
