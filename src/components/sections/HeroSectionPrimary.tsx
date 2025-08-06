@@ -60,7 +60,7 @@ const HeroSectionPrimary = () => {
       if (!isHovered) {
         onSetCurrentSlide();
       }
-    }, 4500); 
+    }, 4500);
 
     return () => clearInterval(interval);
   }, [currentSlide, isHovered, onSetCurrentSlide]);
@@ -72,7 +72,7 @@ const HeroSectionPrimary = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="relative w-full aspect-[2.39/1]">
+        <div className="relative w-full aspect-[2.39/1] max-h-[650px]">
           {mockSliderData.map((item, index) => {
             const isActive = index === currentSlide;
 
@@ -92,25 +92,28 @@ const HeroSectionPrimary = () => {
                 <div className="absolute inset-0 z-5 pointer-events-none bg-black/35" />
 
                 {isActive && (
-                  <div className='relative z-11'>
+
+                  <div className='xl:max-w-4xl mx-auto  xl:mt-56 xl:ml-52 lg:max-w-3xl lg:mt-32 lg:ml-16 md:mt-32  sm:mt-32 mt-24 relative z-11'>
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6 }}
-                      className="text-white px-4 sm:px-6 md:px-8 lg:px-12 pt-16 sm:pt-20 md:pt-32  lg:pt-56 max-w-4xl mx-auto lg:mx-0 lg:max-w-[900px] lg:pl-44 "
+                      className="text-white px-4 flex flex-col gap-9"
                     >
-                      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 sm:mb-8 md:mb-10 lg:mb-12 leading-tight text-center md:text-left">
+                      <h1 className="text-2xl text-center xl:text-6xl xl:text-left lg:text-5xl lg:text-left md:text-4xl md:text-center sm:text-3xl font-black leading-tight">
                         {item.title}
                       </h1>
-                      <div className="flex justify-center md:justify-start">
+                      <div className="flex justify-center lg:justify-start xl:justify-start">
                         <ModalButton
                           buttonText="Записатись на прийом"
                           modalContent={<ContactForm />}
-                          className="bg-brand-600 text-white px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-4 rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
+                          className="bg-brand-600 text-white px-4 sm:px-5 lg:px-8 py-2 sm:py-2.5  lg:py-4 rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
                         />
                       </div>
                     </motion.div>
                   </div>
+                  // <div className='relative z-11'>
+                  // </div>
                 )}
               </div>
             );
