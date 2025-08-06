@@ -22,7 +22,7 @@ const ProductList = ({
   sortOption = '',
   searchQuery = '',
   selectedBrand = '',
-  selectedCategory = '',
+  selectedCategories = [],
   selectedCountry = '',
   minPrice = 0,
   maxPrice = 1000,
@@ -35,7 +35,7 @@ const ProductList = ({
   sortOption?: string;
   searchQuery?: string;
   selectedBrand?: string;
-  selectedCategory?: string;
+  selectedCategories?: string[];
   selectedCountry?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -53,7 +53,9 @@ const ProductList = ({
         const params = new URLSearchParams();
         if (searchQuery) params.append('search', searchQuery);
         if (selectedBrand) params.append('brand', selectedBrand);
-        if (selectedCategory) params.append('category', selectedCategory);
+        if (selectedCategories.length > 0) {
+          selectedCategories.forEach(category => params.append('category', category));
+        }
         if (selectedCountry) params.append('country', selectedCountry);
         if (minPrice > priceRangeMin) params.append('minPrice', minPrice.toString());
         if (maxPrice < priceRangeMax) params.append('maxPrice', maxPrice.toString());
@@ -62,6 +64,8 @@ const ProductList = ({
         params.append('limit', limit.toString());
 
         const url = `/api/products?${params.toString()}`;
+        console.log('ProductList fetching with URL:', url);
+        console.log('ProductList selected categories:', selectedCategories);
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
@@ -76,7 +80,7 @@ const ProductList = ({
     sortOption,
     searchQuery,
     selectedBrand,
-    selectedCategory,
+    selectedCategories,
     selectedCountry,
     minPrice,
     maxPrice,

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import PriceSlider from '@/components/products/PriceSlider';
+import CategoryFilter from '@/components/products/CategoryFilter';
 
 // Lazy load the ProductList component
 const ProductList = dynamic(() => import('@/components/products/ProductList'), {
@@ -52,7 +53,7 @@ const ProductsPage = () => {
   const [sortOption, setSortOption] = useState('default');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedCountry, setSelectedCountry] = useState('');
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
@@ -75,7 +76,9 @@ const ProductsPage = () => {
       const params = new URLSearchParams();
       if (searchQuery) params.append('search', searchQuery);
       if (selectedBrand) params.append('brand', selectedBrand);
-      if (selectedCategory) params.append('category', selectedCategory);
+      if (selectedCategories.length > 0) {
+        selectedCategories.forEach(category => params.append('category', category));
+      }
       if (selectedCountry) params.append('country', selectedCountry);
       if (minPrice > priceRange.min) params.append('minPrice', minPrice.toString());
       if (maxPrice < priceRange.max) params.append('maxPrice', maxPrice.toString());
@@ -84,6 +87,8 @@ const ProductsPage = () => {
       params.append('limit', pagination.limit.toString());
 
       const url = `/api/products?${params.toString()}`;
+      console.log('Fetching products with URL:', url);
+      console.log('Selected categories:', selectedCategories);
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
@@ -128,7 +133,7 @@ const ProductsPage = () => {
     sortOption,
     searchQuery,
     selectedBrand,
-    selectedCategory,
+    selectedCategories,
     selectedCountry,
     minPrice,
     maxPrice,
@@ -152,7 +157,7 @@ const ProductsPage = () => {
   const resetAllFilters = () => {
     setSearchQuery('');
     setSelectedBrand('');
-    setSelectedCategory('');
+    setSelectedCategories([]);
     setSelectedCountry('');
     setMinPrice(priceRange.min);
     setMaxPrice(priceRange.max);
@@ -254,19 +259,14 @@ const ProductsPage = () => {
 
           {/* Фільтр за категорією */}
           <div className="space-y-2">
-            <label className="text-gray-700 font-medium block">Категорія:</label>
-            <select
-              value={selectedCategory}
-              onChange={e => setSelectedCategory(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
-            >
-              <option value="">Усі категорії</option>
-              {allCategories.map(category => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
+            <CategoryFilter
+              categories={allCategories}
+              selectedCategories={selectedCategories}
+              onCategoryChange={categories => {
+                setSelectedCategories(categories);
+                setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+              }}
+            />
           </div>
 
           {/* Фільтр за країною */}
@@ -314,7 +314,7 @@ const ProductsPage = () => {
               sortOption={sortOption}
               searchQuery={searchQuery}
               selectedBrand={selectedBrand}
-              selectedCategory={selectedCategory}
+              selectedCategories={selectedCategories}
               selectedCountry={selectedCountry}
               minPrice={minPrice}
               maxPrice={maxPrice}

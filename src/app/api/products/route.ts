@@ -5,7 +5,7 @@ import clientPromise from '@/lib/mongodb';
 interface ProductQuery {
   name?: { $regex: string; $options: string };
   brand?: string;
-  category?: string;
+  category?: string | { $in: string[] };
   country?: string;
   price?: { $gte?: number; $lte?: number };
 }
@@ -15,7 +15,7 @@ export async function GET(req: Request) {
   const sort = searchParams.get('sort');
   const search = searchParams.get('search');
   const brand = searchParams.get('brand');
-  const category = searchParams.get('category');
+  const categories = searchParams.getAll('category');
   const country = searchParams.get('country');
   const minPrice = searchParams.get('minPrice');
   const maxPrice = searchParams.get('maxPrice');
@@ -28,9 +28,18 @@ export async function GET(req: Request) {
     // eslint-disable-next-line prefer-const
     let query: ProductQuery = {};
 
+    // Логування для відлагодження
+    console.log('Received categories:', categories);
+
     if (search) query['name'] = { $regex: search, $options: 'i' };
     if (brand) query['brand'] = brand;
-    if (category) query['category'] = category;
+    if (categories.length > 0) {
+      if (categories.length === 1) {
+        query['category'] = categories[0];
+      } else {
+        query['category'] = { $in: categories };
+      }
+    }
     if (country) query['country'] = country;
 
     // Фільтрація по ціні
@@ -45,6 +54,9 @@ export async function GET(req: Request) {
     else if (sort === 'price-desc') sortOption = { price: -1 };
     else if (sort === 'name') sortOption = { name: 1 };
     else if (sort === 'country') sortOption = { country: 1 };
+
+    // Логування запиту MongoDB
+    console.log('MongoDB query:', JSON.stringify(query, null, 2));
 
     // Get total count for pagination
     const totalCount = await db.collection('products').countDocuments(query);
