@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import PriceSlider from '@/components/products/PriceSlider';
 import CategoryFilter from '@/components/products/CategoryFilter';
@@ -60,7 +60,9 @@ const ProductsPage = () => {
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFilterLoading, setIsFilterLoading] = useState(false);
   const [allCategories, setAllCategories] = useState<string[]>([]);
+  const isInitialLoadRef = useRef(true);
   // const [allBrands, setAllBrands] = useState<string[]>([]);
   // const [allCountries, setAllCountries] = useState<string[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
@@ -72,7 +74,11 @@ const ProductsPage = () => {
 
   const fetchProducts = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (isInitialLoadRef.current) {
+        setIsLoading(true);
+      } else {
+        setIsFilterLoading(true);
+      }
       const params = new URLSearchParams();
       if (searchQuery) params.append('search', searchQuery);
       if (selectedBrand) params.append('brand', selectedBrand);
@@ -128,6 +134,8 @@ const ProductsPage = () => {
       console.error('Помилка завантаження продуктів:', error);
     } finally {
       setIsLoading(false);
+      setIsFilterLoading(false);
+      isInitialLoadRef.current = false;
     }
   }, [
     sortOption,
@@ -154,7 +162,7 @@ const ProductsPage = () => {
     setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
   };
 
-  const resetAllFilters = () => {
+  const resetAllFilters = useCallback(() => {
     setSearchQuery('');
     setSelectedBrand('');
     setSelectedCategories([]);
@@ -163,7 +171,12 @@ const ProductsPage = () => {
     setMaxPrice(priceRange.max);
     setSortOption('default');
     setPagination(prev => ({ ...prev, page: 1 }));
-  };
+  }, [priceRange.min, priceRange.max]);
+
+  const handleCategoryChange = useCallback((categories: string[]) => {
+    setSelectedCategories(categories);
+    setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+  }, []);
 
   useEffect(() => {
     fetchProducts();
@@ -262,10 +275,7 @@ const ProductsPage = () => {
             <CategoryFilter
               categories={allCategories}
               selectedCategories={selectedCategories}
-              onCategoryChange={categories => {
-                setSelectedCategories(categories);
-                setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
-              }}
+              onCategoryChange={handleCategoryChange}
             />
           </div>
 
@@ -308,23 +318,27 @@ const ProductsPage = () => {
           </div>
         </aside>
         <div className="md:w-3/4 flex flex-col">
-          <div className="w-full flex justify-center sm:block">
-            <ProductList
-              products={products}
-              sortOption={sortOption}
-              searchQuery={searchQuery}
-              selectedBrand={selectedBrand}
-              selectedCategories={selectedCategories}
-              selectedCountry={selectedCountry}
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-              priceRangeMin={priceRange.min}
-              priceRangeMax={priceRange.max}
-              page={pagination.page}
-              limit={pagination.limit}
-            />
+          <div className="w-full flex justify-center sm:block relative min-h-[500px]">
+            {isFilterLoading && (
+              <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10 rounded-lg transition-opacity duration-300">
+                <div className="flex flex-col items-center space-y-4 p-8">
+                  <div className="relative">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-200"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent absolute top-0 left-0"></div>
+                  </div>
+                  <p className="text-gray-600 font-medium text-center">🔄 Оновлення товарів...</p>
+                </div>
+              </div>
+            )}
+            <div
+              className={`transition-opacity duration-300 ${
+                isFilterLoading ? 'opacity-30' : 'opacity-100'
+              }`}
+            >
+              <ProductList products={products} />
+            </div>
           </div>
-          {renderPagination()}
+          {!isFilterLoading && renderPagination()}
         </div>
       </div>
     </div>
