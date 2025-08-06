@@ -38,6 +38,29 @@ const PriceSlider = ({
     };
   }, []);
 
+  // Функція для визначення кроку округлення на основі діапазону цін
+  const getRoundingStep = useCallback(() => {
+    const range = maxPrice - minPrice;
+    if (range <= 100) return 10; // Округлення до десятків
+    if (range <= 1000) return 50; // Округлення до 50
+    if (range <= 5000) return 100; // Округлення до сотень
+    if (range <= 20000) return 500; // Округлення до 500
+    return 1000; // Округлення до тисяч для дуже великих діапазонів
+  }, [maxPrice, minPrice]);
+
+  // Функція для округлення ціни
+  const roundPrice = useCallback(
+    (price: number, roundUp = false) => {
+      const step = getRoundingStep();
+      if (roundUp) {
+        return Math.ceil(price / step) * step;
+      } else {
+        return Math.floor(price / step) * step;
+      }
+    },
+    [getRoundingStep]
+  );
+
   // Надійний обробник перетягування для мінімального повзунка
   const createMinDragHandler = useCallback(() => {
     let isDragging = false;
@@ -54,8 +77,12 @@ const PriceSlider = ({
 
         const deltaPercent = deltaX / containerWidth;
         const deltaValue = (maxPrice - minPrice) * deltaPercent;
-        const newValue = Math.max(minPrice, Math.min(startValue + deltaValue, maxValue - 1));
-        setMinValue(newValue);
+        const newValue = Math.max(
+          minPrice,
+          Math.min(startValue + deltaValue, maxValue - getRoundingStep())
+        );
+        const roundedValue = roundPrice(newValue, false);
+        setMinValue(roundedValue);
       } catch (error) {
         console.warn('Error in min slider drag:', error);
       }
@@ -80,7 +107,7 @@ const PriceSlider = ({
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     };
-  }, [minPrice, maxPrice, minValue, maxValue]);
+  }, [minPrice, maxPrice, minValue, maxValue, getRoundingStep, roundPrice]);
 
   // Надійний обробник перетягування для максимального повзунка
   const createMaxDragHandler = useCallback(() => {
@@ -98,8 +125,12 @@ const PriceSlider = ({
 
         const deltaPercent = deltaX / containerWidth;
         const deltaValue = (maxPrice - minPrice) * deltaPercent;
-        const newValue = Math.min(maxPrice, Math.max(startValue + deltaValue, minValue + 1));
-        setMaxValue(newValue);
+        const newValue = Math.min(
+          maxPrice,
+          Math.max(startValue + deltaValue, minValue + getRoundingStep())
+        );
+        const roundedValue = roundPrice(newValue, true);
+        setMaxValue(roundedValue);
       } catch (error) {
         console.warn('Error in max slider drag:', error);
       }
@@ -124,26 +155,30 @@ const PriceSlider = ({
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     };
-  }, [minPrice, maxPrice, minValue, maxValue]);
+  }, [minPrice, maxPrice, minValue, maxValue, getRoundingStep, roundPrice]);
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), maxValue - 1);
-    setMinValue(value);
+    const value = Math.min(Number(e.target.value), maxValue - getRoundingStep());
+    const roundedValue = roundPrice(value, false);
+    setMinValue(roundedValue);
   };
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(Number(e.target.value), minValue + 1);
-    setMaxValue(value);
+    const value = Math.max(Number(e.target.value), minValue + getRoundingStep());
+    const roundedValue = roundPrice(value, true);
+    setMaxValue(roundedValue);
   };
 
   const handleSliderMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), maxValue - 1);
-    setMinValue(value);
+    const value = Math.min(Number(e.target.value), maxValue - getRoundingStep());
+    const roundedValue = roundPrice(value, false);
+    setMinValue(roundedValue);
   };
 
   const handleSliderMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(Number(e.target.value), minValue + 1);
-    setMaxValue(value);
+    const value = Math.max(Number(e.target.value), minValue + getRoundingStep());
+    const roundedValue = roundPrice(value, true);
+    setMaxValue(roundedValue);
   };
 
   // Обробники для активного стану повзунків
@@ -196,12 +231,14 @@ const PriceSlider = ({
 
     if (distanceToMin < distanceToMax) {
       setActiveSlider('min');
-      const newMinValue = Math.min(clickValue, maxValue - 1);
-      setMinValue(newMinValue);
+      const newMinValue = Math.min(clickValue, maxValue - getRoundingStep());
+      const roundedMinValue = roundPrice(newMinValue, false);
+      setMinValue(roundedMinValue);
     } else {
       setActiveSlider('max');
-      const newMaxValue = Math.max(clickValue, minValue + 1);
-      setMaxValue(newMaxValue);
+      const newMaxValue = Math.max(clickValue, minValue + getRoundingStep());
+      const roundedMaxValue = roundPrice(newMaxValue, true);
+      setMaxValue(roundedMaxValue);
     }
 
     // Скидаємо активний стан через невеликий час
@@ -264,6 +301,7 @@ const PriceSlider = ({
           type="number"
           min={minPrice}
           max={maxPrice}
+          step={getRoundingStep()}
           value={minValue}
           onChange={handleMinChange}
           className="w-20 p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
@@ -273,6 +311,7 @@ const PriceSlider = ({
           type="number"
           min={minPrice}
           max={maxPrice}
+          step={getRoundingStep()}
           value={maxValue}
           onChange={handleMaxChange}
           className="w-20 p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
@@ -310,8 +349,9 @@ const PriceSlider = ({
             const parentRect = e.currentTarget.parentElement!.getBoundingClientRect();
             const fullClickPercent = clickX / parentRect.width;
             const clickValue = minPrice + (maxPrice - minPrice) * fullClickPercent;
-            const newMinValue = Math.min(clickValue, maxValue - 1);
-            setMinValue(newMinValue);
+            const newMinValue = Math.min(clickValue, maxValue - getRoundingStep());
+            const roundedMinValue = roundPrice(newMinValue, false);
+            setMinValue(roundedMinValue);
             setActiveSlider('min');
             setTimeout(() => setActiveSlider(null), 100);
           }}
@@ -331,8 +371,9 @@ const PriceSlider = ({
             const fullClickX = parentRect.width - rect.width + clickX;
             const fullClickPercent = fullClickX / parentRect.width;
             const clickValue = minPrice + (maxPrice - minPrice) * fullClickPercent;
-            const newMaxValue = Math.max(clickValue, minValue + 1);
-            setMaxValue(newMaxValue);
+            const newMaxValue = Math.max(clickValue, minValue + getRoundingStep());
+            const roundedMaxValue = roundPrice(newMaxValue, true);
+            setMaxValue(roundedMaxValue);
             setActiveSlider('max');
             setTimeout(() => setActiveSlider(null), 100);
           }}
@@ -343,6 +384,7 @@ const PriceSlider = ({
           type="range"
           min={minPrice}
           max={maxPrice}
+          step={getRoundingStep()}
           value={minValue}
           onChange={handleSliderMinChange}
           onMouseDown={handleMinMouseDown}
@@ -361,6 +403,7 @@ const PriceSlider = ({
           type="range"
           min={minPrice}
           max={maxPrice}
+          step={getRoundingStep()}
           value={maxValue}
           onChange={handleSliderMaxChange}
           onMouseDown={handleMaxMouseDown}
@@ -402,6 +445,11 @@ const PriceSlider = ({
       <div className="flex justify-between text-sm text-gray-600">
         <span>{minValue} грн</span>
         <span>{maxValue} грн</span>
+      </div>
+
+      {/* Індикатор кроку округлення */}
+      <div className="text-xs text-gray-500 text-center">
+        Крок округлення: {getRoundingStep()} грн
       </div>
 
       {/* Кнопки управления */}
