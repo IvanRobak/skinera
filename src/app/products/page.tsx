@@ -60,8 +60,8 @@ const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [allCategories, setAllCategories] = useState<string[]>([]);
-  const [allBrands, setAllBrands] = useState<string[]>([]);
-  const [allCountries, setAllCountries] = useState<string[]>([]);
+  // const [allBrands, setAllBrands] = useState<string[]>([]);
+  // const [allCountries, setAllCountries] = useState<string[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
     total: 0,
     page: 1,
@@ -97,8 +97,8 @@ const ProductsPage = () => {
           if (filtersResponse.ok) {
             const filtersData = await filtersResponse.json();
             setAllCategories(filtersData.categories || []);
-            setAllBrands(filtersData.brands || []);
-            setAllCountries(filtersData.countries || []);
+            // setAllBrands(filtersData.brands || []);
+            // setAllCountries(filtersData.countries || []);
           } else {
             console.error('Помилка завантаження фільтрів:', filtersResponse.status);
           }
@@ -236,7 +236,7 @@ const ProductsPage = () => {
           </h2>
 
           {/* Фільтр за брендом */}
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <label className="text-gray-700 font-medium block">Бренд:</label>
             <select
               value={selectedBrand}
@@ -250,7 +250,7 @@ const ProductsPage = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
           {/* Фільтр за категорією */}
           <div className="space-y-2">
@@ -270,7 +270,7 @@ const ProductsPage = () => {
           </div>
 
           {/* Фільтр за країною */}
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <label className="text-gray-700 font-medium block">Країна:</label>
             <select
               value={selectedCountry}
@@ -284,7 +284,7 @@ const ProductsPage = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
           {/* Фільтр за ціною */}
           <div className="space-y-2">
