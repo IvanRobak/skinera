@@ -39,11 +39,11 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-lg flex flex-col h-auto cursor-pointer w-full"
+      className=" flex flex-col h-auto cursor-pointer w-full"
       onClick={() => router.push(`/products/${product.id}`)}
     >
       {/* Контейнер для зображення з підложкою */}
-      <div className="w-full h-64 bg-gray-100 p-2 sm:p-4 flex items-center justify-center rounded-lg overflow-hidden shadow-md relative">
+      <div className="w-full h-64  p-2 sm:p-4 flex items-center justify-center relative">
         <Image
           src={product.image_url}
           alt={product.name.en}
@@ -56,7 +56,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* Контейнер для назви та ціни */}
       <div className="flex-grow p-2 text-center flex flex-col justify-center">
-        <div className="mb-2 h-24 flex flex-col items-center justify-center">
+        <div className="mb-2 h-32 flex flex-col items-center ">
           {/* Бренд */}
           <p className="text-gray-500 text-xs font-normal">{product.brand}</p>
 
@@ -69,8 +69,8 @@ const ProductCard = ({ product }: { product: Product }) => {
           <p className="text-gray-600 text-sm font-normal line-clamp-2 text-center">
             {product.name.ua}
           </p>
+          <p className="text-gray-600 font-bold">{product.price} грн</p>
         </div>
-        <p className="text-gray-600 font-bold">{product.price} грн</p>
       </div>
     </div>
   );
