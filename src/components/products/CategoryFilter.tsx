@@ -40,7 +40,9 @@ const CategoryFilter = memo(
 
     return (
       <div className="space-y-3">
-        <label className="text-gray-700 font-medium block text-sm sm:text-base">Категорії:</label>
+        <label className="text-gray-700 font-semibold block text-sm uppercase tracking-wide">
+          Категорії товарів
+        </label>
 
         {/* Кнопка "Очистити всі" */}
         <button

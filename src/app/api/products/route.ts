@@ -3,7 +3,10 @@ import clientPromise from '@/lib/mongodb';
 
 // Інтерфейс для запиту
 interface ProductQuery {
-  name?: { $regex: string; $options: string };
+  $or?: Array<{
+    'name.ua'?: { $regex: string; $options: string };
+    'name.en'?: { $regex: string; $options: string };
+  }>;
   brand?: string;
   category?: string | { $in: string[] };
   country?: string;
@@ -29,9 +32,15 @@ export async function GET(req: Request) {
     let query: ProductQuery = {};
 
     // Логування для відлагодження
+    console.log('Received search:', search);
     console.log('Received categories:', categories);
 
-    if (search) query['name'] = { $regex: search, $options: 'i' };
+    if (search) {
+      query['$or'] = [
+        { 'name.ua': { $regex: search, $options: 'i' } },
+        { 'name.en': { $regex: search, $options: 'i' } },
+      ];
+    }
     if (brand) query['brand'] = brand;
     if (categories.length > 0) {
       if (categories.length === 1) {
@@ -52,7 +61,7 @@ export async function GET(req: Request) {
     let sortOption: Record<string, 1 | -1> = {};
     if (sort === 'price-asc') sortOption = { price: 1 };
     else if (sort === 'price-desc') sortOption = { price: -1 };
-    else if (sort === 'name') sortOption = { name: 1 };
+    else if (sort === 'name') sortOption = { 'name.ua': 1 };
     else if (sort === 'country') sortOption = { country: 1 };
 
     // Логування запиту MongoDB

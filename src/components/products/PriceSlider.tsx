@@ -293,7 +293,9 @@ const PriceSlider = ({
 
   return (
     <div className="space-y-4">
-      <label className="text-gray-700 font-medium block">Ціна (грн):</label>
+      <label className="text-gray-700 font-semibold block text-sm uppercase tracking-wide">
+        Діапазон цін (грн)
+      </label>
 
       {/* Поля введення цін */}
       <div className="flex items-center space-x-2">
