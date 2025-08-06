@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
+import PriceSlider from '@/components/products/PriceSlider';
 
 // Lazy load the ProductList component
 const ProductList = dynamic(() => import('@/components/products/ProductList'), {
@@ -53,6 +54,9 @@ const ProductsPage = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(1000);
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [allCategories, setAllCategories] = useState<string[]>([]);
@@ -73,6 +77,8 @@ const ProductsPage = () => {
       if (selectedBrand) params.append('brand', selectedBrand);
       if (selectedCategory) params.append('category', selectedCategory);
       if (selectedCountry) params.append('country', selectedCountry);
+      if (minPrice > priceRange.min) params.append('minPrice', minPrice.toString());
+      if (maxPrice < priceRange.max) params.append('maxPrice', maxPrice.toString());
       if (sortOption && sortOption !== 'default') params.append('sort', sortOption);
       params.append('page', pagination.page.toString());
       params.append('limit', pagination.limit.toString());
@@ -99,6 +105,19 @@ const ProductsPage = () => {
         } catch (filterError) {
           console.error('Помилка завантаження фільтрів:', filterError);
         }
+
+        // Завантаження діапазону цін
+        try {
+          const priceRangeResponse = await fetch('/api/products/price-range');
+          if (priceRangeResponse.ok) {
+            const priceData = await priceRangeResponse.json();
+            setPriceRange({ min: priceData.minPrice, max: priceData.maxPrice });
+            setMinPrice(priceData.minPrice);
+            setMaxPrice(priceData.maxPrice);
+          }
+        } catch (priceError) {
+          console.error('Помилка завантаження діапазону цін:', priceError);
+        }
       }
     } catch (error) {
       console.error('Помилка завантаження продуктів:', error);
@@ -111,6 +130,10 @@ const ProductsPage = () => {
     selectedBrand,
     selectedCategory,
     selectedCountry,
+    minPrice,
+    maxPrice,
+    priceRange.min,
+    priceRange.max,
     pagination.page,
     pagination.limit,
     allCategories.length,
@@ -118,6 +141,23 @@ const ProductsPage = () => {
 
   const handlePageChange = (newPage: number) => {
     setPagination(prev => ({ ...prev, page: newPage }));
+  };
+
+  const handlePriceChange = (min: number, max: number) => {
+    setMinPrice(min);
+    setMaxPrice(max);
+    setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+  };
+
+  const resetAllFilters = () => {
+    setSearchQuery('');
+    setSelectedBrand('');
+    setSelectedCategory('');
+    setSelectedCountry('');
+    setMinPrice(priceRange.min);
+    setMaxPrice(priceRange.max);
+    setSortOption('default');
+    setPagination(prev => ({ ...prev, page: 1 }));
   };
 
   useEffect(() => {
@@ -245,6 +285,27 @@ const ProductsPage = () => {
               ))}
             </select>
           </div>
+
+          {/* Фільтр за ціною */}
+          <div className="space-y-2">
+            <PriceSlider
+              minPrice={priceRange.min}
+              maxPrice={priceRange.max}
+              currentMin={minPrice}
+              currentMax={maxPrice}
+              onPriceChange={handlePriceChange}
+            />
+          </div>
+
+          {/* Кнопка скидання всіх фільтрів */}
+          <div className="pt-4 border-t border-gray-200">
+            <button
+              onClick={resetAllFilters}
+              className="w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
+            >
+              🗑️ Скинути всі фільтри
+            </button>
+          </div>
         </aside>
         <div className="md:w-3/4 flex flex-col">
           <div className="w-full flex justify-center sm:block">
@@ -255,6 +316,10 @@ const ProductsPage = () => {
               selectedBrand={selectedBrand}
               selectedCategory={selectedCategory}
               selectedCountry={selectedCountry}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              priceRangeMin={priceRange.min}
+              priceRangeMax={priceRange.max}
               page={pagination.page}
               limit={pagination.limit}
             />

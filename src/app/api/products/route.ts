@@ -7,6 +7,7 @@ interface ProductQuery {
   brand?: string;
   category?: string;
   country?: string;
+  price?: { $gte?: number; $lte?: number };
 }
 
 export async function GET(req: Request) {
@@ -16,6 +17,8 @@ export async function GET(req: Request) {
   const brand = searchParams.get('brand');
   const category = searchParams.get('category');
   const country = searchParams.get('country');
+  const minPrice = searchParams.get('minPrice');
+  const maxPrice = searchParams.get('maxPrice');
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '12');
 
@@ -29,6 +32,13 @@ export async function GET(req: Request) {
     if (brand) query['brand'] = brand;
     if (category) query['category'] = category;
     if (country) query['country'] = country;
+
+    // Фільтрація по ціні
+    if (minPrice || maxPrice) {
+      query['price'] = {};
+      if (minPrice) query['price'].$gte = parseFloat(minPrice);
+      if (maxPrice) query['price'].$lte = parseFloat(maxPrice);
+    }
 
     let sortOption: Record<string, 1 | -1> = {};
     if (sort === 'price-asc') sortOption = { price: 1 };
