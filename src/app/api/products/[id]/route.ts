@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
-import { ObjectId } from 'mongodb';
+import { db } from '@/lib/firebase';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
@@ -9,23 +9,29 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
       return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db();
+    // Try to get by document ID first
+    let productDoc = await getDoc(doc(db, 'products', id));
 
-    const numericId = parseInt(id);
-    const query = !isNaN(numericId) ? { id: numericId } : { _id: new ObjectId(id) };
+    // If not found, try to query by numeric field `id`
+    if (!productDoc.exists()) {
+      const numericId = parseInt(id);
+      if (!isNaN(numericId)) {
+        const q = query(collection(db, 'products'), where('id', '==', numericId));
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+          productDoc = snapshot.docs[0];
+        }
+      }
+    }
 
-    const product = await db.collection('products').findOne(query);
-
-    if (!product) {
+    if (!productDoc.exists()) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
-    return NextResponse.json(product);
+    const data = productDoc.data();
+    return NextResponse.json({ ...data, id: data.id ?? productDoc.id });
   } catch (error) {
-    if (error instanceof Error && error.message.includes('ObjectId')) {
-      return NextResponse.json({ error: 'Invalid product ID format' }, { status: 400 });
-    }
+    console.error('Error fetching product from Firestore:', error);
     return NextResponse.json(
       {
         error: 'Internal server error',

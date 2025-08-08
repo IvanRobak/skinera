@@ -1,34 +1,34 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { db } from '@/lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export async function GET() {
   try {
-    const client = await clientPromise;
-    const db = client.db();
+    const snapshot = await getDocs(collection(db, 'products'));
 
-    // Отримуємо мінімальну та максимальну ціну
-    const minPriceResult = await db
-      .collection('products')
-      .find({})
-      .sort({ price: 1 })
-      .limit(1)
-      .toArray();
-    const maxPriceResult = await db
-      .collection('products')
-      .find({})
-      .sort({ price: -1 })
-      .limit(1)
-      .toArray();
+    if (snapshot.empty) {
+      return NextResponse.json({ minPrice: 0, maxPrice: 1000 });
+    }
 
-    const minPrice = minPriceResult.length > 0 ? minPriceResult[0].price : 0;
-    const maxPrice = maxPriceResult.length > 0 ? maxPriceResult[0].price : 1000;
+    const prices: number[] = [];
+    snapshot.forEach(doc => {
+      const data = doc.data() as { price?: number };
+      if (typeof data.price === 'number') prices.push(data.price);
+    });
+
+    if (prices.length === 0) {
+      return NextResponse.json({ minPrice: 0, maxPrice: 1000 });
+    }
+
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
 
     return NextResponse.json({
       minPrice: Math.floor(minPrice),
       maxPrice: Math.ceil(maxPrice),
     });
   } catch (error) {
-    console.error('Помилка отримання діапазону цін:', error);
+    console.error('Error getting price range from Firestore:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

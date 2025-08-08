@@ -12,7 +12,11 @@
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
     "init-db": "ts-node src/scripts/init-db.ts",
-    "check-static": "ts-node src/scripts/check-static-generation.ts"
+    "check-static": "ts-node src/scripts/check-static-generation.ts",
+    "migrate-to-firestore": "tsx src/scripts/migrate-to-firestore.ts",
+    "migrate-images": "tsx src/scripts/migrate-images-to-firebase.ts",
+    "migrate-full": "tsx src/scripts/full-migration.ts",
+    "test-firestore": "tsx src/scripts/test-firestore-connection.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -25,6 +29,7 @@
     "country-state-city": "^3.2.1",
     "crypto-js": "^4.2.0",
     "firebase": "^12.0.0",
+    "firebase-admin": "^13.4.0",
     "framer-motion": "^12.4.7",
     "mongodb": "^5.9.0",
     "next": "15.1.7",
@@ -37,6 +42,7 @@
     "react-icons": "^5.5.0",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^3.4.0",
+    "xlsx": "^0.18.5",
     "zod": "^3.25.76",
     "zustand": "^5.0.3"
   },

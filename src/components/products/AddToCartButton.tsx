@@ -22,7 +22,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
       price: product.price,
       image_url: product.image_url,
       quantity: 1,
-      capacity: product.capacity,
+      capacity: product.volume || 0,
     });
     toast.success('Товар додано до кошика!', {
       position: 'top-right',

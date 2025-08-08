@@ -10,6 +10,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.prom.ua',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   webpack(config: Configuration) {

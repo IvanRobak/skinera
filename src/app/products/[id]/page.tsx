@@ -7,9 +7,11 @@ import StaticProductDetails from '@/components/products/StaticProductDetails';
 export async function generateStaticParams() {
   const products = await getAllProducts();
 
-  return products.map(product => ({
-    id: product.id.toString(),
-  }));
+  return products
+    .filter(product => product.id != null && product.id !== undefined)
+    .map(product => ({
+      id: product.id.toString(),
+    }));
 }
 
 // Generate metadata for each product page
@@ -28,17 +30,21 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${product.name} - Skinera`,
-    description: product.description || `${product.name} від ${product.brand}`,
+    title: `${product.name?.ua || product.name?.en || 'Product'} - Skinera`,
+    description:
+      product.content?.description ||
+      `${product.name?.ua || product.name?.en || 'Product'} від ${product.brand || 'Unknown'}`,
     openGraph: {
-      title: `${product.name} - Skinera`,
-      description: product.description || `${product.name} від ${product.brand}`,
+      title: `${product.name?.ua || product.name?.en || 'Product'} - Skinera`,
+      description:
+        product.content?.description ||
+        `${product.name?.ua || product.name?.en || 'Product'} від ${product.brand || 'Unknown'}`,
       images: [
         {
           url: product.image_url,
           width: 400,
           height: 400,
-          alt: product.name.en,
+          alt: product.name?.en || product.name?.ua || 'Product image',
         },
       ],
     },
