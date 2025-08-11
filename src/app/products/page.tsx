@@ -72,6 +72,11 @@ const ProductsPage = () => {
     totalPages: 0,
   });
 
+  // Функція для прокручування сторінки вгору
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const fetchProducts = useCallback(async () => {
     try {
       if (isInitialLoadRef.current) {
@@ -154,12 +159,14 @@ const ProductsPage = () => {
 
   const handlePageChange = (newPage: number) => {
     setPagination(prev => ({ ...prev, page: newPage }));
+    scrollToTop();
   };
 
   const handlePriceChange = (min: number, max: number) => {
     setMinPrice(min);
     setMaxPrice(max);
     setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+    scrollToTop();
   };
 
   const resetAllFilters = useCallback(() => {
@@ -171,11 +178,13 @@ const ProductsPage = () => {
     setMaxPrice(priceRange.max);
     setSortOption('default');
     setPagination(prev => ({ ...prev, page: 1 }));
+    scrollToTop();
   }, [priceRange.min, priceRange.max]);
 
   const handleCategoryChange = useCallback((categories: string[]) => {
     setSelectedCategories(categories);
     setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+    scrollToTop();
   }, []);
 
   useEffect(() => {
@@ -258,44 +267,53 @@ const ProductsPage = () => {
                 type="text"
                 placeholder="Введіть назву товару..."
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={e => {
+                  setSearchQuery(e.target.value);
+                  setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+                }}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    scrollToTop();
+                  }
+                }}
                 className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:bg-white transition-all duration-300 outline-none hover:border-pink-300 hover:bg-white text-sm"
               />
               {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
+                <div className="absolute inset-y-0 right-0 flex items-center">
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      scrollToTop();
+                    }}
+                    className="pr-3 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => scrollToTop()}
+                    className="pr-3 text-pink-500 hover:text-pink-600 transition-colors"
+                    title="Почати пошук"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </button>
+                </div>
               )}
             </div>
           </div>
-
-          {/* Фільтр за брендом */}
-          {/* <div className="space-y-2">
-            <label className="text-gray-700 font-medium block">Бренд:</label>
-            <select
-              value={selectedBrand}
-              onChange={e => setSelectedBrand(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
-            >
-              <option value="">Усі бренди</option>
-              {allBrands.map(brand => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
-            </select>
-          </div> */}
-
           {/* Фільтр за категорією */}
           <div className="space-y-2">
             <CategoryFilter
@@ -304,24 +322,6 @@ const ProductsPage = () => {
               onCategoryChange={handleCategoryChange}
             />
           </div>
-
-          {/* Фільтр за країною */}
-          {/* <div className="space-y-2">
-            <label className="text-gray-700 font-medium block">Країна:</label>
-            <select
-              value={selectedCountry}
-              onChange={e => setSelectedCountry(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
-            >
-              <option value="">Усі країни</option>
-              {allCountries.map(country => (
-                <option key={country} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-          </div> */}
-
           {/* Фільтр за ціною */}
           <div className="space-y-2">
             <PriceSlider
