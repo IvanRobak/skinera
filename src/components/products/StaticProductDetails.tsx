@@ -54,8 +54,18 @@ export default function StaticProductDetails({
           </div>
           {/* Right side - Product info and purchase buttons */}
           <div className="w-full md:w-2/5 flex flex-col items-start space-y-6 mt-12 md:sticky md:top-20 md:self-start md:max-h-screen">
-            <h2 className="text-2xl font-bold">{product.name.en}</h2>
-            <p className="text-3xl font-bold text-brand-600">{product.price} ₴</p>
+            <div className="flex flex-col gap-2">
+              <h2 className="text-3xl font-bold">{product.name.en}</h2>
+              <p className="text-gray-600">{product.name.ua}</p>
+            </div>
+            <div className="flex justify-between items-center w-full border-b border-gray-400 pb-2">
+              <span className="text-lg text-gray-600 border border-gray-300 rounded-md px-2 py-1">
+                {product.volume} мл
+              </span>
+              <p className="text-3xl font-bold text-brand-600">
+                {product.price} <span className="text-xl text-brand-600">грн</span>
+              </p>
+            </div>
             <AddToCartButton product={product} />
             <div className="space-y-3 text-gray-600">
               <p className="flex items-center gap-2">
