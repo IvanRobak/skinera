@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView } from 'framer-motion';
 import { CounterStat } from '../common/CounterStat';
 import { useRef } from 'react';
 
@@ -63,13 +63,13 @@ const statistics = [
 const defaultAnimations = {
   hidden: {
     opacity: 0,
-    y: 20
+    y: 20,
   },
   visible: {
     opacity: 1,
-    y: 0
-  }
-}
+    y: 0,
+  },
+};
 const StarRating = ({ rating }: { rating: number }) => {
   return (
     <div className="flex gap-3 mb-4 items-center justify-center">
@@ -124,12 +124,6 @@ const ReviewsSection = () => {
             style={{ width: '54%', height: '100%' }}
             priority
           />
-
-          <div className="hidden lg:block absolute left-0 top-0 h-full w-32 pointer-events-none z-20"
-            style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.8) 60%, transparent 100%)', filter: 'blur(24px)' }} />
-
-          <div className="hidden lg:block absolute right-0 top-0 h-full w-32 pointer-events-none z-20"
-            style={{ background: 'linear-gradient(to left, rgba(255,255,255,0.8) 60%, transparent 100%)', filter: 'blur(24px)' }} />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-[1152px] px-4 lg:px-0 lg:h-full">
@@ -143,8 +137,11 @@ const ReviewsSection = () => {
             </p>
           </div>
 
-
-          <motion.div initial='hidden' animate={isInView ? 'visible' : 'hidden'} className="hidden lg:block relative h-full">
+          <motion.div
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className="hidden lg:block relative h-full"
+          >
             {reviews.map((review, index) => {
               const position = getStaircasePosition(index);
               return (
@@ -170,7 +167,6 @@ const ReviewsSection = () => {
             })}
           </motion.div>
 
-
           <div className="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 pb-8">
             {reviews.map(review => (
               <div
@@ -187,11 +183,16 @@ const ReviewsSection = () => {
         </div>
       </section>
       {/* Statistics Section */}
-      <section className="py-10 mt-6">
+      <section className="py-10 ">
         <div className="max-w-6xl mx-auto px-4 lg:px-0 bg-white rounded-2xl py-10 mt-6 shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             {statistics.map(stat => (
-              <CounterStat number={stat.number} symb={stat.symb} description={stat.description} key={stat.id} />
+              <CounterStat
+                number={stat.number}
+                symb={stat.symb}
+                description={stat.description}
+                key={stat.id}
+              />
             ))}
           </div>
         </div>

@@ -31,41 +31,41 @@ const ContactSection = dynamic(() => import('@/components/sections/ContactsSecti
 // Gallery data for main page showcasing all services
 const mainPageGallery = [
   {
-    src: '/images/cosmetologist-doing-face-treatment-applying-face-mask.jpg',
+    src: '/images/cosmetologist-doing-face-treatment-applying-face-mask-small.jpg',
     alt: 'Професійний догляд за обличчям',
     title: 'Догляд за обличчям',
     description: 'Професійні процедури для здорової та сяючої шкіри',
   },
   {
-    src: '/images/laser-epilation-hair-removal-therapy.jpg',
+    src: '/images/laser-epilation-hair-removal-therapy-small.jpg',
     alt: 'Лазерна епіляція',
     title: 'Лазерна епіляція',
     description: 'Безболісне та ефективне видалення небажаного волосся',
   },
   {
-    src: '/images/woman-getting-back-massage-from-masseur.jpg',
+    src: '/images/woman-getting-back-massage-from-masseur-small.jpg',
     alt: 'Професійний масаж',
     title: 'Масажні процедури',
     description: 'Розслаблення та оздоровлення всього організму',
   },
   {
-    src: '/images/woman-visiting-cosmetologist-making-rejuvenation-procedures.jpg',
+    src: '/images/woman-visiting-cosmetologist-making-rejuvenation-procedures-small.jpg',
     alt: 'Омолоджуючі процедури',
     title: 'Омолодження шкіри',
     description: 'Сучасні методи відновлення молодості шкіри',
   },
-  {
-    src: '/images/spa-composition.png',
-    alt: 'SPA атмосфера центру',
-    title: 'SPA атмосфера',
-    description: 'Розслаблююча обстановка та професійний сервіс',
-  },
-  {
-    src: '/images/ready-for-change.png',
-    alt: 'Результати наших процедур',
-    title: 'Видимі результати',
-    description: "Досягнення ваших цілей краси та здоров'я",
-  },
+  // {
+  //   src: '/images/spa-composition.png',
+  //   alt: 'SPA атмосфера центру',
+  //   title: 'SPA атмосфера',
+  //   description: 'Розслаблююча обстановка та професійний сервіс',
+  // },
+  // {
+  //   src: '/images/ready-for-change.png',
+  //   alt: 'Результати наших процедур',
+  //   title: 'Видимі результати',
+  //   description: "Досягнення ваших цілей краси та здоров'я",
+  // },
 ];
 
 function LoginSuccessToast() {
@@ -98,14 +98,7 @@ export default function Home() {
       <AdvantagesSection />
       <ReviewsSection />
       {/* Photo Gallery Section */}
-      <ServiceGallerySection
-        title="Наші послуги в дії"
-        subtitle="Переглянуте фото наших процедур та результатів роботи. Кожна послуга виконується досвідченими спеціалістами з використанням сучасного обладнання в комфортній атмосфері."
-        images={mainPageGallery}
-        columns={3}
-        showTitles={true}
-        className="bg-gray-50"
-      />
+      <ServiceGallerySection images={mainPageGallery} />
       <ContactSection />
     </div>
   );
