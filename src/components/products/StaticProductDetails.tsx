@@ -1,9 +1,11 @@
 'use client';
 import Image from 'next/image';
+import { useState } from 'react';
 import { Product } from '@/lib/products';
 import ProductCard from '@/components/products/ProductCard';
 import DescriptionRenderer from '@/components/common/DescriptionRenderer';
 import AddToCartButton from '@/components/products/AddToCartButton';
+import Modal from '@/components/common/Modal';
 
 interface StaticProductDetailsProps {
   product: Product;
@@ -14,6 +16,16 @@ export default function StaticProductDetails({
   product,
   relatedProducts,
 }: StaticProductDetailsProps) {
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
+  const handleImageClick = () => {
+    setIsImageModalOpen(true);
+  };
+
+  const closeImageModal = () => {
+    setIsImageModalOpen(false);
+  };
+
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
@@ -23,7 +35,10 @@ export default function StaticProductDetails({
           <div className="w-full md:w-3/5 flex flex-col">
             {/* Product image */}
             <div className="flex justify-center mb-6">
-              <div className="relative w-full max-w-sm h-[500px] group">
+              <div
+                className="relative w-full max-w-sm h-[500px] group cursor-pointer"
+                onClick={handleImageClick}
+              >
                 <Image
                   src={product.image_url}
                   alt={product.name.en}
@@ -70,6 +85,22 @@ export default function StaticProductDetails({
           </div>
         )}
       </div>
+
+      {/* Image Modal */}
+      <Modal isOpen={isImageModalOpen} onClose={closeImageModal}>
+        <div className="text-center p-4">
+          <div className="relative w-full min-h-[800px]">
+            <Image
+              src={product.image_url}
+              alt={product.name.en}
+              fill
+              sizes="(max-width: 768px) 100vw, 600px"
+              className="object-contain"
+              priority
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -449,11 +449,6 @@ const PriceSlider = ({
         <span>{maxValue} грн</span>
       </div>
 
-      {/* Індикатор кроку округлення */}
-      {/* <div className="text-xs text-gray-500 text-center">
-        Крок округлення: {getRoundingStep()} грн
-      </div> */}
-
       {/* Кнопки управления */}
       <div className="flex gap-2 mt-4">
         <button
