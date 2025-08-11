@@ -1,27 +1,29 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { db } from '@/lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export async function GET() {
   try {
-    const client = await clientPromise;
-    const db = client.db();
+    const snapshot = await getDocs(collection(db, 'products'));
 
-    // Получаем все уникальные категории
-    const categories = await db.collection('products').distinct('category');
+    const categories = new Set<string>();
+    const brands = new Set<string>();
+    const countries = new Set<string>();
 
-    // Получаем все уникальные бренды
-    const brands = await db.collection('products').distinct('brand');
-
-    // Получаем все уникальные страны
-    const countries = await db.collection('products').distinct('country');
+    snapshot.forEach(doc => {
+      const data = doc.data() as { category?: string; brand?: string; country?: string };
+      if (data.category) categories.add(data.category);
+      if (data.brand) brands.add(data.brand);
+      if (data.country) countries.add(data.country);
+    });
 
     return NextResponse.json({
-      categories: categories.filter(Boolean), // Убираем null/undefined значения
-      brands: brands.filter(Boolean),
-      countries: countries.filter(Boolean),
+      categories: Array.from(categories).sort(),
+      brands: Array.from(brands).sort(),
+      countries: Array.from(countries).sort(),
     });
   } catch (error) {
-    console.error('Ошибка получения фильтров:', error);
+    console.error('Error getting filters from Firestore:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

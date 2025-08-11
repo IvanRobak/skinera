@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import PriceSlider from '@/components/products/PriceSlider';
+import CategoryFilter from '@/components/products/CategoryFilter';
 
 // Lazy load the ProductList component
 const ProductList = dynamic(() => import('@/components/products/ProductList'), {
@@ -51,13 +53,18 @@ const ProductsPage = () => {
   const [sortOption, setSortOption] = useState('default');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedCountry, setSelectedCountry] = useState('');
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(1000);
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFilterLoading, setIsFilterLoading] = useState(false);
   const [allCategories, setAllCategories] = useState<string[]>([]);
-  const [allBrands, setAllBrands] = useState<string[]>([]);
-  const [allCountries, setAllCountries] = useState<string[]>([]);
+  const isInitialLoadRef = useRef(true);
+  // const [allBrands, setAllBrands] = useState<string[]>([]);
+  // const [allCountries, setAllCountries] = useState<string[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
     total: 0,
     page: 1,
@@ -65,19 +72,34 @@ const ProductsPage = () => {
     totalPages: 0,
   });
 
+  // Функція для прокручування сторінки вгору
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const fetchProducts = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (isInitialLoadRef.current) {
+        setIsLoading(true);
+      } else {
+        setIsFilterLoading(true);
+      }
       const params = new URLSearchParams();
       if (searchQuery) params.append('search', searchQuery);
       if (selectedBrand) params.append('brand', selectedBrand);
-      if (selectedCategory) params.append('category', selectedCategory);
+      if (selectedCategories.length > 0) {
+        selectedCategories.forEach(category => params.append('category', category));
+      }
       if (selectedCountry) params.append('country', selectedCountry);
+      if (minPrice > priceRange.min) params.append('minPrice', minPrice.toString());
+      if (maxPrice < priceRange.max) params.append('maxPrice', maxPrice.toString());
       if (sortOption && sortOption !== 'default') params.append('sort', sortOption);
       params.append('page', pagination.page.toString());
       params.append('limit', pagination.limit.toString());
 
       const url = `/api/products?${params.toString()}`;
+      console.log('Fetching products with URL:', url);
+      console.log('Selected categories:', selectedCategories);
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
@@ -91,26 +113,45 @@ const ProductsPage = () => {
           if (filtersResponse.ok) {
             const filtersData = await filtersResponse.json();
             setAllCategories(filtersData.categories || []);
-            setAllBrands(filtersData.brands || []);
-            setAllCountries(filtersData.countries || []);
+            // setAllBrands(filtersData.brands || []);
+            // setAllCountries(filtersData.countries || []);
           } else {
             console.error('Помилка завантаження фільтрів:', filtersResponse.status);
           }
         } catch (filterError) {
           console.error('Помилка завантаження фільтрів:', filterError);
         }
+
+        // Завантаження діапазону цін
+        try {
+          const priceRangeResponse = await fetch('/api/products/price-range');
+          if (priceRangeResponse.ok) {
+            const priceData = await priceRangeResponse.json();
+            setPriceRange({ min: priceData.minPrice, max: priceData.maxPrice });
+            setMinPrice(priceData.minPrice);
+            setMaxPrice(priceData.maxPrice);
+          }
+        } catch (priceError) {
+          console.error('Помилка завантаження діапазону цін:', priceError);
+        }
       }
     } catch (error) {
       console.error('Помилка завантаження продуктів:', error);
     } finally {
       setIsLoading(false);
+      setIsFilterLoading(false);
+      isInitialLoadRef.current = false;
     }
   }, [
     sortOption,
     searchQuery,
     selectedBrand,
-    selectedCategory,
+    selectedCategories,
     selectedCountry,
+    minPrice,
+    maxPrice,
+    priceRange.min,
+    priceRange.max,
     pagination.page,
     pagination.limit,
     allCategories.length,
@@ -118,7 +159,33 @@ const ProductsPage = () => {
 
   const handlePageChange = (newPage: number) => {
     setPagination(prev => ({ ...prev, page: newPage }));
+    scrollToTop();
   };
+
+  const handlePriceChange = (min: number, max: number) => {
+    setMinPrice(min);
+    setMaxPrice(max);
+    setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+    scrollToTop();
+  };
+
+  const resetAllFilters = useCallback(() => {
+    setSearchQuery('');
+    setSelectedBrand('');
+    setSelectedCategories([]);
+    setSelectedCountry('');
+    setMinPrice(priceRange.min);
+    setMaxPrice(priceRange.max);
+    setSortOption('default');
+    setPagination(prev => ({ ...prev, page: 1 }));
+    scrollToTop();
+  }, [priceRange.min, priceRange.max]);
+
+  const handleCategoryChange = useCallback((categories: string[]) => {
+    setSelectedCategories(categories);
+    setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+    scrollToTop();
+  }, []);
 
   useEffect(() => {
     fetchProducts();
@@ -169,97 +236,135 @@ const ProductsPage = () => {
   return (
     <div className="max-w-6xl mx-auto py-10">
       <h1 className="text-5xl font-bold text-gray-800 text-center m-10">Наші Товари</h1>
-      <div className="mb-6 flex flex-col md:flex-row justify-end items-center gap-4 px-15 sm:px-30 md:px-6">
-        <input
-          type="text"
-          placeholder="🔍 Пошук товарів..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 w-full md:w-1/3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
-        />
-        <select
-          value={sortOption}
-          onChange={e => setSortOption(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 w-full md:w-1/3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
-        >
-          <option value="default">За замовчуванням</option>
-          <option value="price-asc">Від дешевших до дорогих</option>
-          <option value="price-desc">Від дорогих до дешевших</option>
-          <option value="name">За назвою</option>
-          <option value="country">За країною</option>
-        </select>
-      </div>
       <div className="flex flex-col md:flex-row gap-6">
         <aside className="md:w-1/4 p-6 bg-white rounded-lg shadow-md space-y-6 h-fit">
           <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-D4D4D4 pb-2">
-            Фільтри
+            Пошук та Фільтри
           </h2>
 
-          {/* Фільтр за брендом */}
-          <div className="space-y-2">
-            <label className="text-gray-700 font-medium block">Бренд:</label>
-            <select
-              value={selectedBrand}
-              onChange={e => setSelectedBrand(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
-            >
-              <option value="">Усі бренди</option>
-              {allBrands.map(brand => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
-            </select>
+          {/* Пошук товарів */}
+          <div className="space-y-3">
+            <label className="text-gray-700 font-semibold block text-sm uppercase tracking-wide">
+              Пошук товарів
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Введіть назву товару..."
+                value={searchQuery}
+                onChange={e => {
+                  setSearchQuery(e.target.value);
+                  setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
+                }}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    scrollToTop();
+                  }
+                }}
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:bg-white transition-all duration-300 outline-none hover:border-pink-300 hover:bg-white text-sm"
+              />
+              {searchQuery && (
+                <div className="absolute inset-y-0 right-0 flex items-center">
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      scrollToTop();
+                    }}
+                    className="pr-3 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => scrollToTop()}
+                    className="pr-3 text-pink-500 hover:text-pink-600 transition-colors"
+                    title="Почати пошук"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-
           {/* Фільтр за категорією */}
           <div className="space-y-2">
-            <label className="text-gray-700 font-medium block">Категорія:</label>
-            <select
-              value={selectedCategory}
-              onChange={e => setSelectedCategory(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
-            >
-              <option value="">Усі категорії</option>
-              {allCategories.map(category => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
+            <CategoryFilter
+              categories={allCategories}
+              selectedCategories={selectedCategories}
+              onCategoryChange={handleCategoryChange}
+            />
+          </div>
+          {/* Фільтр за ціною */}
+          <div className="space-y-2">
+            <PriceSlider
+              minPrice={priceRange.min}
+              maxPrice={priceRange.max}
+              currentMin={minPrice}
+              currentMax={maxPrice}
+              onPriceChange={handlePriceChange}
+            />
           </div>
 
-          {/* Фільтр за країною */}
-          <div className="space-y-2">
-            <label className="text-gray-700 font-medium block">Країна:</label>
-            <select
-              value={selectedCountry}
-              onChange={e => setSelectedCountry(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 outline-none hover:border-pink-400"
+          {/* Кнопка скидання всіх фільтрів */}
+          <div className="pt-4 border-t border-gray-200">
+            <button
+              onClick={resetAllFilters}
+              className="w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
             >
-              <option value="">Усі країни</option>
-              {allCountries.map(country => (
-                <option key={country} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
+              🗑️ Скинути всі фільтри
+            </button>
           </div>
         </aside>
         <div className="md:w-3/4 flex flex-col">
-          <div className="w-full flex justify-center sm:block">
-            <ProductList
-              products={products}
-              sortOption={sortOption}
-              searchQuery={searchQuery}
-              selectedBrand={selectedBrand}
-              selectedCategory={selectedCategory}
-              selectedCountry={selectedCountry}
-              page={pagination.page}
-              limit={pagination.limit}
-            />
+          <div className="w-full flex justify-center sm:block relative min-h-[500px]">
+            {isFilterLoading && (
+              <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10 rounded-lg transition-opacity duration-300">
+                <div className="flex flex-col items-center space-y-4 p-8">
+                  <div className="relative">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-200"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent absolute top-0 left-0"></div>
+                  </div>
+                  <p className="text-gray-600 font-medium text-center">🔄 Оновлення товарів...</p>
+                </div>
+              </div>
+            )}
+            <div
+              className={`transition-opacity duration-300 ${
+                isFilterLoading ? 'opacity-30' : 'opacity-100'
+              }`}
+            >
+              <ProductList products={products} />
+            </div>
           </div>
-          {renderPagination()}
+          {!isFilterLoading && renderPagination()}
         </div>
       </div>
     </div>

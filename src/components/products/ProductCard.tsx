@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { memo, useCallback, useMemo } from 'react';
 
 interface Product {
   id: number;
@@ -16,32 +17,37 @@ interface Product {
   country: string;
 }
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = memo(({ product }: { product: Product }) => {
   const router = useRouter();
 
-  // Функція для очищення назви від бренду та категорії
-  const cleanProductName = (name: string, brand: string, category: string): string => {
-    let cleanName = name;
+  // Мемоізована функція для очищення назви від бренду та категорії
+  const cleanedName = useMemo(() => {
+    const cleanProductName = (name: string, brand: string, category: string): string => {
+      let cleanName = name;
 
-    // Видаляємо бренд з початку назви (якщо є)
-    if (cleanName.toLowerCase().startsWith(brand.toLowerCase())) {
-      cleanName = cleanName.substring(brand.length).trim();
-    }
+      // Видаляємо бренд з початку назви (якщо є)
+      if (cleanName.toLowerCase().startsWith(brand.toLowerCase())) {
+        cleanName = cleanName.substring(brand.length).trim();
+      }
 
-    // Видаляємо категорію з назви (якщо є)
-    cleanName = cleanName.replace(new RegExp(category, 'gi'), '').trim();
+      // Видаляємо категорію з назви (якщо є)
+      cleanName = cleanName.replace(new RegExp(category, 'gi'), '').trim();
 
-    // Очищаємо зайві пробіли та розділювачі
-    cleanName = cleanName.replace(/^[-\s]+|[-\s]+$/g, '').trim();
+      // Очищаємо зайві пробіли та розділювачі
+      cleanName = cleanName.replace(/^[-\s]+|[-\s]+$/g, '').trim();
 
-    return cleanName || name; // Повертаємо оригінальну назву, якщо після очищення нічого не залишилося
-  };
+      return cleanName || name; // Повертаємо оригінальну назву, якщо після очищення нічого не залишилося
+    };
+
+    return cleanProductName(product.name.en, product.brand, product.category);
+  }, [product.name.en, product.brand, product.category]);
+
+  const handleClick = useCallback(() => {
+    router.push(`/products/${product.id}`);
+  }, [router, product.id]);
 
   return (
-    <div
-      className=" flex flex-col h-auto cursor-pointer w-full"
-      onClick={() => router.push(`/products/${product.id}`)}
-    >
+    <div className=" flex flex-col h-auto cursor-pointer w-full" onClick={handleClick}>
       {/* Контейнер для зображення з підложкою */}
       <div className="w-full h-64  p-2 sm:p-4 flex items-center justify-center relative">
         <Image
@@ -62,7 +68,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
           {/* Очищена назва англійською (жирним) */}
           <h2 className="text-gray-700 text-base font-bold line-clamp-2 text-center">
-            {cleanProductName(product.name.en, product.brand, product.category)}
+            {cleanedName}
           </h2>
 
           {/* Назва українською */}
@@ -74,6 +80,8 @@ const ProductCard = ({ product }: { product: Product }) => {
       </div>
     </div>
   );
-};
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;

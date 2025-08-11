@@ -44,10 +44,10 @@ export default function StaticProductDetails({
             <AddToCartButton product={product} />
             <div className="space-y-3 text-gray-600">
               <p className="flex items-center gap-2">
-                <span className="text-pink-500">🚚</span> Доставка: {product.delivery}
+                <span className="text-pink-500">🚚</span> Доставка: Нова пошта, Укрпошта
               </p>
               <p className="flex items-center gap-2">
-                <span className="text-pink-500">✔️</span> Наявність: {product.availability}
+                <span className="text-pink-500">✔️</span> Наявність: В наявності
               </p>
             </div>
           </div>
@@ -89,59 +89,75 @@ function ProductDetailsAccordion({ product }: { product: Product }) {
       {/* Sections - Always Open */}
       <div>
         {/* Description */}
-        {product.description && (
+        {product.content?.description && (
           <Section title="Опис">
-            <DescriptionRenderer description={product.description} />
+            <DescriptionRenderer description={product.content.description} />
           </Section>
         )}
 
         {/* Characteristics */}
         <Section title="Характеристики">
           <ul className="space-y-2">
+            {product.characteristics?.cosmetic_classification && (
+              <li>
+                <strong>Класифікація:</strong> {product.characteristics.cosmetic_classification}
+              </li>
+            )}
+            {product.characteristics?.skin_type && (
+              <li>
+                <strong>Тип шкіри:</strong> {product.characteristics.skin_type}
+              </li>
+            )}
+            {product.characteristics?.purpose_and_result && (
+              <li>
+                <strong>Призначення:</strong> {product.characteristics.purpose_and_result}
+              </li>
+            )}
+            {(product.characteristics?.volume || product.volume) && (
+              <li>
+                <strong>Обʼєм:</strong> {product.characteristics?.volume || product.volume} мл
+              </li>
+            )}
+            {product.characteristics?.cleanser_type && (
+              <li>
+                <strong>Тип очищувача:</strong> {product.characteristics.cleanser_type}
+              </li>
+            )}
+            {product.characteristics?.skin_problem && (
+              <li>
+                <strong>Проблеми шкіри:</strong> {product.characteristics.skin_problem}
+              </li>
+            )}
+            {product.characteristics?.age && (
+              <li>
+                <strong>Вік:</strong> {product.characteristics.age}
+              </li>
+            )}
+            {product.characteristics?.hypoallergenic && (
+              <li>
+                <strong>Гіпоалергенність:</strong> {product.characteristics.hypoallergenic}
+              </li>
+            )}
             <li>
-              <strong>Класифікація:</strong> {product.characteristics.cosmetic_classification}
+              <strong>Бренд:</strong> {product.brand}
             </li>
             <li>
-              <strong>Тип шкіри:</strong> {product.characteristics.skin_type}
-            </li>
-            <li>
-              <strong>Призначення:</strong> {product.characteristics.purpose_and_result}
-            </li>
-            <li>
-              <strong>Обʼєм:</strong> {product.characteristics.volume} мл
-            </li>
-            <li>
-              <strong>Тип очищувача:</strong> {product.characteristics.cleanser_type}
-            </li>
-            <li>
-              <strong>Проблеми шкіри:</strong> {product.characteristics.skin_problem}
-            </li>
-            <li>
-              <strong>Вік:</strong> {product.characteristics.age}
-            </li>
-            <li>
-              <strong>Гіпоалергенність:</strong> {product.characteristics.hypoallergenic}
+              <strong>Країна:</strong> {product.country}
             </li>
           </ul>
         </Section>
 
         {/* Instructions */}
-        {product.instructions && (
+        {product.content?.usage && (
           <Section title="Як використовувати">
-            <p className="leading-relaxed">{product.instructions}</p>
+            <p className="leading-relaxed">{product.content.usage}</p>
           </Section>
         )}
 
         {/* Ingredients */}
-        {product.ingredients && (
-          <Section title="Склад">
-            <ul className="list-disc pl-5 space-y-1">
-              {product.ingredients.split(',').map((ingredient, index) => (
-                <li key={index} className="leading-relaxed">
-                  {ingredient.trim()}
-                </li>
-              ))}
-            </ul>
+        {product.content?.activeComponents && (
+          <Section title="Активні компоненти">
+            <p className="leading-relaxed">{product.content.activeComponents}</p>
           </Section>
         )}
       </div>
