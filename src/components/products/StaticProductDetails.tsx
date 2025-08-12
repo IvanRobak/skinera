@@ -6,6 +6,8 @@ import ProductCard from '@/components/products/ProductCard';
 import DescriptionRenderer from '@/components/common/DescriptionRenderer';
 import AddToCartButton from '@/components/products/AddToCartButton';
 import Modal from '@/components/common/Modal';
+// import ModalButton from '@/components/common/ModalButton';
+import ProductConsultationForm from '@/components/forms/ProductConsultationForm';
 
 interface StaticProductDetailsProps {
   product: Product;
@@ -17,6 +19,7 @@ export default function StaticProductDetails({
   relatedProducts,
 }: StaticProductDetailsProps) {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
 
   const handleImageClick = () => {
     setIsImageModalOpen(true);
@@ -24,6 +27,14 @@ export default function StaticProductDetails({
 
   const closeImageModal = () => {
     setIsImageModalOpen(false);
+  };
+
+  const openConsultationModal = () => {
+    setIsConsultationModalOpen(true);
+  };
+
+  const closeConsultationModal = () => {
+    setIsConsultationModalOpen(false);
   };
 
   return (
@@ -101,11 +112,15 @@ export default function StaticProductDetails({
               style={{ backgroundColor: '#FCEFE7' }}
             >
               <div className="text-brand-600 mb-2">💬</div>
-              <p className="text-sm text-gray-800 font-medium mb-1">Потрібна консультація?</p>
-              <p className="text-xs text-gray-600">Наші експерти готові допомогти</p>
-              <button className="mt-2 text-xs text-brand-600 underline hover:text-brand-700">
-                Запитати консультацію
+              <p className="text-sm text-gray-900 font-medium mb-1">Потрібна консультація?</p>
+              <p className="text-xs text-gray-700">Наші експерти готові допомогти</p>
+              <button
+                onClick={openConsultationModal}
+                className="text-xs text-brand-600 underline hover:text-brand-700 cursor-pointer"
+              >
+                Замовити консультацію
               </button>
+              <div></div>
             </div>
           </div>
         </div>
@@ -142,6 +157,11 @@ export default function StaticProductDetails({
             />
           </div>
         </div>
+      </Modal>
+
+      {/* Consultation Modal */}
+      <Modal isOpen={isConsultationModalOpen} onClose={closeConsultationModal}>
+        <ProductConsultationForm productName={product.name.ua} productBrand={product.brand} />
       </Modal>
     </div>
   );
