@@ -54,18 +54,6 @@ const mainPageGallery = [
     title: 'Омолодження шкіри',
     description: 'Сучасні методи відновлення молодості шкіри',
   },
-  // {
-  //   src: '/images/spa-composition.png',
-  //   alt: 'SPA атмосфера центру',
-  //   title: 'SPA атмосфера',
-  //   description: 'Розслаблююча обстановка та професійний сервіс',
-  // },
-  // {
-  //   src: '/images/ready-for-change.png',
-  //   alt: 'Результати наших процедур',
-  //   title: 'Видимі результати',
-  //   description: "Досягнення ваших цілей краси та здоров'я",
-  // },
 ];
 
 function LoginSuccessToast() {

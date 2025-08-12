@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import Image from 'next/image';
 
 interface ServiceGalleryProps {
@@ -19,58 +19,78 @@ interface ServiceGalleryProps {
 const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
   images,
   title,
-  subtitle,
-  columns,
   showTitles = true,
   className = '',
 }) => {
-  const visibleCounts = 3;
-  const slideWidthPx = 370;
+  const [visibleCounts, setVisibleCounts] = useState(3);
+  const [slideWidthPx, setSlideWidthPx] = useState(370);
+  const [slideGap, setSlideGap] = useState(20);
 
   const prependSlides = images.slice(-visibleCounts);
   const appendSlides = images.slice(0, visibleCounts);
   const slidesRef = useRef([...prependSlides, ...images, ...appendSlides]);
+  console.log('Slides', slidesRef);
 
   const [currentIndex, setCurrentIndex] = useState(3);
   const [transitionEnabled, setTransitionEnabled] = useState(true);
+  const [isJumping, setIsJumping] = useState(false);
 
   const sliderTrackRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const updateResponsiveSettings = () => {
+      const width = window.innerWidth;
+      if (width < 1188) {
+        setVisibleCounts(2);
+        setSlideGap(40);
+      } else if (width < 1032) {
+        setVisibleCounts(1);
+        setSlideGap(60);
+      } else {
+        setSlideGap(20);
+      }
+    };
+
+    updateResponsiveSettings();
+    window.addEventListener('resize', updateResponsiveSettings);
+    return () => window.removeEventListener('resize', updateResponsiveSettings);
+  }, []);
 
   useEffect(() => {
     if (sliderTrackRef.current) {
       sliderTrackRef.current.style.transition = transitionEnabled ? 'transform 0.3s ease' : 'none';
       sliderTrackRef.current.style.transform = `translateX(-${
-        currentIndex * (slideWidthPx + 20)
+        currentIndex * (slideWidthPx + slideGap)
       }px)`;
     }
-  }, [transitionEnabled, currentIndex]);
+  }, [transitionEnabled, currentIndex, slideWidthPx, slideGap]);
 
   function handleTransitionEnd() {
     if (currentIndex <= visibleCounts - 1) {
+      // Disable transitions for an instant, jump to the mirrored real index without animating
       setTransitionEnabled(false);
+      setIsJumping(true);
       setCurrentIndex(images.length + visibleCounts - 1);
 
-      // Відновлюємо анімацію тільки на наступному кадрі
+      // Re-enable transitions on the next frame to keep forward motion smooth
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           setTransitionEnabled(true);
+          setIsJumping(false);
         });
       });
     } else if (currentIndex >= images.length + visibleCounts) {
       setTransitionEnabled(false);
+      setIsJumping(true);
       setCurrentIndex(visibleCounts);
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           setTransitionEnabled(true);
+          setIsJumping(false);
         });
       });
     }
-  }
-
-  function nextSlide() {
-    setTransitionEnabled(true);
-    setCurrentIndex(prev => prev + 1);
   }
 
   function prevSlide() {
@@ -78,11 +98,16 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
     setCurrentIndex(prev => prev - 1);
   }
 
+  function nextSlide() {
+    setTransitionEnabled(true);
+    setCurrentIndex(prev => prev + 1);
+  }
+
   return (
     <section className={`w-full py-16 relative ${className}`}>
       <div className="absolute inset-0 bg-[#FCEFE7] top-[220px]" />
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div className="relative z-10 min-[1188px]:max-w-6xl min-[1032px]:max-w-[785px] min-[300px]:max-w-[500px] mx-auto">
         <h2 className="text-3xl lg:text-4xl font-bold text-black mb-14 text-center">
           {title ?? 'Наші послуги в дії'}
         </h2>
@@ -92,7 +117,10 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
           <div className="overflow-x-clip">
             {/* Slider track */}
             <div
-              className="flex relative gap-5  transition-transform duration-500 ease-out will-change-transform"
+              className={`flex relative ${
+                transitionEnabled ? 'transition-transform duration-300 ease-out' : 'transition-none'
+              }`}
+              style={{ gap: `${slideGap}px` }}
               ref={sliderTrackRef}
               onTransitionEnd={handleTransitionEnd}
             >
@@ -106,18 +134,15 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
                 return (
                   <div
                     key={index}
-                    className={`w-[370px] overflow-hidden rounded-xl bg-white origin-center flex-shrink-0 transition-transform duration-500 ease-out will-change-transform ${
-                      isMiddle ? 'z-20 shadow-xl' : 'shadow-md'
-                    } }`}
+                    className={`w-[370px] overflow-hidden rounded-xl bg-white flex-shrink-0 ${
+                      isJumping ? 'transition-none' : 'transition-transform duration-300 ease-out'
+                    } ${isMiddle ? 'z-20 shadow-xl' : 'shadow-md'}`}
                     style={{
-                      transform: isMiddle
-                        ? 'translateY(-20px) scale(1)'
-                        : isAdjacent
-                        ? 'translateY(0) scale(0.95)'
-                        : 'translateY(0) scale(0.9)',
+                      transform: isMiddle && visibleCounts === 3 ? 'translateY(-20px)' : '',
                     }}
                   >
-                    <div className="relative w-full h-[350px]">
+                    {/* 1188 / 1003 */}
+                    <div className="relative w-full h-[350px] ">
                       <Image
                         fill
                         src={image.src}
