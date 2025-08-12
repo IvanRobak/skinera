@@ -69,30 +69,42 @@ const Footer = () => {
               <h3 className="font-semibold text-gray-800 mb-4">Соціальні мережі</h3>
               <div className="flex space-x-4">
                 <a
-                  href="#"
-                  className="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 hover:bg-brand-100 transition-colors"
+                  href="https://www.instagram.com/skinera.lviv/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 group"
                   aria-label="Instagram"
                 >
-                  <Image src="/icon/icon_instagram.svg" alt="Instagram" width={22} height={22} />
+                  <div className="group-hover:scale-110 transition-transform duration-300">
+                    <Image src="/icon/icon_instagram.svg" alt="Instagram" width={22} height={22} />
+                  </div>
                 </a>
                 <a
-                  href="#"
-                  className="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 hover:bg-brand-100 transition-colors"
+                  href="https://www.facebook.com/EpiLadies/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 group"
                   aria-label="Facebook"
                 >
-                  <Image src="/icon/iconoir_facebook.svg" alt="Facebook" width={22} height={22} />
+                  <div className="group-hover:scale-110 transition-transform duration-300">
+                    <Image src="/icon/iconoir_facebook.svg" alt="Facebook" width={22} height={22} />
+                  </div>
                 </a>
                 <a
-                  href="#"
-                  className="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 hover:bg-brand-100 transition-colors"
+                  href="https://t.me/skinera_lviv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 group"
                   aria-label="Telegram"
                 >
-                  <Image
-                    src="/icon/basil_telegram-outline.svg"
-                    alt="Telegram"
-                    width={22}
-                    height={22}
-                  />
+                  <div className="group-hover:scale-110 transition-transform duration-300">
+                    <Image
+                      src="/icon/basil_telegram-outline.svg"
+                      alt="Telegram"
+                      width={22}
+                      height={22}
+                    />
+                  </div>
                 </a>
               </div>
             </div>

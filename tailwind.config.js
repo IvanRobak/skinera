@@ -22,6 +22,15 @@ module.exports = {
                     600: '#BF4475',
                     700: '#A03D66',
                 },
+                social: {
+                    instagram: {
+                        from: '#833AB4',
+                        via: '#FD1D1D',
+                        to: '#405DE6',
+                    },
+                    facebook: '#1877F2',
+                    telegram: '#0088CC',
+                },
             },
             boxShadow: {
                 '3xl': '0 -7px 50px -20px rgba(0, 0, 0, 0.3)',
