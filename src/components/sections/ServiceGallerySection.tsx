@@ -1,9 +1,7 @@
 'use client';
 
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { scale } from 'framer-motion';
-import Link from 'next/link';
 
 interface ServiceGalleryProps {
   images: {
@@ -26,24 +24,59 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
   showTitles = true,
   className = '',
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const sliderRef = useRef(null);
-  const cardRef = useRef(null);
+  const visibleCounts = 3;
+  const slideWidthPx = 370;
 
-  // Keep slide and gap widths in sync with Tailwind classes below
-  const slideWidthPx = 370; // matches w-[370px]
-  const gapWidthPx = 28; // matches gap-7 (1.75rem ≈ 28px)
-  const stepWidthPx = useMemo(() => slideWidthPx + gapWidthPx, [slideWidthPx, gapWidthPx]);
+  const prependSlides = images.slice(-visibleCounts);
+  const appendSlides = images.slice(0, visibleCounts);
+  const slidesRef = useRef([...prependSlides, ...images, ...appendSlides]);
 
-  const goPrev = () => {
-    setCurrentIndex(prev => --prev);
-  };
+  const [currentIndex, setCurrentIndex] = useState(3);
+  const [transitionEnabled, setTransitionEnabled] = useState(true);
 
-  const goNext = () => {
+  const sliderTrackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (sliderTrackRef.current) {
+      sliderTrackRef.current.style.transition = transitionEnabled ? 'transform 0.3s ease' : 'none';
+      sliderTrackRef.current.style.transform = `translateX(-${
+        currentIndex * (slideWidthPx + 20)
+      }px)`;
+    }
+  }, [transitionEnabled, currentIndex]);
+
+  function handleTransitionEnd() {
+    if (currentIndex <= visibleCounts - 1) {
+      setTransitionEnabled(false);
+      setCurrentIndex(images.length + visibleCounts - 1);
+
+      // Відновлюємо анімацію тільки на наступному кадрі
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTransitionEnabled(true);
+        });
+      });
+    } else if (currentIndex >= images.length + visibleCounts) {
+      setTransitionEnabled(false);
+      setCurrentIndex(visibleCounts);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTransitionEnabled(true);
+        });
+      });
+    }
+  }
+
+  function nextSlide() {
+    setTransitionEnabled(true);
     setCurrentIndex(prev => prev + 1);
-    console.log(currentIndex);
-    images.push(images[currentIndex]);
-  };
+  }
+
+  function prevSlide() {
+    setTransitionEnabled(true);
+    setCurrentIndex(prev => prev - 1);
+  }
 
   return (
     <section className={`w-full py-16 relative ${className}`}>
@@ -59,24 +92,23 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
           <div className="overflow-x-clip">
             {/* Slider track */}
             <div
-              className="flex relative gap-5 transition-transform duration-500 ease-out will-change-transform"
-              ref={sliderRef}
-              style={{ transform: `translateX(-${currentIndex * stepWidthPx}px)` }}
+              className="flex relative gap-5  transition-transform duration-500 ease-out will-change-transform"
+              ref={sliderTrackRef}
+              onTransitionEnd={handleTransitionEnd}
             >
-              {images.map((image, index) => {
-                const middleIndex = (currentIndex + 1) % images.length;
-                const leftIndex = currentIndex % images.length;
-                const rightIndex = (currentIndex + 2) % images.length;
+              {slidesRef.current.map((image, index) => {
+                const middleIndex = (currentIndex + 1) % slidesRef.current.length;
+                const leftIndex = currentIndex % slidesRef.current.length;
+                const rightIndex = (currentIndex + 2) % slidesRef.current.length;
                 const isMiddle = index === middleIndex;
                 const isAdjacent = index === leftIndex || index === rightIndex;
 
                 return (
                   <div
                     key={index}
-                    ref={cardRef}
                     className={`w-[370px] overflow-hidden rounded-xl bg-white origin-center flex-shrink-0 transition-transform duration-500 ease-out will-change-transform ${
                       isMiddle ? 'z-20 shadow-xl' : 'shadow-md'
-                    }`}
+                    } }`}
                     style={{
                       transform: isMiddle
                         ? 'translateY(-20px) scale(1)'
@@ -118,7 +150,7 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
               <button
                 type="button"
                 aria-label="Попередній слайд"
-                onClick={goPrev}
+                onClick={prevSlide}
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-white text-gray-800 rounded-full shadow-lg w-10 h-10 flex items-center justify-center hover:scale-105 transition"
               >
                 <span className="sr-only">Previous</span>
@@ -141,7 +173,7 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
               <button
                 type="button"
                 aria-label="Наступний слайд"
-                onClick={goNext}
+                onClick={nextSlide}
                 className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-white text-gray-800 rounded-full shadow-lg w-10 h-10 flex items-center justify-center hover:scale-105 transition"
               >
                 <span className="sr-only">Next</span>
