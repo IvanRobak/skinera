@@ -54,7 +54,7 @@ export default function StaticProductDetails({
           </div>
           {/* Right side - Product info and purchase buttons */}
           <div className="w-full md:w-2/5 flex flex-col items-start space-y-6 mt-12 md:sticky md:top-20 md:self-start md:max-h-screen">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 mb-10">
               <h2 className="text-3xl font-bold">{product.name.en}</h2>
               <p className="text-gray-600">{product.name.ua}</p>
             </div>
@@ -67,13 +67,45 @@ export default function StaticProductDetails({
               </p>
             </div>
             <AddToCartButton product={product} />
-            <div className="space-y-3 text-gray-600">
+            <div className="mt-8 text-gray-600 flex flex-col gap-2 ">
               <p className="flex items-center gap-2">
                 <span className="text-pink-500">🚚</span> Доставка: Нова пошта, Укрпошта
               </p>
               <p className="flex items-center gap-2">
                 <span className="text-pink-500">✔️</span> Наявність: В наявності
               </p>
+            </div>
+
+            {/* Product Highlights */}
+            <div className="w-full bg-gray-50 rounded-lg p-4 space-y-3">
+              <h4 className="font-semibold text-gray-800">Ключові переваги</h4>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-500">✓</span>
+                  <span>100% оригінальна продукція</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-500">✓</span>
+                  <span>Сертифікована косметика</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-500">✓</span>
+                  <span>Швидка доставка</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Customer Support */}
+            <div
+              className="w-full rounded-lg p-4 text-center"
+              style={{ backgroundColor: '#FCEFE7' }}
+            >
+              <div className="text-brand-600 mb-2">💬</div>
+              <p className="text-sm text-gray-800 font-medium mb-1">Потрібна консультація?</p>
+              <p className="text-xs text-gray-600">Наші експерти готові допомогти</p>
+              <button className="mt-2 text-xs text-brand-600 underline hover:text-brand-700">
+                Запитати консультацію
+              </button>
             </div>
           </div>
         </div>
