@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { formatPriceWithCurrency } from '@/lib/utils';
 
 interface PriceSliderProps {
   minPrice: number;
@@ -445,8 +446,8 @@ const PriceSlider = ({
 
       {/* Отображение текущих значений */}
       <div className="flex justify-between text-sm text-gray-600">
-        <span>{minValue} грн</span>
-        <span>{maxValue} грн</span>
+        <span>{formatPriceWithCurrency(minValue)}</span>
+        <span>{formatPriceWithCurrency(maxValue)}</span>
       </div>
 
       {/* Кнопки управления */}

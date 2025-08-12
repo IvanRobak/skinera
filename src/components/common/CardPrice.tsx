@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatPriceWithCurrency } from '@/lib/utils';
 
 interface Props {
   title: string;
@@ -14,7 +15,7 @@ const CardPrice = ({ title, description, price, time, list }: Props) => {
       <h3 className="text-xl font-semibold mb-2 text-gray-800">{title}</h3>
       <p className="text-gray-500 text-sm mb-4 h-16">{description}</p>
       <div className="flex items-baseline justify-between mb-8">
-        <span className="text-2xl font-bold text-gray-800">{price} грн</span>
+        <span className="text-2xl font-bold text-gray-800">{formatPriceWithCurrency(price)}</span>
         <span className="text-brand-600 bg-brand-100 px-3 py-1 rounded-full text-sm">{time}хв</span>
       </div>
       <ul className="space-y-3 mb-8">

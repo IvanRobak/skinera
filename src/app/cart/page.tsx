@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { formatPriceWithCurrency } from '@/lib/utils';
 
 function Cart() {
   const router = useRouter();
@@ -45,7 +46,9 @@ function Cart() {
             </div>
             {/* Price block */}
             <div className="min-w-[120px]">
-              <div className="text-purple-600 font-semibold text-lg">{item.price} грн</div>
+              <div className="text-purple-600 font-semibold text-lg">
+                {formatPriceWithCurrency(item.price)}
+              </div>
             </div>
             {/* Quantity */}
             <div>
@@ -63,7 +66,7 @@ function Cart() {
             </div>
             {/* Total */}
             <div className="font-bold text-lg min-w-[90px] text-right">
-              {item.price * item.quantity} грн
+              {formatPriceWithCurrency(item.price * item.quantity)}
             </div>
             {/* Remove */}
             <button
@@ -77,7 +80,7 @@ function Cart() {
       })}
       <div>
         <div className="w-full bg-gray-100 min-h-14 flex items-center justify-end px-3">
-          <h3 className="text-2xl font-semibold ">Всього {total}</h3>
+          <h3 className="text-2xl font-semibold ">Всього {formatPriceWithCurrency(total)}</h3>
         </div>
         <div className="flex justify-between my-6">
           <Link

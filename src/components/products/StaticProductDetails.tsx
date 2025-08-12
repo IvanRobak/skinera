@@ -8,6 +8,7 @@ import AddToCartButton from '@/components/products/AddToCartButton';
 import Modal from '@/components/common/Modal';
 // import ModalButton from '@/components/common/ModalButton';
 import ProductConsultationForm from '@/components/forms/ProductConsultationForm';
+import { formatPriceWithCurrency } from '@/lib/utils';
 
 interface StaticProductDetailsProps {
   product: Product;
@@ -74,7 +75,7 @@ export default function StaticProductDetails({
                 {product.volume} мл
               </span>
               <p className="text-3xl font-bold text-brand-600">
-                {product.price} <span className="text-xl text-brand-600">грн</span>
+                {formatPriceWithCurrency(product.price)}
               </p>
             </div>
             <AddToCartButton product={product} />

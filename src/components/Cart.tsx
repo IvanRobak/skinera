@@ -3,6 +3,7 @@
 
 import { useRouter } from 'next/navigation';
 import { CartItem } from './store/cartStore';
+import { formatPriceWithCurrency } from '@/lib/utils';
 
 interface CartProps {
   cart: CartItem[];
@@ -73,7 +74,9 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
               >
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-800">{item.name.en}</h4>
-                  <p className="text-brand-600 font-medium">{item.price} ₴</p>
+                  <p className="text-brand-600 font-medium">
+                    {formatPriceWithCurrency(item.price, '₴')}
+                  </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center bg-white rounded-full shadow-sm border border-gray-200">
@@ -106,7 +109,10 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
           <div className="flex justify-between items-center mb-6">
             <span className="text-gray-600">Загальна сума:</span>
             <span className="text-xl font-bold text-brand-600">
-              {cart.reduce((sum, item) => sum + item.price * item.quantity, 0)} ₴
+              {formatPriceWithCurrency(
+                cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+                '₴'
+              )}
             </span>
           </div>
           <button
