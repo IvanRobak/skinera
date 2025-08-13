@@ -30,7 +30,13 @@ export default function FavoriteButton({
   className = '',
   isHovered = false,
 }: FavoriteButtonProps) {
-  const { addToFavorites, removeFromFavorites, isFavorite } = useFavoritesStore();
+  const { addToFavorites, removeFromFavorites, isFavorite, hasHydrated } = useFavoritesStore();
+
+  // Don't render until the store has hydrated to prevent hydration mismatch
+  if (!hasHydrated) {
+    return null;
+  }
+
   const favorite = isFavorite(product.id);
 
   const sizeClasses = {

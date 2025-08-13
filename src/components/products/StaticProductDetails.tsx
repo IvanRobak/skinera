@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Product } from '@/lib/products';
 import ProductCard from '@/components/products/ProductCard';
 import DescriptionRenderer from '@/components/common/DescriptionRenderer';
@@ -23,16 +23,10 @@ export default function StaticProductDetails({
 }: StaticProductDetailsProps) {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
-  const { addToFavorites, removeFromFavorites, isFavorite } = useFavoritesStore();
+  const { addToFavorites, removeFromFavorites, isFavorite, hasHydrated } = useFavoritesStore();
 
-  // Використовуємо стан гідратації для запобігання помилці SSR
-  const isProductFavorite = isHydrated ? isFavorite(product.id) : false;
-
-  // Встановлюємо гідратацію після монтування компонента
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
+  // Використовуємо стан гідратації зі стора для запобігання помилці SSR
+  const isProductFavorite = hasHydrated ? isFavorite(product.id) : false;
 
   const handleImageClick = () => {
     setIsImageModalOpen(true);
