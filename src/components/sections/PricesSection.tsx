@@ -1,5 +1,6 @@
 import { SectionPriceInterface } from '@/interfaces/Section';
 import WavyBottomBorder from '../common/WavyBottomBorder';
+import { formatPriceWithCurrency } from '@/lib/utils';
 
 interface Props {
   data: SectionPriceInterface[];
@@ -41,7 +42,7 @@ export default function PricesSection({ data }: Props) {
                   {sectionInfo.procedure.prices.map((sectionTitle, index) => {
                     return (
                       <div className="text-xl" key={index}>
-                        {sectionTitle} грн
+                        {formatPriceWithCurrency(sectionTitle)}
                       </div>
                     );
                   })}

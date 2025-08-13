@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { memo, useCallback, useMemo } from 'react';
+import { formatPriceWithCurrency } from '@/lib/utils';
 
 interface Product {
   id: number;
@@ -75,7 +76,7 @@ const ProductCard = memo(({ product }: { product: Product }) => {
           <p className="text-gray-600 text-sm font-normal line-clamp-2 text-center">
             {product.name.ua}
           </p>
-          <p className="text-gray-600 font-bold">{product.price} грн</p>
+          <p className="text-gray-600 font-bold">{formatPriceWithCurrency(product.price)}</p>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import { useCartStore } from '../store/cartStore';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useRouter } from 'next/navigation';
+import { formatPriceWithCurrency } from '@/lib/utils';
 
 const OrderSection = () => {
   const router = useRouter();
@@ -43,7 +44,9 @@ const OrderSection = () => {
                 <div className="flex-1">
                   <h3 className="text-[#212121] text-sm font-normal mb-1">{item.name.ua}</h3>
                   <p className="text-[#A6A2A2] text-sm">{item.name.en}</p>
-                  <span className="text-[#A6A2A2] text-sm">{item.price}$</span>
+                  <span className="text-[#A6A2A2] text-sm">
+                    {formatPriceWithCurrency(item.price, '$')}
+                  </span>
                   <div className="flex justify-between items-center mt-3">
                     <div className="relative flex items-center">
                       <button
@@ -77,7 +80,7 @@ const OrderSection = () => {
       <div className="pt-3">
         <div className="flex justify-between mb-3">
           <span className="text-sm">Підсумок</span>
-          <span className="text-sm font-medium">{total}$</span>
+          <span className="text-sm font-medium">{formatPriceWithCurrency(total, '$')}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-sm">Доставка(Кур&quot;єром Makeup)</span>
@@ -85,7 +88,7 @@ const OrderSection = () => {
         </div>
         <div className="flex justify-between mt-6">
           <h2 className="text-xl font-semibold">Разом</h2>
-          <span className="text-sm font-semibold">{total}$</span>
+          <span className="text-sm font-semibold">{formatPriceWithCurrency(total, '$')}</span>
         </div>
       </div>
     </div>
