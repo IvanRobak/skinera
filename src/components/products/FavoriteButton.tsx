@@ -21,12 +21,14 @@ interface FavoriteButtonProps {
   };
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  isHovered?: boolean;
 }
 
 export default function FavoriteButton({
   product,
   size = 'md',
   className = '',
+  isHovered = false,
 }: FavoriteButtonProps) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavoritesStore();
   const favorite = isFavorite(product.id);
@@ -60,6 +62,13 @@ export default function FavoriteButton({
       });
     }
   };
+
+  // Показуємо кнопку тільки якщо товар у улюблених або при ховері
+  const shouldShow = favorite || isHovered;
+
+  if (!shouldShow) {
+    return null;
+  }
 
   return (
     <motion.button
