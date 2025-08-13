@@ -38,7 +38,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold"
+            className="absolute -top-2 -right-2 bg-brand-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center "
           >
             {favoritesCount > 99 ? '99+' : favoritesCount}
           </motion.div>
