@@ -6,7 +6,6 @@ import ContactForm from '../forms/ContactForm';
 
 const mockSliderData = [
   {
-
     title: 'Вакуумно-роликовий массаж RF-ліфтинг',
     description: 'Вакумно-роликовий массаж RF-ліфтинг',
     action: 'Aкція',
@@ -31,7 +30,7 @@ const mockSliderData = [
   {
     title: 'Сучасні методики та сертифіковані фахівці',
     description:
-      'Ми використовуємо лише перевірені косметологічні технології та засоби. Довірте свою шкіру професіоналам з досвідом та турботою.',
+      'Ми використовуємо лише перевірені косметологічні технології та засоби. Довірте KTсвою шкіру професіоналам з досвідом та турботою.',
     photo: {
       src: '/images/cosmetologist-doing-face-treatment.jpg',
       alt: 'Ультразвукова чистка обличчя у косметолога',
@@ -48,7 +47,7 @@ const HeroSectionPrimary = () => {
   const onSetCurrentSlide = useCallback(() => {
     const currentIndex = currentSlide === mockSliderData.length - 1 ? 0 : currentSlide + 1;
     setCurrentSlide(currentIndex);
-  }, [currentSlide])
+  }, [currentSlide]);
 
   const onSetPreviousSlide = () => {
     const currentIndex = currentSlide === 0 ? mockSliderData.length - 1 : currentSlide - 1;
@@ -79,8 +78,9 @@ const HeroSectionPrimary = () => {
             return (
               <div
                 key={index}
-                className={`absolute inset-0 transition-opacity duration-700 ease-in-out  ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                  }`}
+                className={`absolute inset-0 transition-opacity duration-700 ease-in-out  ${
+                  isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                }`}
               >
                 <Image
                   fill
@@ -92,8 +92,7 @@ const HeroSectionPrimary = () => {
                 <div className="absolute inset-0 z-5 pointer-events-none bg-black/35" />
 
                 {isActive && (
-
-                  <div className='xl:max-w-4xl mx-auto  xl:mt-56 xl:ml-52 lg:max-w-3xl lg:mt-32 lg:ml-16 md:mt-32  sm:mt-32 mt-24 relative z-11'>
+                  <div className="xl:max-w-4xl mx-auto  xl:mt-56 xl:ml-52 lg:max-w-3xl lg:mt-32 lg:ml-16 md:mt-32  sm:mt-32 mt-24 relative z-11">
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
