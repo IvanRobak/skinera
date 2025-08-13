@@ -29,7 +29,6 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
   const prependSlides = images.slice(-visibleCounts);
   const appendSlides = images.slice(0, visibleCounts);
   const slidesRef = useRef([...prependSlides, ...images, ...appendSlides]);
-  console.log('Slides', slidesRef);
 
   const [currentIndex, setCurrentIndex] = useState(3);
   const [transitionEnabled, setTransitionEnabled] = useState(true);
@@ -110,7 +109,6 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
     setCurrentIndex(prev => prev + 1);
   }
 
-  console.log(visibleCounts);
   return (
     <section className={`w-full py-16 relative ${className}`}>
       <div className="absolute inset-0 bg-[#FCEFE7] top-[220px]" />

@@ -92,21 +92,21 @@ const HeroSectionPrimary = () => {
                 <div className="absolute inset-0 z-5 pointer-events-none bg-black/35" />
 
                 {isActive && (
-                  <div className="xl:max-w-4xl mx-auto  xl:mt-56 xl:ml-52 lg:max-w-3xl lg:mt-32 lg:ml-16 md:mt-32  sm:mt-32 mt-24 relative z-11">
+                  <div className="min-[1770px]:m-auto min-[1770px]:mt-52 min-[1770px]:max-w-4xl  min-[1440px]:ml-52 xl:max-w-4xl mx-auto  xl:mt-56 xl:ml-52 lg:max-w-3xl lg:mt-32 lg:ml-16 md:mt-32  sm:mt-32 mt-24 relative z-11">
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6 }}
                       className="text-white px-4 flex flex-col gap-9"
                     >
-                      <h1 className="text-2xl text-center xl:text-6xl xl:text-left lg:text-5xl lg:text-left md:text-4xl md:text-center sm:text-3xl font-black leading-tight">
+                      <h1 className="text-2xl text-center min-[1770px]:text-center min-[1770px]:text-7xl  xl:text-6xl xl:text-left lg:text-5xl lg:text-left md:text-4xl md:text-center sm:text-3xl font-black leading-tight">
                         {item.title}
                       </h1>
-                      <div className="flex justify-center lg:justify-start xl:justify-start">
+                      <div className="flex justify-center lg:justify-start xl:justify-start min-[1770px]:justify-center">
                         <ModalButton
                           buttonText="Записатись на прийом"
                           modalContent={<ContactForm />}
-                          className="bg-brand-600 text-white px-4 sm:px-5 lg:px-8 py-2 sm:py-2.5  lg:py-4 rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
+                          className="bg-brand-600 text-white px-4    sm:px-5 lg:px-8 py-2 sm:py-2.5  lg:py-4  rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
                         />
                       </div>
                     </motion.div>
