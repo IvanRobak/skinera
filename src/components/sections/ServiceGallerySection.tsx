@@ -40,13 +40,20 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
   useLayoutEffect(() => {
     const updateResponsiveSettings = () => {
       const width = window.innerWidth;
-      if (width < 1188) {
-        setVisibleCounts(2);
-        setSlideGap(40);
-      } else if (width < 1032) {
+
+      if (width < 542) {
         setVisibleCounts(1);
-        setSlideGap(60);
+        setSlideWidthPx(300);
+      } else if (width < 820) {
+        setVisibleCounts(1);
+        setSlideWidthPx(500);
+      } else if (width < 1188) {
+        setVisibleCounts(2);
+        setSlideWidthPx(370);
+        setSlideGap(40);
       } else {
+        setVisibleCounts(3);
+        setSlideWidthPx(370);
         setSlideGap(20);
       }
     };
@@ -103,11 +110,12 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
     setCurrentIndex(prev => prev + 1);
   }
 
+  console.log(visibleCounts);
   return (
     <section className={`w-full py-16 relative ${className}`}>
       <div className="absolute inset-0 bg-[#FCEFE7] top-[220px]" />
 
-      <div className="relative z-10 min-[1188px]:max-w-6xl min-[1032px]:max-w-[785px] min-[300px]:max-w-[500px] mx-auto">
+      <div className="relative z-10 min-[1188px]:max-w-6xl min-[820px]:max-w-[785px] min-[542px]:max-w-[505px] min-[350px]:max-w-[300px] mx-auto">
         <h2 className="text-3xl lg:text-4xl font-bold text-black mb-14 text-center">
           {title ?? 'Наші послуги в дії'}
         </h2>
@@ -126,29 +134,27 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
             >
               {slidesRef.current.map((image, index) => {
                 const middleIndex = (currentIndex + 1) % slidesRef.current.length;
-                const leftIndex = currentIndex % slidesRef.current.length;
-                const rightIndex = (currentIndex + 2) % slidesRef.current.length;
                 const isMiddle = index === middleIndex;
-                const isAdjacent = index === leftIndex || index === rightIndex;
 
                 return (
                   <div
                     key={index}
-                    className={`w-[370px] overflow-hidden rounded-xl bg-white flex-shrink-0 ${
+                    className={`overflow-hidden rounded-xl bg-white flex-shrink-0 ${
                       isJumping ? 'transition-none' : 'transition-transform duration-300 ease-out'
-                    } ${isMiddle ? 'z-20 shadow-xl' : 'shadow-md'}`}
+                    } ${isMiddle && visibleCounts === 3 ? 'z-20 shadow-xl' : 'shadow-md'}`}
                     style={{
                       transform: isMiddle && visibleCounts === 3 ? 'translateY(-20px)' : '',
+                      width: `${slideWidthPx}px`,
                     }}
                   >
                     {/* 1188 / 1003 */}
-                    <div className="relative w-full h-[350px] ">
+                    <div className="relative w-full" style={{ aspectRatio: '37 / 35' }}>
                       <Image
                         fill
                         src={image.src}
                         alt={image.alt}
                         className="object-cover"
-                        sizes="(max-width: 768px) 80vw, 370px"
+                        sizes="(max-width: 542px) 200px, (max-width: 820px) 500px, (max-width: 1188px) 370px, 370px"
                       />
                     </div>
                     {showTitles && image.title && (
