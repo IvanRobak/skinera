@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Product } from '@/lib/products';
 import ProductCard from '@/components/products/ProductCard';
 import DescriptionRenderer from '@/components/common/DescriptionRenderer';
@@ -9,6 +9,8 @@ import Modal from '@/components/common/Modal';
 // import ModalButton from '@/components/common/ModalButton';
 import ProductConsultationForm from '@/components/forms/ProductConsultationForm';
 import { formatPriceWithCurrency } from '@/lib/utils';
+import { useFavoritesStore } from '@/components/store/favoritesStore';
+import { toast } from 'react-toastify';
 
 interface StaticProductDetailsProps {
   product: Product;
@@ -21,6 +23,16 @@ export default function StaticProductDetails({
 }: StaticProductDetailsProps) {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavoritesStore();
+
+  // Використовуємо стан гідратації для запобігання помилці SSR
+  const isProductFavorite = isHydrated ? isFavorite(product.id) : false;
+
+  // Встановлюємо гідратацію після монтування компонента
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const handleImageClick = () => {
     setIsImageModalOpen(true);
@@ -36,6 +48,22 @@ export default function StaticProductDetails({
 
   const closeConsultationModal = () => {
     setIsConsultationModalOpen(false);
+  };
+
+  const handleToggleFavorite = () => {
+    if (isProductFavorite) {
+      removeFromFavorites(product.id);
+      toast.success('Товар видалено з улюблених', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+    } else {
+      addToFavorites(product);
+      toast.success('Товар додано до улюблених!', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
@@ -79,6 +107,30 @@ export default function StaticProductDetails({
               </p>
             </div>
             <AddToCartButton product={product} />
+
+            {/* Favorite Button */}
+            <button
+              onClick={handleToggleFavorite}
+              className={`
+                w-full py-3 px-4 rounded-lg border-2 transition-all duration-300 
+                flex items-center justify-center gap-3 font-medium
+                ${
+                  isProductFavorite
+                    ? 'border-red-300 bg-red-50 text-red-600 hover:bg-red-100'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-red-300 hover:bg-red-50 hover:text-red-600'
+                }
+              `}
+            >
+              <Image
+                src={isProductFavorite ? '/heart-filled.svg' : '/heart.svg'}
+                alt="heart"
+                width={20}
+                height={20}
+                className="transition-all duration-300"
+              />
+              <span>{isProductFavorite ? 'Додано до улюблених' : 'Додати до улюблених'}</span>
+            </button>
+
             <div className="mt-8 text-gray-600 flex flex-col gap-2 ">
               <p className="flex items-center gap-2">
                 <span className="text-pink-500">🚚</span> Доставка: Нова пошта, Укрпошта
