@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { memo, useCallback, useMemo } from 'react';
 import { formatPriceWithCurrency } from '@/lib/utils';
+import FavoriteButton from './FavoriteButton';
 
 interface Product {
   id: number;
@@ -16,6 +17,7 @@ interface Product {
   brand: string;
   category: string;
   country: string;
+  volume?: number;
 }
 
 const ProductCard = memo(({ product }: { product: Product }) => {
@@ -51,6 +53,7 @@ const ProductCard = memo(({ product }: { product: Product }) => {
     <div className=" flex flex-col h-auto cursor-pointer w-full" onClick={handleClick}>
       {/* Контейнер для зображення з підложкою */}
       <div className="w-full h-64  p-2 sm:p-4 flex items-center justify-center relative">
+        <FavoriteButton product={product} size="sm" />
         <Image
           src={product.image_url}
           alt={product.name.en}

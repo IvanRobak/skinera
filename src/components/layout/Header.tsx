@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { UserIcon } from '@heroicons/react/24/outline';
 import CartButton from './CartButton';
+import FavoritesButton from './FavoritesButton';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,6 +29,7 @@ const Header = () => {
         {/* Меню для великих екранів */}
         <div className="hidden md:flex items-center">
           <Navigation />
+          <FavoritesButton />
           <CartButton />
           {session ? (
             <Link
@@ -83,6 +85,7 @@ const Header = () => {
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
           <Navigation isMobile onNavigate={() => setIsMenuOpen(false)} />
           <div className="px-4 py-3 border-t border-gray-100">
+            <FavoritesButton isMobile />
             <CartButton isMobile />
           </div>
           {session ? (
