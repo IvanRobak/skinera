@@ -144,7 +144,10 @@ export default function AuthModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-          onClick={onClose}
+          onClick={e => {
+            e.stopPropagation();
+            onClose();
+          }}
         />
 
         {/* Modal */}
@@ -153,6 +156,7 @@ export default function AuthModal({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto"
+          onClick={e => e.stopPropagation()}
         >
           {/* Close Button */}
           <button
