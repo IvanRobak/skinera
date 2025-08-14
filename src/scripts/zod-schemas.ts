@@ -21,10 +21,10 @@ export const SignInSchema = z.object({
 }).required()
 
 export const ClientInfoFormSchema = z.object({
-  name: z.string().min(3, { message: `Поле ім'я обов'язкове` }),
-  surname: z.string().min(3, { message: `Поле прізвище обов'язкове` }),
-  number: z.string().min(3, { message: `Поле номер телефону обов'язкове` }),
-  email: z.string().min(1, { message: `Поле електронна адреса обов'язкове` }).email(),
+  name: z.string().min(3, { message: `Поле ім'я є обов'язковим` }),
+  surname: z.string().min(3, { message: `Поле прізвище є обов'язковим` }),
+  number: z.string().min(3, { message: `Поле номер телефону є обов'язковим` }),
+  email: z.string().min(1, { message: `Поле електронна адреса є обов'язковим` }).email('Введіть коректну електронну адресу'),
 }).required();
 
 export type ClientInfoFormFields = z.infer<typeof ClientInfoFormSchema>
