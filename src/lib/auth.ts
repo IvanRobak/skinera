@@ -25,19 +25,23 @@ export const authOptions: NextAuthOptions = {
             throw new Error('Database connection failed');
           }
 
-          // Get user from Firestore
-          const usersRef = adminDb.collection('users');
-          console.log('📊 Querying Firestore for user...');
+          // Get user from Firestore using email as document ID
+          const userDocRef = adminDb.collection('users').doc(credentials.email);
+          console.log('📊 Getting user document from Firestore...');
 
-          const userQuery = await usersRef.where('email', '==', credentials.email).get();
+          const userDoc = await userDocRef.get();
 
-          if (userQuery.empty) {
+          if (!userDoc.exists) {
             console.log('❌ No user found with email:', credentials.email);
             throw new Error('No user found');
           }
 
-          const user = userQuery.docs[0].data();
+          const user = userDoc.data();
           console.log('✅ User found, verifying password...');
+
+          if (!user) {
+            throw new Error('User data not found');
+          }
 
           // Verify password hash
           const isValid = await compare(credentials.password, user.password);
@@ -49,7 +53,7 @@ export const authOptions: NextAuthOptions = {
 
           console.log('✅ Authentication successful for:', credentials.email);
           return {
-            id: user.uid,
+            id: user.email,
             name: user.name,
             surname: user.surname,
             email: user.email,

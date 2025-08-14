@@ -48,13 +48,8 @@ export async function POST(req: Request) {
     // Hash password
     const hashedPassword = await hash(password, 12);
 
-    // Generate unique UID
-    const uid = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    console.log('🆔 Generated UID:', uid);
-
-    // Store user data in Firestore
+    // Store user data in Firestore using email as document ID
     const userData = {
-      uid,
       surname: surname || null,
       email,
       password: hashedPassword,
@@ -63,14 +58,14 @@ export async function POST(req: Request) {
     };
 
     console.log('💾 Saving user to Firestore...');
-    await usersRef.doc(uid).set(userData);
+    await usersRef.doc(email).set(userData);
 
     console.log('✅ User registered successfully:', email);
 
     return NextResponse.json(
       {
         message: 'User created successfully',
-        userId: uid,
+        userId: email,
       },
       { status: 201 }
     );

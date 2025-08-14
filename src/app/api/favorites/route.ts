@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { adminDb } from '@/lib/firebase-admin';
 
-// Helper function to ensure user document exists
+// Helper function to get or create user document by email
 async function ensureUserDocument(userEmail: string) {
   const userDocRef = adminDb.collection('users').doc(userEmail);
   const userDoc = await userDocRef.get();
@@ -28,7 +28,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Переконуємося, що документ користувача існує
+    // Отримуємо або створюємо документ користувача
     const userDocRef = await ensureUserDocument(session.user.email);
     const favoritesRef = userDocRef.collection('favorites');
     const favoritesSnapshot = await favoritesRef.get();
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Product data is required' }, { status: 400 });
     }
 
-    // Переконуємося, що документ користувача існує
+    // Отримуємо або створюємо документ користувача
     const userDocRef = await ensureUserDocument(session.user.email);
     const favoritesRef = userDocRef.collection('favorites');
     const productDocRef = favoritesRef.doc(product.id.toString());
@@ -107,7 +107,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
     }
 
-    // Переконуємося, що документ користувача існує
+    // Отримуємо або створюємо документ користувача
     const userDocRef = await ensureUserDocument(session.user.email);
     const favoritesRef = userDocRef.collection('favorites');
     const productDocRef = favoritesRef.doc(productId);
