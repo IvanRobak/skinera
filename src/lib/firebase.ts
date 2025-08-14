@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 // Firebase configuration
 const projectId = process.env.FIREBASE_PROJECT_ID;
@@ -23,6 +24,9 @@ export const storage = getStorage(app);
 
 // Initialize Firestore
 export const db = getFirestore(app);
+
+// Initialize Firebase Auth
+export const auth = getAuth(app);
 
 // Note: Using production Firestore, not emulator
 
