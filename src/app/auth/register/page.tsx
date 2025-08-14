@@ -23,24 +23,47 @@ export default function Register() {
 
   const onSubmit: SubmitHandler<RegisterFields> = async formData => {
     try {
+      console.log('🚀 Submitting registration form:', formData);
+
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      console.log('📡 Response status:', res.status);
+      console.log('📡 Response headers:', res.headers);
 
       if (!res.ok) {
-        setError('root', {
-          message: data?.error || 'Щось пішло не так. Спробуйте ще раз.',
-        });
+        // Try to parse JSON, but handle cases where response is not JSON
+        let errorMessage = 'Щось пішло не так. Спробуйте ще раз.';
+        try {
+          const data = await res.json();
+          errorMessage = data?.error || errorMessage;
+        } catch (jsonError) {
+          console.error('Failed to parse error response as JSON:', jsonError);
+          errorMessage = `Server error: ${res.status} ${res.statusText}`;
+        }
+
+        setError('root', { message: errorMessage });
         return;
       }
 
-      router.push('/auth/signin/?registered=true');
+      // Try to parse success response
+      try {
+        const data = await res.json();
+        console.log('✅ Registration successful:', data);
+        router.push('/auth/signin/?registered=true');
+      } catch (jsonError) {
+        console.error('Failed to parse success response as JSON:', jsonError);
+        // If we can't parse the response but status is ok, consider it success
+        router.push('/auth/signin/?registered=true');
+      }
     } catch (err) {
       console.error('Error creating new user', err);
+      setError('root', {
+        message: 'Помилка мережі. Перевірте підключення до інтернету.',
+      });
     }
   };
 

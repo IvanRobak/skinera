@@ -35,7 +35,6 @@ async function checkStaticGeneration() {
     console.error('❌ Error checking static generation setup:', error);
     console.log('\nPossible issues:');
     console.log('- Database connection failed');
-    console.log('- MongoDB not running');
     console.log('- Environment variables not set');
   }
 }
