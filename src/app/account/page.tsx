@@ -1,19 +1,19 @@
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import AuthModal from '../../components/auth/AuthModal';
 
 export default function AccountPage() {
   const { data: session, status } = useSession();
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+      setShowAuthModal(true);
     }
-  }, [status, router]);
+  }, [status]);
 
   if (status === 'loading') {
     return (
@@ -24,7 +24,16 @@ export default function AccountPage() {
   }
 
   if (!session) {
-    return null;
+    return (
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        defaultTab="signin"
+        onSuccess={() => {
+          setShowAuthModal(false);
+        }}
+      />
+    );
   }
 
   const handleSignOut = async () => {
