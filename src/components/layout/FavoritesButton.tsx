@@ -1,16 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { useFavoritesStore } from '../store/favoritesStore';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { useFavorites } from '@/hooks/useFavorites';
 
 interface FavoritesButtonProps {
   isMobile?: boolean;
 }
 
 export default function FavoritesButton({ isMobile = false }: FavoritesButtonProps) {
-  const { getFavoritesCount, hasHydrated } = useFavoritesStore();
+  const { getFavoritesCount, hasHydrated } = useFavorites();
   const favoritesCount = getFavoritesCount();
 
   if (!hasHydrated) {

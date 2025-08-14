@@ -2,15 +2,28 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function AccountPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+    }
+  }, [status, router]);
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-brand-500"></div>
+      </div>
+    );
+  }
+
   if (!session) {
-    router.push('/auth/signin');
     return null;
   }
 
@@ -20,7 +33,7 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="bg-gray-50 py-12">
+    <div className="py-32 ">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg">
           {/* Header */}
@@ -49,7 +62,6 @@ export default function AccountPage() {
 
               {/* Actions */}
               <div className="space-y-4">
-                <h4 className="text-lg font-medium text-gray-900">Дії</h4>
                 <div className="flex flex-col space-y-3">
                   <button
                     onClick={handleSignOut}

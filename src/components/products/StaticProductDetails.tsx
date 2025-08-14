@@ -9,8 +9,11 @@ import Modal from '@/components/common/Modal';
 // import ModalButton from '@/components/common/ModalButton';
 import ProductConsultationForm from '@/components/forms/ProductConsultationForm';
 import { formatPriceWithCurrency } from '@/lib/utils';
-import { useFavoritesStore } from '@/components/store/favoritesStore';
 import { toast } from 'react-toastify';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useSession } from 'next-auth/react';
+import { useState as useModalState } from 'react';
+import AuthModal from '@/components/auth/AuthModal';
 
 interface StaticProductDetailsProps {
   product: Product;
@@ -21,9 +24,11 @@ export default function StaticProductDetails({
   product,
   relatedProducts,
 }: StaticProductDetailsProps) {
+  const { data: session } = useSession();
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
-  const { addToFavorites, removeFromFavorites, isFavorite, hasHydrated } = useFavoritesStore();
+  const [showAuthModal, setShowAuthModal] = useModalState(false);
+  const { addToFavorites, removeFromFavorites, isFavorite, hasHydrated } = useFavorites();
 
   // Використовуємо стан гідратації зі стора для запобігання помилці SSR
   const isProductFavorite = hasHydrated ? isFavorite(product.id) : false;
@@ -44,20 +49,35 @@ export default function StaticProductDetails({
     setIsConsultationModalOpen(false);
   };
 
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = async () => {
+    // Якщо користувач не авторизований, показуємо модальне вікно
+    if (!session) {
+      setShowAuthModal(true);
+      return;
+    }
+
     if (isProductFavorite) {
-      removeFromFavorites(product.id);
+      await removeFromFavorites(product.id);
       toast.success('Товар видалено з улюблених', {
         position: 'top-right',
         autoClose: 2000,
       });
     } else {
-      addToFavorites(product);
+      await addToFavorites(product);
       toast.success('Товар додано до улюблених!', {
         position: 'top-right',
         autoClose: 2000,
       });
     }
+  };
+
+  const handleAuthSuccess = async () => {
+    // Після успішної авторизації додаємо товар до улюблених
+    await addToFavorites(product);
+    toast.success('Товар додано до улюблених!', {
+      position: 'top-right',
+      autoClose: 2000,
+    });
   };
 
   return (
@@ -210,6 +230,14 @@ export default function StaticProductDetails({
       <Modal isOpen={isConsultationModalOpen} onClose={closeConsultationModal}>
         <ProductConsultationForm productName={product.name.ua} productBrand={product.brand} />
       </Modal>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
+        defaultTab="signin"
+      />
     </div>
   );
 }

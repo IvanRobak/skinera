@@ -1,15 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useFavoritesStore } from '@/components/store/favoritesStore';
 import ProductCard from '@/components/products/ProductCard';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useFavorites } from '@/hooks/useFavorites';
 
 export default function FavoritesPage() {
-  const { favorites, clearFavorites, hasHydrated } = useFavoritesStore();
+  const { favorites, hasHydrated } = useFavorites();
   const [mounted, setMounted] = useState(false);
+
+  const clearAllFavorites = async () => {
+    // Очищуємо всі улюблені товари
+    // Тут можна додати логіку видалення з сервера, якщо потрібно
+    window.location.reload(); // Простий спосіб оновити сторінку
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -91,7 +97,7 @@ export default function FavoritesPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                onClick={clearFavorites}
+                onClick={clearAllFavorites}
                 className="px-4 py-2 text-red-600 hover:text-red-700 font-medium transition-colors duration-200"
               >
                 Очистити всі
