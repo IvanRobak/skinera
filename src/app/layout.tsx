@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './global.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import Main from '@/components/layout/Main';
 import { ToastContainer } from 'react-toastify';
 import ClientSessionProvider from '@/components/ClientSessionProvider';
 import StructuredData from '@/components/seo/StructuredData';
@@ -104,10 +105,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <ClientSessionProvider>
           <Header />
-          <main className="flex-grow">
+          <Main>
             {children}
             <ToastContainer />
-          </main>
+          </Main>
           <Footer />
         </ClientSessionProvider>
       </body>

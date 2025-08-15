@@ -26,7 +26,7 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="bg-gray-50 pt-20">
+    <div className="min-h-full bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Заголовок */}
         <div className="text-center mb-12">
