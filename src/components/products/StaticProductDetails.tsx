@@ -24,7 +24,7 @@ export default function StaticProductDetails({
   product,
   relatedProducts,
 }: StaticProductDetailsProps) {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useModalState(false);
@@ -72,12 +72,26 @@ export default function StaticProductDetails({
   };
 
   const handleAuthSuccess = async () => {
-    // Після успішної авторизації додаємо товар до улюблених
-    await addToFavorites(product);
-    toast.success('Товар додано до улюблених!', {
-      position: 'top-right',
-      autoClose: 2000,
-    });
+    try {
+      // Примусово оновлюємо сесію
+      await update();
+
+      // Невелика затримка для впевненості
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      // Тепер addToFavorites сам перевірить свіжу сесію
+      await addToFavorites(product);
+      toast.success('Товар додано до улюблених!', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+    } catch (error) {
+      console.error('Error adding to favorites after auth:', error);
+      toast.error('Помилка при додаванні до улюблених', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+    }
   };
 
   return (

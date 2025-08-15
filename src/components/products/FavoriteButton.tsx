@@ -33,7 +33,7 @@ export default function FavoriteButton({
   className = '',
   isHovered = false,
 }: FavoriteButtonProps) {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const { addToFavorites, removeFromFavorites, isFavorite, hasHydrated } = useFavorites();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -90,12 +90,26 @@ export default function FavoriteButton({
   };
 
   const handleAuthSuccess = async () => {
-    // Після успішної авторизації додаємо товар до улюблених
-    await addToFavorites(product);
-    toast.success('Товар додано до улюблених!', {
-      position: 'top-right',
-      autoClose: 1000,
-    });
+    try {
+      // Примусово оновлюємо сесію
+      await update();
+
+      // Невелика затримка для впевненості
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      // Тепер addToFavorites сам перевірить свіжу сесію
+      await addToFavorites(product);
+      toast.success('Товар додано до улюблених!', {
+        position: 'top-right',
+        autoClose: 1000,
+      });
+    } catch (error) {
+      console.error('Error adding to favorites after auth:', error);
+      toast.error('Помилка при додаванні до улюблених', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+    }
   };
 
   // Показуємо кнопку тільки якщо товар у улюблених або при ховері

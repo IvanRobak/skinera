@@ -115,15 +115,15 @@ const ReviewsSection = () => {
     <div className="w-full">
       <section className="relative overflow-hidden w-full max-w-[1440px] mx-auto mt-16 lg:h-[882px] h-auto">
         <div className="absolute left-0 top-0 h-full w-full">
-          <Image
-            src="/images/Rectangle4.png"
-            alt="Background"
-            width={1400}
-            height={882}
-            className="object-cover object-right"
-            style={{ width: '54%', height: '100%' }}
-            priority
-          />
+          <div className="relative w-[54%] h-full">
+            <Image
+              src="/images/Rectangle4.png"
+              alt="Background"
+              fill
+              className="object-cover object-right"
+              priority
+            />
+          </div>
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-[1152px] px-4 lg:px-0 lg:h-full">

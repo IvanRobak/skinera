@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, getSession } from 'next-auth/react';
 import { useFavoritesStore } from '@/components/store/favoritesStore';
 import { toast } from 'react-toastify';
 
@@ -139,19 +139,24 @@ export function useFavorites() {
 
   // Додати товар до улюблених
   const addToFavorites = async (product: FavoriteProduct) => {
-    if (session?.user?.email) {
-      // Для авторизованих користувачів - додаємо на сервер і локально
-      await addToServerFavorites(product);
-      addToLocalFavorites(product);
-    } else {
-      // Для неавторизованих користувачів - не дозволяємо додавати
+    // Отримуємо свіжу сесію
+    const currentSession = await getSession();
+
+    if (!currentSession?.user?.email) {
       throw new Error('Потрібна авторизація для додавання в улюблені');
     }
+
+    // Для авторизованих користувачів - додаємо на сервер і локально
+    await addToServerFavorites(product);
+    addToLocalFavorites(product);
   };
 
   // Видалити товар з улюблених
   const removeFromFavorites = async (productId: number) => {
-    if (session?.user?.email) {
+    // Отримуємо свіжу сесію
+    const currentSession = await getSession();
+
+    if (currentSession?.user?.email) {
       // Для авторизованих користувачів - видаляємо з сервера і локально
       await removeFromServerFavorites(productId);
       removeFromLocalFavorites(productId);

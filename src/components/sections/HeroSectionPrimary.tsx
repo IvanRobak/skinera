@@ -87,6 +87,7 @@ const HeroSectionPrimary = () => {
                   src={item.photo.src}
                   alt={item.photo.alt}
                   className="object-cover brightness-80"
+                  priority={index === 0}
                 />
 
                 <div className="absolute inset-0 z-5 pointer-events-none bg-black/35" />

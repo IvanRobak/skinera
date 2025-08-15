@@ -29,10 +29,9 @@ const ServicesSection = () => {
                 <Image
                   src="/images/cosmetologist-doing-face-treatment-applying-face-mask.jpg"
                   alt="Догляд за обличчям"
-                  width={384}
-                  height={192}
+                  fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover w-full h-full"
+                  className="object-cover"
                 />
               </div>
               <div className="p-6">
@@ -73,10 +72,9 @@ const ServicesSection = () => {
                 <Image
                   src="/images/laser-epilation-hair-removal-therapy.jpg"
                   alt="Лазерна епіляція"
-                  width={384}
-                  height={192}
+                  fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover w-full h-full"
+                  className="object-cover"
                 />
               </div>
               <div className="p-6">
@@ -117,10 +115,9 @@ const ServicesSection = () => {
                 <Image
                   src="/images/woman-getting-back-massage-from-masseur.jpg"
                   alt="Масаж"
-                  width={384}
-                  height={192}
+                  fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover w-full h-full"
+                  className="object-cover"
                 />
               </div>
               <div className="p-6">

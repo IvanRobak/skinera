@@ -81,8 +81,11 @@ export default function AuthModal({
         toast.error('Невірні дані для входу');
       } else {
         toast.success('Успішний вхід!');
-        onSuccess?.();
-        onClose();
+        // Даємо час сесії оновитися перед викликом onSuccess
+        setTimeout(() => {
+          onSuccess?.();
+          onClose();
+        }, 100);
       }
     } catch {
       toast.error('Помилка входу');
@@ -127,8 +130,11 @@ export default function AuthModal({
         if (result?.error) {
           toast.error('Помилка автоматичного входу');
         } else {
-          onSuccess?.();
-          onClose();
+          // Даємо час сесії оновитися перед викликом onSuccess
+          setTimeout(() => {
+            onSuccess?.();
+            onClose();
+          }, 100);
         }
       } else {
         const error = await response.json();
