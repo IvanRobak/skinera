@@ -58,6 +58,14 @@ export default function AuthModal({
     }
   }, [isOpen, defaultTab]);
 
+  // Also reset when modal closes to ensure clean state
+  useEffect(() => {
+    if (!isOpen) {
+      setSigninData({ email: '', password: '' });
+      setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+    }
+  }, [isOpen]);
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -181,7 +189,11 @@ export default function AuthModal({
           {/* Tabs */}
           <div className="flex border-b border-gray-200 mx-6 mt-6">
             <button
-              onClick={() => setActiveTab('signin')}
+              onClick={() => {
+                setActiveTab('signin');
+                setSigninData({ email: '', password: '' });
+                setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+              }}
               className={`flex-1 py-3 px-4 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === 'signin'
                   ? 'border-brand-500 text-brand-600'
@@ -191,7 +203,11 @@ export default function AuthModal({
               Вхід
             </button>
             <button
-              onClick={() => setActiveTab('register')}
+              onClick={() => {
+                setActiveTab('register');
+                setSigninData({ email: '', password: '' });
+                setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+              }}
               className={`flex-1 py-3 px-4 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === 'register'
                   ? 'border-brand-500 text-brand-600'
@@ -205,7 +221,7 @@ export default function AuthModal({
           {/* Content */}
           <div className="p-6">
             {activeTab === 'signin' ? (
-              <form onSubmit={handleSignIn} className="space-y-4">
+              <form key="signin-form" onSubmit={handleSignIn} className="space-y-4">
                 <div>
                   <label
                     htmlFor="signin-email"
@@ -220,7 +236,7 @@ export default function AuthModal({
                     value={signinData.email}
                     onChange={e => setSigninData(prev => ({ ...prev, email: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                    placeholder="your@email.com"
+                    autoComplete="email"
                   />
                 </div>
 
@@ -238,7 +254,7 @@ export default function AuthModal({
                     value={signinData.password}
                     onChange={e => setSigninData(prev => ({ ...prev, password: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                    placeholder="••••••••"
+                    autoComplete="current-password"
                   />
                 </div>
 
@@ -251,7 +267,7 @@ export default function AuthModal({
                 </button>
               </form>
             ) : (
-              <form onSubmit={handleRegister} className="space-y-4">
+              <form key="register-form" onSubmit={handleRegister} className="space-y-4">
                 <div>
                   <label
                     htmlFor="register-name"
@@ -266,7 +282,7 @@ export default function AuthModal({
                     value={registerData.name}
                     onChange={e => setRegisterData(prev => ({ ...prev, name: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                    placeholder="Ваше імʼя"
+                    autoComplete="name"
                   />
                 </div>
 
@@ -284,7 +300,7 @@ export default function AuthModal({
                     value={registerData.email}
                     onChange={e => setRegisterData(prev => ({ ...prev, email: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                    placeholder="your@email.com"
+                    autoComplete="email"
                   />
                 </div>
 
@@ -302,7 +318,7 @@ export default function AuthModal({
                     value={registerData.password}
                     onChange={e => setRegisterData(prev => ({ ...prev, password: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                    placeholder="••••••••"
+                    autoComplete="new-password"
                   />
                 </div>
 
@@ -322,7 +338,7 @@ export default function AuthModal({
                       setRegisterData(prev => ({ ...prev, confirmPassword: e.target.value }))
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                    placeholder="••••••••"
+                    autoComplete="new-password"
                   />
                 </div>
 
