@@ -18,6 +18,7 @@ export interface FavoriteItem {
 
 interface FavoritesStore {
   favorites: FavoriteItem[];
+  setFavorites: (favorites: FavoriteItem[]) => void;
   addToFavorites: (product: FavoriteItem) => void;
   removeFromFavorites: (productId: number) => void;
   isFavorite: (productId: number) => boolean;
@@ -39,6 +40,10 @@ export const useFavoritesStore = create<FavoritesStore>()(
             hasHydrated: state,
           });
         },
+        setFavorites: (favorites: FavoriteItem[]) =>
+          set(() => ({
+            favorites,
+          })),
         addToFavorites: (product: FavoriteItem) =>
           set(state => {
             const existingProduct = state.favorites.find(item => item.id === product.id);

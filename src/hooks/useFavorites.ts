@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import { useFavoritesStore } from '@/components/store/favoritesStore';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 export interface FavoriteProduct {
   id: number;
@@ -19,20 +19,16 @@ export interface FavoriteProduct {
   country: string;
 }
 
-// Глобальний стан для уникнення повторних синхронізацій
-const globalSyncState = {
-  hasSynced: false,
-  isCurrentlySyncing: false,
-};
+// Глобальний стан більше не потрібен, оскільки використовуємо єдине джерело істини (Zustand store)
 
 export function useFavorites() {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
-  const [serverFavorites, setServerFavorites] = useState<FavoriteProduct[]>([]);
-  const [, setHasSynced] = useState(globalSyncState.hasSynced);
+  const [, setHasSynced] = useState(false);
 
   const {
-    favorites: localFavorites,
+    favorites,
+    setFavorites,
     addToFavorites: addToLocalFavorites,
     removeFromFavorites: removeFromLocalFavorites,
     isFavorite: isLocalFavorite,
@@ -50,92 +46,56 @@ export function useFavorites() {
       if (response.ok) {
         const data = await response.json();
         const products = data.favorites.map((fav: { product: FavoriteProduct }) => fav.product);
-        setServerFavorites(products);
+        setFavorites(products);
       }
     } catch (error) {
       console.error('Error fetching favorites:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [session?.user?.email]);
+  }, [session?.user?.email, setFavorites]);
 
   // Додати товар на сервер
-  const addToServerFavorites = useCallback(async (product: FavoriteProduct) => {
-    try {
-      const response = await fetch('/api/favorites', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ product }),
-      });
-
-      if (response.ok) {
-        setServerFavorites(prev => [...prev.filter(p => p.id !== product.id), product]);
-      }
-    } catch (error) {
-      console.error('Error adding to server favorites:', error);
-    }
-  }, []);
-
-  // Синхронізувати локальні улюблені з сервером при вході
-  const syncFavoritesWithServer = useCallback(async () => {
-    if (
-      !session?.user?.email ||
-      !hasHydrated ||
-      globalSyncState.hasSynced ||
-      globalSyncState.isCurrentlySyncing
-    )
-      return;
-
-    globalSyncState.isCurrentlySyncing = true;
-    setIsLoading(true);
-
-    try {
-      // Завантажуємо серверні улюблені
-      await fetchServerFavorites();
-
-      // Якщо є локальні улюблені, додаємо їх на сервер
-      if (localFavorites.length > 0) {
-        for (const product of localFavorites) {
-          await addToServerFavorites(product);
-        }
-        // Показуємо повідомлення тільки якщо було що синхронізувати
-        toast.success(`Синхронізовано ${localFavorites.length} улюблених товарів!`, {
-          toastId: 'sync-favorites', // Унікальний ID щоб уникнути дублікатів
+  const addToServerFavorites = useCallback(
+    async (product: FavoriteProduct) => {
+      try {
+        const response = await fetch('/api/favorites', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ product }),
         });
-      }
 
-      globalSyncState.hasSynced = true;
-      setHasSynced(true);
-    } catch (error) {
-      console.error('Error syncing favorites:', error);
-    } finally {
-      globalSyncState.isCurrentlySyncing = false;
-      setIsLoading(false);
-    }
-  }, [
-    session?.user?.email,
-    hasHydrated,
-    fetchServerFavorites,
-    localFavorites,
-    addToServerFavorites,
-  ]);
+        if (response.ok) {
+          addToLocalFavorites(product);
+        }
+      } catch (error) {
+        console.error('Error adding to server favorites:', error);
+      }
+    },
+    [addToLocalFavorites]
+  );
+
+  // Синхронізація: при наявності сесії просто завантажуємо серверні улюблені у store
 
   // Видалити товар з сервера
-  const removeFromServerFavorites = useCallback(async (productId: number) => {
-    try {
-      const response = await fetch(`/api/favorites?productId=${productId}`, {
-        method: 'DELETE',
-      });
+  const removeFromServerFavorites = useCallback(
+    async (productId: number) => {
+      try {
+        const response = await fetch(`/api/favorites?productId=${productId}`, {
+          method: 'DELETE',
+        });
 
-      if (response.ok) {
-        setServerFavorites(prev => prev.filter(p => p.id !== productId));
+        if (response.ok) {
+          removeFromLocalFavorites(productId);
+        }
+      } catch (error) {
+        console.error('Error removing from server favorites:', error);
       }
-    } catch (error) {
-      console.error('Error removing from server favorites:', error);
-    }
-  }, []);
+    },
+    [removeFromLocalFavorites]
+  );
 
   // Додати товар до улюблених
   const addToFavorites = async (product: FavoriteProduct) => {
@@ -146,9 +106,8 @@ export function useFavorites() {
       throw new Error('Потрібна авторизація для додавання в улюблені');
     }
 
-    // Для авторизованих користувачів - додаємо на сервер і локально
+    // Для авторизованих користувачів - додаємо на сервер і локально (store)
     await addToServerFavorites(product);
-    addToLocalFavorites(product);
   };
 
   // Видалити товар з улюблених
@@ -157,9 +116,8 @@ export function useFavorites() {
     const currentSession = await getSession();
 
     if (currentSession?.user?.email) {
-      // Для авторизованих користувачів - видаляємо з сервера і локально
+      // Для авторизованих користувачів - видаляємо з сервера і локально (store)
       await removeFromServerFavorites(productId);
-      removeFromLocalFavorites(productId);
     } else {
       // Для неавторизованих користувачів - не дозволяємо видаляти
       throw new Error('Потрібна авторизація для роботи з улюбленими');
@@ -169,7 +127,7 @@ export function useFavorites() {
   // Перевірити, чи товар в улюблених
   const isFavorite = (productId: number): boolean => {
     if (session?.user?.email) {
-      return serverFavorites.some(p => p.id === productId) || isLocalFavorite(productId);
+      return isLocalFavorite(productId);
     }
     // Для неавторизованих користувачів - завжди false
     return false;
@@ -178,14 +136,7 @@ export function useFavorites() {
   // Отримати всі улюблені товари
   const getAllFavorites = (): FavoriteProduct[] => {
     if (session?.user?.email) {
-      // Об'єднуємо серверні та локальні, видаляючи дублікати
-      const combined = [...serverFavorites];
-      localFavorites.forEach(local => {
-        if (!combined.some(server => server.id === local.id)) {
-          combined.push(local);
-        }
-      });
-      return combined;
+      return favorites as FavoriteProduct[];
     }
     // Для неавторизованих користувачів - порожній масив
     return [];
@@ -196,34 +147,17 @@ export function useFavorites() {
     return getAllFavorites().length;
   };
 
-  // Ефект для синхронізації при вході (тільки якщо є локальні улюблені)
+  // Ефект для завантаження серверних улюблених при наявності сесії
   useEffect(() => {
-    if (
-      session?.user?.email &&
-      hasHydrated &&
-      !globalSyncState.hasSynced &&
-      !globalSyncState.isCurrentlySyncing &&
-      localFavorites.length > 0
-    ) {
-      syncFavoritesWithServer();
-    }
-  }, [session?.user?.email, hasHydrated, localFavorites.length, syncFavoritesWithServer]);
-
-  // Ефект для завантаження серверних улюблених
-  useEffect(() => {
-    if (session?.user?.email && globalSyncState.hasSynced) {
+    if (session?.user?.email && hasHydrated) {
       fetchServerFavorites();
     }
-  }, [session?.user?.email, fetchServerFavorites]);
+  }, [session?.user?.email, hasHydrated, fetchServerFavorites]);
 
   // Скидаємо глобальний стан при виході з системи
   useEffect(() => {
     if (!session?.user?.email) {
-      globalSyncState.hasSynced = false;
-      globalSyncState.isCurrentlySyncing = false;
       setHasSynced(false);
-      setServerFavorites([]);
-      // Очищаємо localStorage при виході
       clearOnLogout();
     }
   }, [session?.user?.email, clearOnLogout]);
