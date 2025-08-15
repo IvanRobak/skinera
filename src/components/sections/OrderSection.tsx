@@ -82,10 +82,6 @@ const OrderSection = () => {
           <span className="text-sm">Підсумок</span>
           <span className="text-sm font-medium">{formatPriceWithCurrency(total, '$')}</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-sm">Доставка(Кур&quot;єром Makeup)</span>
-          <span className="text-sm font-medium">0$</span>
-        </div>
         <div className="flex justify-between mt-6">
           <h2 className="text-xl font-semibold">Разом</h2>
           <span className="text-sm font-semibold">{formatPriceWithCurrency(total, '$')}</span>
