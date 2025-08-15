@@ -102,26 +102,35 @@ export async function DELETE(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const productId = searchParams.get('productId');
+    const clearAll = searchParams.get('clearAll');
+
+    // Отримуємо або створюємо документ користувача
+    const userDocRef = await ensureUserDocument(session.user.email);
+    const favoritesRef = userDocRef.collection('favorites');
+
+    // Очистити всі улюблені
+    if (clearAll === 'true') {
+      const snapshot = await favoritesRef.get();
+      if (snapshot.empty) {
+        return NextResponse.json({ message: 'No favorites to remove' });
+      }
+      const batch = adminDb.batch();
+      snapshot.docs.forEach(doc => batch.delete(doc.ref));
+      await batch.commit();
+      return NextResponse.json({ message: 'All favorites removed' });
+    }
 
     if (!productId) {
       return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
     }
 
-    // Отримуємо або створюємо документ користувача
-    const userDocRef = await ensureUserDocument(session.user.email);
-    const favoritesRef = userDocRef.collection('favorites');
+    // Видалити один товар з улюблених
     const productDocRef = favoritesRef.doc(productId);
-
-    // Перевіряємо, чи існує товар в улюблених
     const favoriteDoc = await productDocRef.get();
-
     if (!favoriteDoc.exists) {
       return NextResponse.json({ error: 'Favorite not found' }, { status: 404 });
     }
-
-    // Видаляємо товар з улюблених
     await productDocRef.delete();
-
     return NextResponse.json({ message: 'Product removed from favorites' });
   } catch (error) {
     console.error('Error removing from favorites:', error);

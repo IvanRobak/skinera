@@ -147,6 +147,25 @@ export function useFavorites() {
     return getAllFavorites().length;
   };
 
+  // Очистити всі улюблені
+  const clearAllFavorites = useCallback(async () => {
+    const currentSession = await getSession();
+    if (!currentSession?.user?.email) {
+      throw new Error('Потрібна авторизація для роботи з улюбленими');
+    }
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/favorites?clearAll=true', { method: 'DELETE' });
+      if (response.ok) {
+        setFavorites([]);
+      }
+    } catch (error) {
+      console.error('Error clearing favorites:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [setFavorites]);
+
   // Ефект для завантаження серверних улюблених при наявності сесії
   useEffect(() => {
     if (session?.user?.email && hasHydrated) {
@@ -170,5 +189,6 @@ export function useFavorites() {
     isFavorite,
     getFavoritesCount,
     hasHydrated,
+    clearAllFavorites,
   };
 }

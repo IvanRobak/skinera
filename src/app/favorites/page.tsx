@@ -9,15 +9,9 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { useSession } from 'next-auth/react';
 
 export default function FavoritesPage() {
-  const { favorites, hasHydrated } = useFavorites();
+  const { favorites, hasHydrated, clearAllFavorites } = useFavorites();
   const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
-
-  const clearAllFavorites = async () => {
-    // Очищуємо всі улюблені товари
-    // Тут можна додати логіку видалення з сервера, якщо потрібно
-    window.location.reload(); // Простий спосіб оновити сторінку
-  };
 
   useEffect(() => {
     setMounted(true);
