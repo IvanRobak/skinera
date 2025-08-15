@@ -2,9 +2,10 @@
 import { useState } from 'react';
 // import DeliveryInfoForm from './DeliveryInfoForm';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { ClientInfoFormFields, ClientInfoFormSchema } from '@/scripts/zod-schemas';
 import DeliveryInfoForm from './DeliveryInfoForm';
+import { IMaskInput } from 'react-imask';
 
 const ClientInfoForm = () => {
   const [firstCurrentStep, setFirstCurrentStep] = useState(true);
@@ -14,15 +15,27 @@ const ClientInfoForm = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    control,
+    setError,
+    clearErrors,
   } = useForm<ClientInfoFormFields>({
     resolver: zodResolver(ClientInfoFormSchema),
     shouldFocusError: false,
+    defaultValues: {
+      name: '',
+      surname: '',
+      number: '',
+      email: '',
+    },
+    mode: 'onBlur', // validate only when leaving the input
+    reValidateMode: 'onBlur',
   });
 
   const name = watch('name');
   const surname = watch('surname');
   const number = watch('number');
   const email = watch('email');
+  const [isPhoneFocused, setIsPhoneFocused] = useState(false);
 
   const onSubmit: SubmitHandler<ClientInfoFormFields> = () => {
     try {
@@ -87,7 +100,12 @@ const ClientInfoForm = () => {
                                                         origin-left peer-focus:w-full z-10`}
                   ></span>
                 </div>
-                <p aria-live="polite" className="text-red-500 text-xs font-semibold h-4 mt-1">
+                <p
+                  aria-live="polite"
+                  className={`text-red-500 text-xs font-semibold h-4 mt-1 transition-all duration-200 ${
+                    errors.name ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'
+                  }`}
+                >
                   {errors.name?.message ?? '\u00A0'}
                 </p>
               </div>
@@ -122,7 +140,12 @@ const ClientInfoForm = () => {
                                                         origin-left peer-focus-within:w-full z-10`}
                   ></span>
                 </div>
-                <p aria-live="polite" className="text-red-500 text-xs font-semibold h-4 mt-1">
+                <p
+                  aria-live="polite"
+                  className={`text-red-500 text-xs font-semibold h-4 mt-1 transition-all duration-200 ${
+                    errors.surname ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'
+                  }`}
+                >
                   {errors.surname?.message ?? '\u00A0'}
                 </p>
               </div>
@@ -130,12 +153,44 @@ const ClientInfoForm = () => {
             <div className="flex flex-col gap-12  w-[50%]">
               <div>
                 <div className="relative">
-                  <input
-                    type="text"
-                    id="number"
-                    placeholder=" "
-                    className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
-                    {...register('number')}
+                  <Controller
+                    name="number"
+                    control={control}
+                    render={({ field }) => (
+                      <IMaskInput
+                        mask="+{38} (000) 000 00 00"
+                        lazy={!isPhoneFocused}
+                        placeholderChar="_"
+                        value={field.value ?? ''}
+                        onAccept={(value: string) => field.onChange(value)}
+                        onComplete={() => {
+                          clearErrors('number');
+                        }}
+                        onFocus={() => setIsPhoneFocused(true)}
+                        onBlur={e => {
+                          const raw = (e.target as HTMLInputElement).value || '';
+                          const digits = raw.replace(/\D/g, '');
+                          const rest = digits.startsWith('38') ? digits.slice(2) : digits;
+                          if (rest.length === 0) {
+                            field.onChange('');
+                            clearErrors('number');
+                          } else if (rest.length < 10) {
+                            setError('number', {
+                              type: 'manual',
+                              message: 'Неправильний формат телефону',
+                            });
+                          } else {
+                            clearErrors('number');
+                          }
+                          setIsPhoneFocused(false);
+                          field.onBlur();
+                        }}
+                        inputMode="tel"
+                        id="number"
+                        placeholder=" "
+                        className="peer w-full border-0 border-b border-[#ebebeb] p-0 focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none"
+                      />
+                    )}
                   />
                   <label
                     htmlFor="number"
@@ -156,7 +211,12 @@ const ClientInfoForm = () => {
                                                         origin-left peer-focus-within:w-full z-10`}
                   ></span>
                 </div>
-                <p aria-live="polite" className="text-red-500 text-xs font-semibold h-4 mt-1">
+                <p
+                  aria-live="polite"
+                  className={`text-red-500 text-xs font-semibold h-4 mt-1 transition-all duration-200 ${
+                    errors.number ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'
+                  }`}
+                >
                   {errors.number?.message ?? '\u00A0'}
                 </p>
               </div>
@@ -188,7 +248,12 @@ const ClientInfoForm = () => {
                                                         origin-left peer-focus-within:w-full z-10`}
                   ></span>
                 </div>
-                <p aria-live="polite" className="text-red-500 text-xs font-semibold h-4 mt-1">
+                <p
+                  aria-live="polite"
+                  className={`text-red-500 text-xs font-semibold h-4 mt-1 transition-all duration-200 ${
+                    errors.email ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'
+                  }`}
+                >
                   {errors.email?.message ?? '\u00A0'}
                 </p>
               </div>

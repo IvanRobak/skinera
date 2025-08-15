@@ -21,10 +21,22 @@ export const SignInSchema = z.object({
 }).required()
 
 export const ClientInfoFormSchema = z.object({
-  name: z.string().min(3, { message: `Поле ім'я є обов'язковим` }),
-  surname: z.string().min(3, { message: `Поле прізвище є обов'язковим` }),
-  number: z.string().min(3, { message: `Поле номер телефону є обов'язковим` }),
-  email: z.string().min(1, { message: `Поле електронна адреса є обов'язковим` }).email('Введіть коректну електронну адресу'),
+    name: z.string().min(3, { message: 'Щонайменше 3 символи' }),
+    surname: z.string().min(3, { message: 'Щонайменше 3 символи' }),
+    number: z
+        .string()
+        .superRefine((val, ctx) => {
+            const digitsOnly = val.replace(/\D/g, '');
+            const localPart = digitsOnly.startsWith('38') ? digitsOnly.slice(2) : digitsOnly;
+            if (localPart.length === 0) {
+                ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Поле номер телефону є обов'язковим` });
+                return;
+            }
+            if (localPart.length !== 10) {
+                ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Неправильний формат телефону' });
+            }
+        }),
+    email: z.string().min(1, { message: `Поле електронна адреса є обов'язковим` }).email('Введіть коректну електронну адресу'),
 }).required();
 
 export type ClientInfoFormFields = z.infer<typeof ClientInfoFormSchema>
