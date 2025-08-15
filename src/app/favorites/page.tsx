@@ -6,9 +6,11 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFavorites } from '@/hooks/useFavorites';
+import { useSession } from 'next-auth/react';
 
 export default function FavoritesPage() {
   const { favorites, hasHydrated } = useFavorites();
+  const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
 
   const clearAllFavorites = async () => {
@@ -52,7 +54,42 @@ export default function FavoritesPage() {
           </motion.p>
         </div>
 
-        {favorites.length === 0 ? (
+        {!session ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-center py-16"
+          >
+            <div className="inline-flex items-center justify-center w-24 h-24 bg-gray-100 rounded-full mb-6">
+              <Image
+                src="/heart-filled.svg"
+                alt="heart"
+                width={48}
+                height={48}
+                className="opacity-50"
+              />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Для перегляду улюблених товарів потрібна авторизація
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Увійдіть в акаунт, щоб зберігати та переглядати улюблені товари
+            </p>
+            <Link
+              href="/auth/signin"
+              className="inline-flex items-center px-6 py-3 bg-brand-500 text-white font-medium rounded-full hover:bg-brand-600 transition-colors duration-200 mr-4"
+            >
+              Увійти в акаунт
+            </Link>
+            <Link
+              href="/products"
+              className="inline-flex items-center px-6 py-3 bg-gray-200 text-gray-800 font-medium rounded-full hover:bg-gray-300 transition-colors duration-200"
+            >
+              Перейти до товарів
+            </Link>
+          </motion.div>
+        ) : favorites.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -93,15 +130,17 @@ export default function FavoritesPage() {
               >
                 Знайдено {favorites.length} товар{getPluralForm(favorites.length)}
               </motion.p>
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                onClick={clearAllFavorites}
-                className="px-4 py-2 text-red-600 hover:text-red-700 font-medium transition-colors duration-200"
-              >
-                Очистити всі
-              </motion.button>
+              {session && (
+                <motion.button
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  onClick={clearAllFavorites}
+                  className="px-4 py-2 text-red-600 hover:text-red-700 font-medium transition-colors duration-200"
+                >
+                  Очистити всі
+                </motion.button>
+              )}
             </div>
 
             {/* Сітка товарів */}

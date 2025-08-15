@@ -38,11 +38,12 @@ export default function FavoriteButton({
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Don't render until the store has hydrated to prevent hydration mismatch
-  if (!hasHydrated) {
+  // But always show on hover for better UX
+  if (!hasHydrated && !isHovered) {
     return null;
   }
 
-  const favorite = isFavorite(product.id);
+  const favorite = hasHydrated ? isFavorite(product.id) : false;
 
   const sizeClasses = {
     sm: 'w-8 h-8',
@@ -65,18 +66,26 @@ export default function FavoriteButton({
       return;
     }
 
-    if (favorite) {
-      await removeFromFavorites(product.id);
-      toast.success('Товар видалено з улюблених', {
+    try {
+      if (favorite) {
+        await removeFromFavorites(product.id);
+        toast.success('Товар видалено з улюблених', {
+          position: 'top-right',
+          autoClose: 1000,
+        });
+      } else {
+        await addToFavorites(product);
+        toast.success('Товар додано до улюблених!', {
+          position: 'top-right',
+          autoClose: 1000,
+        });
+      }
+    } catch (error) {
+      toast.error('Помилка при роботі з улюбленими товарами', {
         position: 'top-right',
-        autoClose: 1000,
+        autoClose: 2000,
       });
-    } else {
-      await addToFavorites(product);
-      toast.success('Товар додано до улюблених!', {
-        position: 'top-right',
-        autoClose: 1000,
-      });
+      console.error('Favorites error:', error);
     }
   };
 
@@ -90,7 +99,8 @@ export default function FavoriteButton({
   };
 
   // Показуємо кнопку тільки якщо товар у улюблених або при ховері
-  const shouldShow = favorite || isHovered;
+  // Для неавторизованих користувачів - показуємо тільки при ховері
+  const shouldShow = session ? favorite || isHovered : isHovered;
 
   return (
     <>

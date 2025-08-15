@@ -25,6 +25,7 @@ interface FavoritesStore {
   getFavoritesCount: () => number;
   hasHydrated: boolean;
   setHasHydrated: (state: boolean) => void;
+  clearOnLogout: () => void;
 }
 
 export const useFavoritesStore = create<FavoritesStore>()(
@@ -56,6 +57,7 @@ export const useFavoritesStore = create<FavoritesStore>()(
         },
         clearFavorites: () => set({ favorites: [] }),
         getFavoritesCount: () => get().favorites.length,
+        clearOnLogout: () => set({ favorites: [] }),
       }),
       {
         name: 'favorites-storage',

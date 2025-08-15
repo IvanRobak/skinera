@@ -36,7 +36,7 @@ export function useFavorites() {
     addToFavorites: addToLocalFavorites,
     removeFromFavorites: removeFromLocalFavorites,
     isFavorite: isLocalFavorite,
-
+    clearOnLogout,
     hasHydrated,
   } = useFavoritesStore();
 
@@ -144,8 +144,8 @@ export function useFavorites() {
       await addToServerFavorites(product);
       addToLocalFavorites(product);
     } else {
-      // Для неавторизованих - тільки локально
-      addToLocalFavorites(product);
+      // Для неавторизованих користувачів - не дозволяємо додавати
+      throw new Error('Потрібна авторизація для додавання в улюблені');
     }
   };
 
@@ -156,8 +156,8 @@ export function useFavorites() {
       await removeFromServerFavorites(productId);
       removeFromLocalFavorites(productId);
     } else {
-      // Для неавторизованих - тільки локально
-      removeFromLocalFavorites(productId);
+      // Для неавторизованих користувачів - не дозволяємо видаляти
+      throw new Error('Потрібна авторизація для роботи з улюбленими');
     }
   };
 
@@ -166,7 +166,8 @@ export function useFavorites() {
     if (session?.user?.email) {
       return serverFavorites.some(p => p.id === productId) || isLocalFavorite(productId);
     }
-    return isLocalFavorite(productId);
+    // Для неавторизованих користувачів - завжди false
+    return false;
   };
 
   // Отримати всі улюблені товари
@@ -181,7 +182,8 @@ export function useFavorites() {
       });
       return combined;
     }
-    return localFavorites;
+    // Для неавторизованих користувачів - порожній масив
+    return [];
   };
 
   // Отримати кількість улюблених товарів
@@ -216,8 +218,10 @@ export function useFavorites() {
       globalSyncState.isCurrentlySyncing = false;
       setHasSynced(false);
       setServerFavorites([]);
+      // Очищаємо localStorage при виході
+      clearOnLogout();
     }
-  }, [session?.user?.email]);
+  }, [session?.user?.email, clearOnLogout]);
 
   return {
     favorites: getAllFavorites(),
