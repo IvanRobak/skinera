@@ -35,6 +35,75 @@ export default function AuthModal({
     confirmPassword: '',
   });
 
+  // Validation errors
+  const [validationErrors, setValidationErrors] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  // Validation functions
+  const validateField = (field: string, value: string) => {
+    let error = '';
+
+    switch (field) {
+      case 'name':
+        if (!value.trim()) {
+          error = 'Імʼя обовʼязкове';
+        } else if (value.trim().length < 2) {
+          error = 'Імʼя має містити мінімум 2 символи';
+        }
+        break;
+
+      case 'email':
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value) {
+          error = 'Email обовʼязковий';
+        } else if (!emailRegex.test(value)) {
+          error = 'Введіть коректний email';
+        }
+        break;
+
+      case 'password':
+        if (!value) {
+          error = 'Пароль обовʼязковий';
+        } else if (value.length < 6) {
+          error = 'Пароль має містити мінімум 6 символів';
+        }
+        break;
+
+      case 'confirmPassword':
+        if (!value) {
+          error = 'Підтвердження пароля обовʼязкове';
+        } else if (value !== registerData.password) {
+          error = 'Паролі не співпадають';
+        }
+        break;
+    }
+
+    setValidationErrors(prev => ({
+      ...prev,
+      [field]: error,
+    }));
+
+    return error === '';
+  };
+
+  const validateAllFields = () => {
+    const fields = ['name', 'email', 'password', 'confirmPassword'];
+    let isValid = true;
+
+    fields.forEach(field => {
+      const value = registerData[field as keyof typeof registerData];
+      if (!validateField(field, value)) {
+        isValid = false;
+      }
+    });
+
+    return isValid;
+  };
+
   // Handle Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -55,6 +124,7 @@ export default function AuthModal({
       setActiveTab(defaultTab);
       setSigninData({ email: '', password: '' });
       setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+      setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
     }
   }, [isOpen, defaultTab]);
 
@@ -63,6 +133,7 @@ export default function AuthModal({
     if (!isOpen) {
       setSigninData({ email: '', password: '' });
       setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+      setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
     }
   }, [isOpen]);
 
@@ -97,8 +168,8 @@ export default function AuthModal({
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (registerData.password !== registerData.confirmPassword) {
-      toast.error('Паролі не співпадають');
+    // Validate all fields before submission
+    if (!validateAllFields()) {
       return;
     }
 
@@ -138,7 +209,8 @@ export default function AuthModal({
         }
       } else {
         const error = await response.json();
-        toast.error(error.message || 'Помилка реєстрації');
+        // Show specific error message from API
+        toast.error(error.error || error.message || 'Помилка реєстрації');
       }
     } catch {
       toast.error('Помилка реєстрації');
@@ -199,6 +271,7 @@ export default function AuthModal({
                 setActiveTab('signin');
                 setSigninData({ email: '', password: '' });
                 setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+                setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
               }}
               className={`flex-1 py-3 px-4 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === 'signin'
@@ -213,6 +286,7 @@ export default function AuthModal({
                 setActiveTab('register');
                 setSigninData({ email: '', password: '' });
                 setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+                setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
               }}
               className={`flex-1 py-3 px-4 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === 'register'
@@ -286,10 +360,24 @@ export default function AuthModal({
                     type="text"
                     required
                     value={registerData.name}
-                    onChange={e => setRegisterData(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    onChange={e => {
+                      const value = e.target.value;
+                      setRegisterData(prev => ({ ...prev, name: value }));
+                      if (validationErrors.name) {
+                        validateField('name', value);
+                      }
+                    }}
+                    onBlur={e => validateField('name', e.target.value)}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent ${
+                      validationErrors.name
+                        ? 'border-red-300 focus:ring-red-500'
+                        : 'border-gray-300'
+                    }`}
                     autoComplete="name"
                   />
+                  {validationErrors.name && (
+                    <p className="text-red-500 text-xs mt-1">{validationErrors.name}</p>
+                  )}
                 </div>
 
                 <div>
@@ -304,10 +392,24 @@ export default function AuthModal({
                     type="email"
                     required
                     value={registerData.email}
-                    onChange={e => setRegisterData(prev => ({ ...prev, email: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    onChange={e => {
+                      const value = e.target.value;
+                      setRegisterData(prev => ({ ...prev, email: value }));
+                      if (validationErrors.email) {
+                        validateField('email', value);
+                      }
+                    }}
+                    onBlur={e => validateField('email', e.target.value)}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent ${
+                      validationErrors.email
+                        ? 'border-red-300 focus:ring-red-500'
+                        : 'border-gray-300'
+                    }`}
                     autoComplete="email"
                   />
+                  {validationErrors.email && (
+                    <p className="text-red-500 text-xs mt-1">{validationErrors.email}</p>
+                  )}
                 </div>
 
                 <div>
@@ -322,10 +424,28 @@ export default function AuthModal({
                     type="password"
                     required
                     value={registerData.password}
-                    onChange={e => setRegisterData(prev => ({ ...prev, password: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    onChange={e => {
+                      const value = e.target.value;
+                      setRegisterData(prev => ({ ...prev, password: value }));
+                      if (validationErrors.password) {
+                        validateField('password', value);
+                      }
+                      // Also revalidate confirm password if it has content
+                      if (registerData.confirmPassword && validationErrors.confirmPassword) {
+                        validateField('confirmPassword', registerData.confirmPassword);
+                      }
+                    }}
+                    onBlur={e => validateField('password', e.target.value)}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent ${
+                      validationErrors.password
+                        ? 'border-red-300 focus:ring-red-500'
+                        : 'border-gray-300'
+                    }`}
                     autoComplete="new-password"
                   />
+                  {validationErrors.password && (
+                    <p className="text-red-500 text-xs mt-1">{validationErrors.password}</p>
+                  )}
                 </div>
 
                 <div>
@@ -340,12 +460,24 @@ export default function AuthModal({
                     type="password"
                     required
                     value={registerData.confirmPassword}
-                    onChange={e =>
-                      setRegisterData(prev => ({ ...prev, confirmPassword: e.target.value }))
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    onChange={e => {
+                      const value = e.target.value;
+                      setRegisterData(prev => ({ ...prev, confirmPassword: value }));
+                      if (validationErrors.confirmPassword) {
+                        validateField('confirmPassword', value);
+                      }
+                    }}
+                    onBlur={e => validateField('confirmPassword', e.target.value)}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent ${
+                      validationErrors.confirmPassword
+                        ? 'border-red-300 focus:ring-red-500'
+                        : 'border-gray-300'
+                    }`}
                     autoComplete="new-password"
                   />
+                  {validationErrors.confirmPassword && (
+                    <p className="text-red-500 text-xs mt-1">{validationErrors.confirmPassword}</p>
+                  )}
                 </div>
 
                 <button
