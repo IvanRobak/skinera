@@ -301,7 +301,7 @@ export default function AuthModal({
           {/* Content */}
           <div className="p-6">
             {activeTab === 'signin' ? (
-              <form key="signin-form" onSubmit={handleSignIn} className="space-y-4">
+              <form key="signin-form" onSubmit={handleSignIn} className="space-y-4 text-justify">
                 <div>
                   <label
                     htmlFor="signin-email"
@@ -347,7 +347,11 @@ export default function AuthModal({
                 </button>
               </form>
             ) : (
-              <form key="register-form" onSubmit={handleRegister} className="space-y-4">
+              <form
+                key="register-form"
+                onSubmit={handleRegister}
+                className="space-y-4 text-justify"
+              >
                 <div>
                   <label
                     htmlFor="register-name"

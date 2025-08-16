@@ -5,6 +5,7 @@ import ProductCard from '@/components/products/ProductCard';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import AuthModal from '@/components/auth/AuthModal';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useSession } from 'next-auth/react';
 
@@ -12,6 +13,7 @@ export default function FavoritesPage() {
   const { favorites, hasHydrated, clearAllFavorites } = useFavorites();
   const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -70,18 +72,24 @@ export default function FavoritesPage() {
             <p className="text-gray-600 mb-6">
               Увійдіть в акаунт, щоб зберігати та переглядати улюблені товари
             </p>
-            <Link
-              href="/auth/signin"
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
               className="inline-flex items-center px-6 py-3 bg-brand-500 text-white font-medium rounded-full hover:bg-brand-600 transition-colors duration-200 mr-4"
             >
               Увійти в акаунт
-            </Link>
+            </button>
             <Link
               href="/products"
               className="inline-flex items-center px-6 py-3 bg-gray-200 text-gray-800 font-medium rounded-full hover:bg-gray-300 transition-colors duration-200"
             >
               Перейти до товарів
             </Link>
+            <AuthModal
+              isOpen={isAuthModalOpen}
+              onClose={() => setIsAuthModalOpen(false)}
+              defaultTab="signin"
+              onSuccess={() => setIsAuthModalOpen(false)}
+            />
           </motion.div>
         ) : favorites.length === 0 ? (
           <motion.div
