@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { signIn } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -21,6 +21,7 @@ export default function AuthModal({
 }: AuthModalProps) {
   const [activeTab, setActiveTab] = useState<'signin' | 'register'>(defaultTab);
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   // Form states
   const [signinData, setSigninData] = useState({
@@ -104,11 +105,43 @@ export default function AuthModal({
     return isValid;
   };
 
+  // Check if there's any data entered in forms
+  const hasFormData = useCallback(() => {
+    if (activeTab === 'signin') {
+      return signinData.email.trim() !== '' || signinData.password.trim() !== '';
+    } else {
+      return (
+        registerData.name.trim() !== '' ||
+        registerData.email.trim() !== '' ||
+        registerData.password.trim() !== '' ||
+        registerData.confirmPassword.trim() !== ''
+      );
+    }
+  }, [activeTab, signinData, registerData]);
+
+  // Handle modal close with confirmation if needed
+  const handleClose = useCallback(() => {
+    if (hasFormData()) {
+      setShowConfirmDialog(true);
+    } else {
+      onClose();
+    }
+  }, [hasFormData, onClose]);
+
+  const confirmClose = () => {
+    setShowConfirmDialog(false);
+    onClose();
+  };
+
+  const cancelClose = () => {
+    setShowConfirmDialog(false);
+  };
+
   // Handle Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        handleClose();
       }
     };
 
@@ -116,7 +149,7 @@ export default function AuthModal({
       document.addEventListener('keydown', handleEscape);
       return () => document.removeEventListener('keydown', handleEscape);
     }
-  }, [isOpen, onClose]);
+  }, [isOpen, handleClose]);
 
   // Reset form data when modal opens
   useEffect(() => {
@@ -232,7 +265,7 @@ export default function AuthModal({
           className="absolute inset-0 bg-black/50 backdrop-blur-sm"
           onClick={e => {
             e.stopPropagation();
-            onClose();
+            handleClose();
           }}
         />
 
@@ -246,7 +279,7 @@ export default function AuthModal({
         >
           {/* Close Button */}
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors"
           >
             <XMarkIcon className="w-6 h-6" />
@@ -268,10 +301,24 @@ export default function AuthModal({
           <div className="flex border-b border-gray-200 mx-6 mt-6">
             <button
               onClick={() => {
-                setActiveTab('signin');
-                setSigninData({ email: '', password: '' });
-                setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
-                setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
+                if (hasFormData()) {
+                  // If switching tabs with data, ask for confirmation
+                  if (
+                    confirm(
+                      'Ви ввели деякі дані. Переключення на іншу вкладку очистить форму. Продовжити?'
+                    )
+                  ) {
+                    setActiveTab('signin');
+                    setSigninData({ email: '', password: '' });
+                    setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+                    setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
+                  }
+                } else {
+                  setActiveTab('signin');
+                  setSigninData({ email: '', password: '' });
+                  setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+                  setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
+                }
               }}
               className={`flex-1 py-3 px-4 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === 'signin'
@@ -283,10 +330,24 @@ export default function AuthModal({
             </button>
             <button
               onClick={() => {
-                setActiveTab('register');
-                setSigninData({ email: '', password: '' });
-                setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
-                setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
+                if (hasFormData()) {
+                  // If switching tabs with data, ask for confirmation
+                  if (
+                    confirm(
+                      'Ви ввели деякі дані. Переключення на іншу вкладку очистить форму. Продовжити?'
+                    )
+                  ) {
+                    setActiveTab('register');
+                    setSigninData({ email: '', password: '' });
+                    setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+                    setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
+                  }
+                } else {
+                  setActiveTab('register');
+                  setSigninData({ email: '', password: '' });
+                  setRegisterData({ name: '', email: '', password: '', confirmPassword: '' });
+                  setValidationErrors({ name: '', email: '', password: '', confirmPassword: '' });
+                }
               }}
               className={`flex-1 py-3 px-4 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === 'register'
@@ -495,6 +556,44 @@ export default function AuthModal({
             )}
           </div>
         </motion.div>
+
+        {/* Confirmation Dialog */}
+        {showConfirmDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm z-10 flex items-center justify-center p-4"
+            onClick={cancelClose}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm mx-auto"
+              onClick={e => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Закрити вікно?</h3>
+              <p className="text-gray-600 mb-6 text-sm">
+                Ви ввели деякі дані. Якщо закриєте вікно, всі введені дані буде втрачено.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={cancelClose}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                >
+                  Продовжити
+                </button>
+                <button
+                  onClick={confirmClose}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                >
+                  Закрити
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </div>
     </AnimatePresence>
   );
