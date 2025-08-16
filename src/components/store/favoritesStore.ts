@@ -18,6 +18,7 @@ export interface FavoriteItem {
 
 interface FavoritesStore {
   favorites: FavoriteItem[];
+  setFavorites: (favorites: FavoriteItem[]) => void;
   addToFavorites: (product: FavoriteItem) => void;
   removeFromFavorites: (productId: number) => void;
   isFavorite: (productId: number) => boolean;
@@ -25,6 +26,7 @@ interface FavoritesStore {
   getFavoritesCount: () => number;
   hasHydrated: boolean;
   setHasHydrated: (state: boolean) => void;
+  clearOnLogout: () => void;
 }
 
 export const useFavoritesStore = create<FavoritesStore>()(
@@ -38,6 +40,10 @@ export const useFavoritesStore = create<FavoritesStore>()(
             hasHydrated: state,
           });
         },
+        setFavorites: (favorites: FavoriteItem[]) =>
+          set(() => ({
+            favorites,
+          })),
         addToFavorites: (product: FavoriteItem) =>
           set(state => {
             const existingProduct = state.favorites.find(item => item.id === product.id);
@@ -56,6 +62,7 @@ export const useFavoritesStore = create<FavoritesStore>()(
         },
         clearFavorites: () => set({ favorites: [] }),
         getFavoritesCount: () => get().favorites.length,
+        clearOnLogout: () => set({ favorites: [] }),
       }),
       {
         name: 'favorites-storage',

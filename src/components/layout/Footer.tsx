@@ -50,7 +50,7 @@ const Footer = () => {
             <div className="flex flex-col gap-4 w-1/2">
               <h3 className="font-semibold text-gray-800 mb-4">Контакти</h3>
               <ul className="space-y-2">
-                <li className="text-gray-600">м. Львів, пр. Червоної калини, 36в</li>
+                <li className="text-gray-600">м.Львів, пр.Червоної калини, 36в</li>
                 <li>
                   <a
                     href="tel:+380965180956"
