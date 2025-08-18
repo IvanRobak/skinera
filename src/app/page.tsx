@@ -1,6 +1,6 @@
 'use client';
 
-import AdvantagesSection from '@/components/sections/AdvantagesSection';
+// import AdvantagesSection from '@/components/sections/AdvantagesSection';
 import ServiceGallerySection from '@/components/sections/ServiceGallerySection';
 import './global.css';
 import dynamic from 'next/dynamic';
@@ -10,6 +10,10 @@ import { toast } from 'react-toastify';
 
 const HeroSectionPrimary = dynamic(() => import('@/components/sections/HeroSectionPrimary'), {
   loading: () => <div className="w-full h-screen bg-gray-100 animate-pulse" />,
+});
+
+const FeaturedSection = dynamic(() => import('@/components/sections/FeaturedSection'), {
+  loading: () => <div className="w-full h-[500px] bg-gray-100 animate-pulse" />,
 });
 
 const AboutSection = dynamic(() => import('@/components/sections/AboutSection'), {
@@ -81,9 +85,10 @@ export default function Home() {
         <LoginSuccessToast />
       </Suspense>
       <HeroSectionPrimary />
-      <AboutSection />
+      <FeaturedSection />
       <ServicesSection />
-      <AdvantagesSection />
+      {/* <AdvantagesSection /> */}
+      <AboutSection />
       <ReviewsSection />
       {/* Photo Gallery Section */}
       <ServiceGallerySection images={mainPageGallery} />
