@@ -46,6 +46,17 @@ export interface Product {
 }
 
 export async function getAllProducts(): Promise<Product[]> {
+  // Skip Firebase operations during build time
+  if (process.env.VERCEL_BUILD) {
+    console.log('🚫 Skipping getAllProducts during Vercel build');
+    return [];
+  }
+
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return [];
+  }
+
   try {
     const productsCollection = collection(db, 'products');
     const snapshot = await getDocs(productsCollection);
@@ -74,6 +85,17 @@ export async function getAllProducts(): Promise<Product[]> {
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
+  // Skip Firebase operations during build time
+  if (process.env.VERCEL_BUILD) {
+    console.log('🚫 Skipping getProductById during Vercel build');
+    return null;
+  }
+
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return null;
+  }
+
   try {
     // Try to get by document ID first (string ID)
     const docRef = doc(db, 'products', id);
@@ -115,6 +137,17 @@ export async function getRelatedProducts(
   category: string,
   limit: number = 4
 ): Promise<Product[]> {
+  // Skip Firebase operations during build time
+  if (process.env.VERCEL_BUILD) {
+    console.log('🚫 Skipping getRelatedProducts during Vercel build');
+    return [];
+  }
+
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return [];
+  }
+
   try {
     const productsCollection = collection(db, 'products');
 
@@ -197,6 +230,17 @@ export async function getProductsWithFilters(options: {
   page?: number;
   limit?: number;
 }): Promise<{ products: Product[]; total: number }> {
+  // Skip Firebase operations during build time
+  if (process.env.VERCEL_BUILD) {
+    console.log('🚫 Skipping getProductsWithFilters during Vercel build');
+    return { products: [], total: 0 };
+  }
+
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return { products: [], total: 0 };
+  }
+
   try {
     const {
       search,
