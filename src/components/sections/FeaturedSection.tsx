@@ -1,8 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import ModalButton from '../common/ModalButton';
-import ContactForm from '../forms/ContactForm';
 
 const FeaturedSection = () => {
   return (
@@ -172,11 +170,18 @@ const FeaturedSection = () => {
               viewport={{ once: true, margin: '-100px' }}
               className="pt-4"
             >
-              <ModalButton
-                buttonText="Записатися на консультацію"
-                modalContent={<ContactForm />}
-                className="bg-brand-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-base md:text-lg font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-              />
+              <button
+                onClick={() => {
+                  // Прокручуємо до секції з послугами
+                  const servicesSection = document.querySelector('[data-section="services"]');
+                  if (servicesSection) {
+                    servicesSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="bg-white text-brand-600 border-2 border-brand-600 px-6 md:px-8 py-3 md:py-4 rounded-full text-base md:text-lg font-semibold hover:bg-brand-600 hover:text-white transition duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Переглянути послуги
+              </button>
             </motion.div>
           </motion.div>
         </div>

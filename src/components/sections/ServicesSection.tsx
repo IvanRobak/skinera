@@ -5,6 +5,7 @@ import WavyBottomBorder from '../common/WavyBottomBorder';
 const ServicesSection = () => {
   return (
     <section
+      data-section="services"
       className="relative w-screen left-1/2 -translate-x-1/2 pt-16 pb-24"
       style={{
         backgroundColor: '#EAD2D7',
