@@ -35,6 +35,12 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        // Skip Firebase operations during build time
+        if (process.env.VERCEL_BUILD) {
+          console.log('🚫 Skipping authentication during Vercel build');
+          return null;
+        }
+
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Missing credentials');
         }

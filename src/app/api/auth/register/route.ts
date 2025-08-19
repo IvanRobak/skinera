@@ -1,88 +1,53 @@
-import { NextResponse } from 'next/server';
-import { hash } from 'bcryptjs';
+import { NextRequest, NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
+import { z } from 'zod';
 
-export async function POST(req: Request) {
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+  name: z.string().min(2),
+  phone: z.string().optional(),
+});
+
+export async function POST(request: NextRequest) {
+  // Skip Firebase operations during build time
+  if (process.env.VERCEL_BUILD) {
+    return NextResponse.json({ error: 'Service temporarily unavailable' }, { status: 503 });
+  }
+
+  if (!adminDb) {
+    return NextResponse.json({ error: 'Database not initialized' }, { status: 503 });
+  }
+
   try {
-    console.log('🚀 Starting user registration...');
+    const body = await request.json();
+    const { email, name, phone } = registerSchema.parse(body);
 
-    const { surname, email, password, name } = await req.json();
-    console.log('📝 Registration data received:', {
+    // Check if user already exists
+    const userRef = adminDb.collection('users').doc(email);
+    const userDoc = await userRef.get();
+
+    if (userDoc.exists) {
+      return NextResponse.json({ error: 'User with this email already exists' }, { status: 400 });
+    }
+
+    // Create user document
+    await userRef.set({
       email,
       name,
-      surname: surname || 'Not provided',
-      hasPassword: !!password,
+      phone: phone || '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
-    // Validate input
-    if (!email || !password || !name) {
-      console.log('❌ Missing required fields');
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
+    return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
+  } catch (error) {
+    console.error('Registration error:', error);
 
-    // Validate password length
-    if (password.length < 6) {
-      console.log('❌ Password too weak');
+    if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Пароль занадто слабкий. Мінімум 6 символів' },
+        { error: 'Validation error', details: error.errors },
         { status: 400 }
-      );
-    }
-
-    console.log('🔍 Checking if user already exists...');
-
-    // Check if user already exists in Firestore
-    const usersRef = adminDb.collection('users');
-    const existingUser = await usersRef.where('email', '==', email).get();
-
-    if (!existingUser.empty) {
-      console.log('❌ User already exists:', email);
-      return NextResponse.json(
-        { error: 'Користувач з таким email вже існує вибіріть інший електронний адрес' },
-        { status: 400 }
-      );
-    }
-
-    console.log('🔐 Hashing password...');
-
-    // Hash password
-    const hashedPassword = await hash(password, 12);
-
-    // Store user data in Firestore using email as document ID
-    const userData = {
-      surname: surname || null,
-      email,
-      password: hashedPassword,
-      name,
-      createdAt: new Date(),
-    };
-
-    console.log('💾 Saving user to Firestore...');
-    await usersRef.doc(email).set(userData);
-
-    console.log('✅ User registered successfully:', email);
-
-    return NextResponse.json(
-      {
-        message: 'User created successfully',
-        userId: email,
-      },
-      { status: 201 }
-    );
-  } catch (error: unknown) {
-    console.error('💥 Registration error:', error);
-
-    // Check if it's a Firebase error
-    if (
-      error &&
-      typeof error === 'object' &&
-      'code' in error &&
-      error.code === 'permission-denied'
-    ) {
-      console.error('❌ Firebase permission denied');
-      return NextResponse.json(
-        { error: 'Database permission denied. Please check Firebase rules.' },
-        { status: 500 }
       );
     }
 

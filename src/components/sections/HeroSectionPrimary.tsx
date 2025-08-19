@@ -93,27 +93,27 @@ const HeroSectionPrimary = () => {
                 <div className="absolute inset-0 z-5 pointer-events-none bg-black/35" />
 
                 {isActive && (
-                  <div className="min-[1770px]:m-auto min-[1770px]:mt-52 min-[1770px]:max-w-4xl  min-[1440px]:ml-52 xl:max-w-4xl mx-auto  xl:mt-56 xl:ml-52 lg:max-w-3xl lg:mt-32 lg:ml-16 md:mt-32  sm:mt-32 mt-24 relative z-11">
-                    <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6 }}
-                      className="text-white px-4 flex flex-col gap-9"
-                    >
-                      <h1 className="text-2xl text-center min-[1770px]:text-center min-[1770px]:text-7xl  xl:text-6xl xl:text-left lg:text-5xl lg:text-left md:text-4xl md:text-center sm:text-3xl font-black leading-tight">
-                        {item.title}
-                      </h1>
-                      <div className="flex justify-center lg:justify-start xl:justify-start min-[1770px]:justify-center">
-                        <ModalButton
-                          buttonText="Записатись на прийом"
-                          modalContent={<ContactForm />}
-                          className="bg-brand-600 text-white px-4    sm:px-5 lg:px-8 py-2 sm:py-2.5  lg:py-4  rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
-                        />
-                      </div>
-                    </motion.div>
+                  <div className="absolute inset-0 flex items-center z-11">
+                    <div className="w-full max-w-6xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+                      <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-white flex flex-col gap-4 sm:gap-6 md:gap-8 lg:gap-9"
+                      >
+                        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl min-[1770px]:text-6xl font-black leading-tight">
+                          {item.title}
+                        </h1>
+                        <div className="flex justify-center min-[360px]:justify-start">
+                          <ModalButton
+                            buttonText="Записатись на прийом"
+                            modalContent={<ContactForm />}
+                            className="bg-brand-600 text-white px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 xl:px-8 xl:py-4 rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-semibold hover:bg-brand-700 transition duration-300 shadow-lg hover:shadow-xl"
+                          />
+                        </div>
+                      </motion.div>
+                    </div>
                   </div>
-                  // <div className='relative z-11'>
-                  // </div>
                 )}
               </div>
             );
@@ -121,53 +121,57 @@ const HeroSectionPrimary = () => {
         </div>
 
         {/* Кнопки навігації слайдера */}
-        <motion.button
-          initial={{ opacity: 0, x: 50 }}
-          animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
-          transition={{ duration: 0.2, ease: 'linear' }}
-          onClick={onSetPreviousSlide}
-          className="absolute top-1/2 left-6 z-30 -translate-y-1/2 w-16 h-16 flex items-center justify-center rounded-full bg-gray-300 hover:bg-pink-600 active:bg-pink-700 text-black shadow-xl transition-colors duration-300 ease-in-out"
-          aria-label="Попередній слайд"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-8 h-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </motion.button>
+        <div className="absolute bottom-2  sm:bottom-6 md:bottom-8 left-0 right-0 pointer-events-none z-20">
+          <div className="hidden min-[450px]:flex w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 h-full  items-center justify-between ">
+            <motion.button
+              initial={{ opacity: 0, x: 50 }}
+              animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'linear' }}
+              onClick={onSetPreviousSlide}
+              className="flex pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 items-center justify-center rounded-full bg-white hover:bg-pink-600 active:bg-pink-700 text-gray-800 hover:text-white shadow-xl transition-colors duration-300 ease-in-out"
+              aria-label="Попередній слайд"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-8 lg:h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </motion.button>
 
-        <motion.button
-          initial={{ opacity: 0, x: -50 }}
-          animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
-          transition={{ duration: 0.2, ease: 'linear' }}
-          onClick={onSetCurrentSlide}
-          className="absolute top-1/2 right-6 z-30 -translate-y-1/2 w-16 h-16 flex items-center justify-center rounded-full bg-gray-300 hover:bg-pink-600 active:bg-pink-700 text-black shadow-xl transition-colors duration-300 ease-in-out"
-          aria-label="Попередній слайд"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-8 h-8 rotate-180"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </motion.button>
+            <motion.button
+              initial={{ opacity: 0, x: -50 }}
+              animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'linear' }}
+              onClick={onSetCurrentSlide}
+              className="flex pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 items-center justify-center rounded-full bg-white hover:bg-pink-600 active:bg-pink-700 text-gray-800 hover:text-white shadow-xl transition-colors duration-300 ease-in-out"
+              aria-label="Наступний слайд"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 rotate-180"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </motion.button>
+          </div>
+        </div>
       </div>
     </section>
   );
