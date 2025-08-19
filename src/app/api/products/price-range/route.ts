@@ -9,7 +9,8 @@ export async function GET() {
   }
 
   if (!db) {
-    return NextResponse.json({ error: 'Database not initialized' }, { status: 503 });
+    console.warn('Firebase not initialized, returning default price range');
+    return NextResponse.json({ minPrice: 0, maxPrice: 1000 });
   }
 
   try {
@@ -19,13 +20,16 @@ export async function GET() {
     const prices = products.map(p => p.price).filter(price => typeof price === 'number');
 
     if (prices.length === 0) {
-      return NextResponse.json({ min: 0, max: 0 });
+      return NextResponse.json({ minPrice: 0, maxPrice: 1000 });
     }
 
     const min = Math.min(...prices);
     const max = Math.max(...prices);
 
-    return NextResponse.json({ min, max });
+    return NextResponse.json({
+      minPrice: Math.floor(min),
+      maxPrice: Math.ceil(max),
+    });
   } catch (error) {
     console.error('Error fetching price range from Firestore:', error);
     return NextResponse.json(

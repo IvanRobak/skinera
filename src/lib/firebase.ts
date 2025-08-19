@@ -29,26 +29,19 @@ if (process.env.VERCEL_BUILD) {
   // Initialize Firebase only if config is available
   let app: ReturnType<typeof initializeApp> | null = null;
 
-  if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
-    // Client-side only
+  // Check if we have the required environment variables
+  if (process.env.FIREBASE_API_KEY && process.env.FIREBASE_PROJECT_ID) {
     try {
       app = initializeApp(firebaseConfig);
       storage = getStorage(app);
       db = getFirestore(app);
       auth = getAuth(app);
+      console.log('✅ Firebase initialized successfully');
     } catch (error) {
       console.warn('Firebase client initialization failed:', error);
     }
-  } else if (process.env.NODE_ENV === 'production' && !process.env.VERCEL_BUILD) {
-    // Production runtime only (not during build)
-    try {
-      app = initializeApp(firebaseConfig);
-      storage = getStorage(app);
-      db = getFirestore(app);
-      auth = getAuth(app);
-    } catch (error) {
-      console.warn('Firebase client initialization failed:', error);
-    }
+  } else {
+    console.warn('⚠️ Firebase environment variables not found, skipping initialization');
   }
 }
 
