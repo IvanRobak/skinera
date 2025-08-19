@@ -9,7 +9,12 @@ export async function GET() {
   }
 
   if (!db) {
-    return NextResponse.json({ error: 'Database not initialized' }, { status: 503 });
+    console.warn('Firebase not initialized, returning empty filters');
+    return NextResponse.json({
+      brands: [],
+      categories: [],
+      countries: [],
+    });
   }
 
   try {
