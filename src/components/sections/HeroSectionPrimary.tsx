@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ModalButton from '../common/ModalButton';
 import ContactForm from '../forms/ContactForm';
 
@@ -54,15 +54,15 @@ const HeroSectionPrimary = () => {
     setCurrentSlide(currentIndex);
   };
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (!isHovered) {
-  //       onSetCurrentSlide();
-  //     }
-  //   }, 4500);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isHovered) {
+        onSetCurrentSlide();
+      }
+    }, 4500);
 
-  //   return () => clearInterval(interval);
-  // }, [currentSlide, isHovered, onSetCurrentSlide]);
+    return () => clearInterval(interval);
+  }, [currentSlide, isHovered, onSetCurrentSlide]);
 
   return (
     <section className="w-full mt-[64px]">
@@ -122,7 +122,7 @@ const HeroSectionPrimary = () => {
 
         {/* Кнопки навігації слайдера */}
         <div className="absolute bottom-2  sm:bottom-6 md:bottom-8 left-0 right-0 pointer-events-none z-20">
-          <div className="hidden min-[360px]:flex w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 h-full  items-center justify-between ">
+          <div className="hidden min-[450px]:flex w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 h-full  items-center justify-between ">
             <motion.button
               initial={{ opacity: 0, x: 50 }}
               animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
