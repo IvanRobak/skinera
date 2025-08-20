@@ -183,7 +183,7 @@ const ReviewsSection = () => {
         </div>
       </section>
       {/* Statistics Section */}
-      <section className="py-10 ">
+      <section className="py-10 px-4">
         <div className="max-w-6xl mx-auto px-4 lg:px-0 bg-white rounded-2xl py-10 mt-6 shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             {statistics.map(stat => (
