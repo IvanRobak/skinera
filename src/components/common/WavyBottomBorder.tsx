@@ -10,7 +10,7 @@ const WavyBottomBorder: React.FC<WavyBottomBorderProps> = ({
   return (
     <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
       <svg
-        className="relative block w-full h-20 overflow-hidden"
+        className="relative block w-full h-12 sm:h-14 md:h-20 overflow-hidden"
         data-name="Layer 1"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1200 120"
@@ -26,7 +26,7 @@ const WavyBottomBorder: React.FC<WavyBottomBorderProps> = ({
         />
       </svg>
       {/* Додаткове перекриття для приховування тонкої лінії */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-white"></div>
+      {/* <div className="absolute bottom-0 left-0 w-full h-1 bg-white"></div> */}
     </div>
   );
 };
