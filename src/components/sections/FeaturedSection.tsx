@@ -40,7 +40,7 @@ const FeaturedSection = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
               viewport={{ once: true, margin: '-100px' }}
-              className="absolute -top-0 -right-0 w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden shadow-lg"
+              className="hidden lg:block absolute -top-8 -right-8 w-28 h-28 md:w-40 md:h-40 rounded-xl overflow-hidden shadow-lg"
             >
               <Image
                 src="/images/laser-epilation-hair-removal-therapy-small.jpg"
