@@ -36,6 +36,8 @@ const PriceSlider = ({
       // Cleanup any remaining event listeners
       document.removeEventListener('mousemove', () => {});
       document.removeEventListener('mouseup', () => {});
+      document.removeEventListener('touchmove', () => {});
+      document.removeEventListener('touchend', () => {});
     };
   }, []);
 
@@ -62,17 +64,17 @@ const PriceSlider = ({
     [getRoundingStep]
   );
 
-  // Надійний обробник перетягування для мінімального повзунка
+  // Універсальний обробник перетягування для мінімального повзунка (підтримує mouse і touch)
   const createMinDragHandler = useCallback(() => {
     let isDragging = false;
     let startX = 0;
     let startValue = 0;
 
-    const handleMouseMove = (moveEvent: MouseEvent) => {
+    const handleMove = (clientX: number) => {
       if (!isDragging || !sliderContainerRef.current) return;
 
       try {
-        const deltaX = moveEvent.clientX - startX;
+        const deltaX = clientX - startX;
         const containerWidth = sliderContainerRef.current.getBoundingClientRect().width;
         if (containerWidth === 0) return;
 
@@ -89,6 +91,16 @@ const PriceSlider = ({
       }
     };
 
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      handleMove(moveEvent.clientX);
+    };
+
+    const handleTouchMove = (moveEvent: TouchEvent) => {
+      if (moveEvent.touches.length > 0) {
+        handleMove(moveEvent.touches[0].clientX);
+      }
+    };
+
     const handleMouseUp = () => {
       if (!isDragging) return;
       isDragging = false;
@@ -97,30 +109,47 @@ const PriceSlider = ({
       document.removeEventListener('mouseup', handleMouseUp);
     };
 
-    return (e: React.MouseEvent) => {
+    const handleTouchEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      setActiveSlider(null);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+
+    return (e: React.MouseEvent | React.TouchEvent) => {
       e.preventDefault();
       e.stopPropagation();
+
       isDragging = true;
-      startX = e.clientX;
       startValue = minValue;
       setActiveSlider('min');
 
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      if ('touches' in e) {
+        // Touch event
+        startX = e.touches[0].clientX;
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd);
+      } else {
+        // Mouse event
+        startX = (e as React.MouseEvent).clientX;
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+      }
     };
   }, [minPrice, maxPrice, minValue, maxValue, getRoundingStep, roundPrice]);
 
-  // Надійний обробник перетягування для максимального повзунка
+  // Універсальний обробник перетягування для максимального повзунка (підтримує mouse і touch)
   const createMaxDragHandler = useCallback(() => {
     let isDragging = false;
     let startX = 0;
     let startValue = 0;
 
-    const handleMouseMove = (moveEvent: MouseEvent) => {
+    const handleMove = (clientX: number) => {
       if (!isDragging || !sliderContainerRef.current) return;
 
       try {
-        const deltaX = moveEvent.clientX - startX;
+        const deltaX = clientX - startX;
         const containerWidth = sliderContainerRef.current.getBoundingClientRect().width;
         if (containerWidth === 0) return;
 
@@ -137,6 +166,16 @@ const PriceSlider = ({
       }
     };
 
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      handleMove(moveEvent.clientX);
+    };
+
+    const handleTouchMove = (moveEvent: TouchEvent) => {
+      if (moveEvent.touches.length > 0) {
+        handleMove(moveEvent.touches[0].clientX);
+      }
+    };
+
     const handleMouseUp = () => {
       if (!isDragging) return;
       isDragging = false;
@@ -145,16 +184,33 @@ const PriceSlider = ({
       document.removeEventListener('mouseup', handleMouseUp);
     };
 
-    return (e: React.MouseEvent) => {
+    const handleTouchEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      setActiveSlider(null);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+
+    return (e: React.MouseEvent | React.TouchEvent) => {
       e.preventDefault();
       e.stopPropagation();
+
       isDragging = true;
-      startX = e.clientX;
       startValue = maxValue;
       setActiveSlider('max');
 
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      if ('touches' in e) {
+        // Touch event
+        startX = e.touches[0].clientX;
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd);
+      } else {
+        // Mouse event
+        startX = (e as React.MouseEvent).clientX;
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+      }
     };
   }, [minPrice, maxPrice, minValue, maxValue, getRoundingStep, roundPrice]);
 
@@ -219,10 +275,21 @@ const PriceSlider = ({
     setActiveSlider(null);
   };
 
-  // Обробник кліку по треку для визначення найближчого повзунка
-  const handleTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Універсальний обробник кліку/тапу по треку для визначення найближчого повзунка
+  const handleTrackInteraction = (
+    e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
+    let clickX: number;
+
+    if ('touches' in e) {
+      // Touch event
+      clickX = e.touches[0].clientX - rect.left;
+    } else {
+      // Mouse event
+      clickX = (e as React.MouseEvent).clientX - rect.left;
+    }
+
     const clickPercent = clickX / rect.width;
     const clickValue = minPrice + (maxPrice - minPrice) * clickPercent;
 
@@ -326,7 +393,8 @@ const PriceSlider = ({
         {/* Трек слайдера */}
         <div
           className="relative h-2 bg-gray-200 rounded-lg shadow-inner cursor-pointer"
-          onClick={handleTrackClick}
+          onClick={handleTrackInteraction}
+          onTouchStart={handleTrackInteraction}
         >
           {/* Активная область */}
           <div
@@ -358,6 +426,19 @@ const PriceSlider = ({
             setActiveSlider('min');
             setTimeout(() => setActiveSlider(null), 100);
           }}
+          onTouchStart={e => {
+            e.stopPropagation();
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.touches[0].clientX - rect.left;
+            const parentRect = e.currentTarget.parentElement!.getBoundingClientRect();
+            const fullClickPercent = clickX / parentRect.width;
+            const clickValue = minPrice + (maxPrice - minPrice) * fullClickPercent;
+            const newMinValue = Math.min(clickValue, maxValue - getRoundingStep());
+            const roundedMinValue = roundPrice(newMinValue, false);
+            setMinValue(roundedMinValue);
+            setActiveSlider('min');
+            setTimeout(() => setActiveSlider(null), 100);
+          }}
         />
 
         <div
@@ -370,6 +451,20 @@ const PriceSlider = ({
             e.stopPropagation();
             const rect = e.currentTarget.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
+            const parentRect = e.currentTarget.parentElement!.getBoundingClientRect();
+            const fullClickX = parentRect.width - rect.width + clickX;
+            const fullClickPercent = fullClickX / parentRect.width;
+            const clickValue = minPrice + (maxPrice - minPrice) * fullClickPercent;
+            const newMaxValue = Math.max(clickValue, minValue + getRoundingStep());
+            const roundedMaxValue = roundPrice(newMaxValue, true);
+            setMaxValue(roundedMaxValue);
+            setActiveSlider('max');
+            setTimeout(() => setActiveSlider(null), 100);
+          }}
+          onTouchStart={e => {
+            e.stopPropagation();
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.touches[0].clientX - rect.left;
             const parentRect = e.currentTarget.parentElement!.getBoundingClientRect();
             const fullClickX = parentRect.width - rect.width + clickX;
             const fullClickPercent = fullClickX / parentRect.width;
@@ -430,6 +525,7 @@ const PriceSlider = ({
               zIndex: 20,
             }}
             onMouseDown={createMinDragHandler()}
+            onTouchStart={createMinDragHandler()}
           />
 
           <div
@@ -440,6 +536,7 @@ const PriceSlider = ({
               zIndex: 20,
             }}
             onMouseDown={createMaxDragHandler()}
+            onTouchStart={createMaxDragHandler()}
           />
         </div>
       </div>
@@ -550,6 +647,29 @@ const PriceSlider = ({
 
         .max-slider {
           pointer-events: auto;
+        }
+
+        /* Touch-friendly стилі для мобільних пристроїв */
+        @media (pointer: coarse) {
+          .slider-thumb::-webkit-slider-thumb {
+            height: 24px;
+            width: 24px;
+            border: 3px solid #ffffff;
+          }
+
+          .slider-thumb::-moz-range-thumb {
+            height: 24px;
+            width: 24px;
+            border: 3px solid #ffffff;
+          }
+        }
+
+        /* Запобігання вибору тексту при drag */
+        * {
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
         }
       `}</style>
     </div>
