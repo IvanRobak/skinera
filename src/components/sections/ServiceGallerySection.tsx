@@ -228,7 +228,7 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
                 type="button"
                 aria-label="Попередній слайд"
                 onClick={prevSlide}
-                className="absolute left-[-10] top-1/2 -translate-y-1/2 -translate-x-1/2 bg-white text-gray-800 rounded-full shadow-lg w-10 h-10 flex items-center justify-center hover:scale-110 hover:shadow-xl transition-all duration-300 ease-out"
+                className="absolute -left-5 top-1/2 -translate-y-1/2 bg-white text-gray-800 rounded-full shadow-lg w-10 h-10 flex items-center justify-center hover:scale-110 hover:shadow-xl transition-all duration-300 ease-out z-30"
               >
                 <span className="sr-only">Previous</span>
                 <svg
@@ -251,7 +251,7 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
                 type="button"
                 aria-label="Наступний слайд"
                 onClick={nextSlide}
-                className="absolute right-[-10] top-1/2 -translate-y-1/2 translate-x-1/2 bg-white text-gray-800 rounded-full shadow-lg w-10 h-10 flex items-center justify-center hover:scale-110 hover:shadow-xl transition-all duration-300 ease-out"
+                className="absolute -right-5 top-1/2 -translate-y-1/2 bg-white text-gray-800 rounded-full shadow-lg w-10 h-10 flex items-center justify-center hover:shadow-xl transition-all duration-300 ease-out z-30"
               >
                 <span className="sr-only">Next</span>
                 <svg
