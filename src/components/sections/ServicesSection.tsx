@@ -6,7 +6,7 @@ const ServicesSection = () => {
   return (
     <section
       data-section="services"
-      className="relative w-full pt-16 pb-24"
+      className="relative w-full pt-16 pb-40 overflow-hidden"
       style={{
         backgroundColor: '#EAD2D7',
         borderTopLeftRadius: '50% 20px',
@@ -153,7 +153,7 @@ const ServicesSection = () => {
           </Link>
         </div>
       </div>
-      <WavyBottomBorder />
+      <WavyBottomBorder fillColor="white" />
     </section>
   );
 };
