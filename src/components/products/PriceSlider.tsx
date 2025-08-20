@@ -214,18 +214,6 @@ const PriceSlider = ({
     };
   }, [minPrice, maxPrice, minValue, maxValue, getRoundingStep, roundPrice]);
 
-  const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), maxValue - getRoundingStep());
-    const roundedValue = roundPrice(value, false);
-    setMinValue(roundedValue);
-  };
-
-  const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(Number(e.target.value), minValue + getRoundingStep());
-    const roundedValue = roundPrice(value, true);
-    setMaxValue(roundedValue);
-  };
-
   const handleSliderMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.min(Number(e.target.value), maxValue - getRoundingStep());
     const roundedValue = roundPrice(value, false);
@@ -265,6 +253,12 @@ const PriceSlider = ({
 
   const handleMinBlur = () => {
     setActiveSlider(null);
+    // Застосовуємо обмеження та округлення при втраті фокусу
+    const constrainedValue = Math.max(minPrice, Math.min(minValue, maxValue - getRoundingStep()));
+    const roundedValue = roundPrice(constrainedValue, false);
+    if (roundedValue !== minValue) {
+      setMinValue(roundedValue);
+    }
   };
 
   const handleMaxFocus = () => {
@@ -273,6 +267,12 @@ const PriceSlider = ({
 
   const handleMaxBlur = () => {
     setActiveSlider(null);
+    // Застосовуємо обмеження та округлення при втраті фокусу
+    const constrainedValue = Math.min(maxPrice, Math.max(maxValue, minValue + getRoundingStep()));
+    const roundedValue = roundPrice(constrainedValue, true);
+    if (roundedValue !== maxValue) {
+      setMaxValue(roundedValue);
+    }
   };
 
   // Універсальний обробник кліку/тапу по треку для визначення найближчого повзунка
@@ -360,45 +360,22 @@ const PriceSlider = ({
   };
 
   return (
-    <div className="space-y-4">
-      <label className="text-gray-700 font-semibold block text-sm uppercase tracking-wide">
+    <div className="space-y-4 sm:space-y-6">
+      <label className="text-gray-700 font-semibold block text-sm sm:text-base uppercase tracking-wide">
         Діапазон цін (грн)
       </label>
-
-      {/* Поля введення цін */}
-      <div className="flex items-center space-x-2">
-        <input
-          type="number"
-          min={minPrice}
-          max={maxPrice}
-          step={getRoundingStep()}
-          value={minValue}
-          onChange={handleMinChange}
-          className="w-20 p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
-        />
-        <span className="text-gray-500">—</span>
-        <input
-          type="number"
-          min={minPrice}
-          max={maxPrice}
-          step={getRoundingStep()}
-          value={maxValue}
-          onChange={handleMaxChange}
-          className="w-20 p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
-        />
-      </div>
 
       {/* Двойной слайдер */}
       <div className="relative" ref={sliderContainerRef}>
         {/* Трек слайдера */}
         <div
-          className="relative h-2 bg-gray-200 rounded-lg shadow-inner cursor-pointer"
+          className="relative h-2 sm:h-3 bg-gray-200 rounded-lg shadow-inner cursor-pointer"
           onClick={handleTrackInteraction}
           onTouchStart={handleTrackInteraction}
         >
           {/* Активная область */}
           <div
-            className="absolute h-2 bg-gradient-to-r from-pink-400 to-pink-600 rounded-lg shadow-sm transition-all duration-200 pointer-events-none"
+            className="absolute h-2 sm:h-3 bg-gradient-to-r from-pink-400 to-pink-600 rounded-lg shadow-sm transition-all duration-200 pointer-events-none"
             style={{
               left: `${getLeftPosition()}%`,
               width: `${getRightPosition() - getLeftPosition()}%`,
@@ -408,7 +385,7 @@ const PriceSlider = ({
 
         {/* Области кліку для кожного повзунка */}
         <div
-          className="absolute top-0 left-0 h-2 bg-transparent cursor-pointer"
+          className="absolute top-0 left-0 h-2 sm:h-3 bg-transparent cursor-pointer"
           style={{
             width: `${50 + (getLeftPosition() - getRightPosition()) / 2}%`,
             zIndex: 10,
@@ -442,7 +419,7 @@ const PriceSlider = ({
         />
 
         <div
-          className="absolute top-0 right-0 h-2 bg-transparent cursor-pointer"
+          className="absolute top-0 right-0 h-2 sm:h-3 bg-transparent cursor-pointer"
           style={{
             width: `${50 - (getLeftPosition() - getRightPosition()) / 2}%`,
             zIndex: 10,
@@ -489,7 +466,7 @@ const PriceSlider = ({
           onMouseUp={handleMinMouseUp}
           onFocus={handleMinFocus}
           onBlur={handleMinBlur}
-          className="absolute top-0 left-0 w-full h-2 bg-transparent appearance-none cursor-pointer slider-thumb min-slider"
+          className="absolute top-0 left-0 w-full h-2 sm:h-3 bg-transparent appearance-none cursor-pointer slider-thumb min-slider touch-manipulation"
           style={{
             zIndex: getMinSliderZIndex(),
             pointerEvents: 'none',
@@ -508,7 +485,7 @@ const PriceSlider = ({
           onMouseUp={handleMaxMouseUp}
           onFocus={handleMaxFocus}
           onBlur={handleMaxBlur}
-          className="absolute top-0 left-0 w-full h-2 bg-transparent appearance-none cursor-pointer slider-thumb max-slider"
+          className="absolute top-0 left-0 w-full h-2 sm:h-3 bg-transparent appearance-none cursor-pointer slider-thumb max-slider touch-manipulation"
           style={{
             zIndex: getMaxSliderZIndex(),
             pointerEvents: 'none',
@@ -516,9 +493,9 @@ const PriceSlider = ({
         />
 
         {/* Thumb контроли з pointer events */}
-        <div className="absolute top-0 left-0 w-full h-2" style={{ pointerEvents: 'none' }}>
+        <div className="absolute top-0 left-0 w-full h-2 sm:h-3" style={{ pointerEvents: 'none' }}>
           <div
-            className="absolute w-6 h-6 -mt-2 -ml-3 bg-transparent cursor-pointer"
+            className="absolute w-6 h-6 sm:w-8 sm:h-8 -mt-2 sm:-mt-2.5 -ml-3 sm:-ml-4 bg-transparent cursor-pointer"
             style={{
               left: `${getLeftPosition()}%`,
               pointerEvents: 'auto',
@@ -529,7 +506,7 @@ const PriceSlider = ({
           />
 
           <div
-            className="absolute w-6 h-6 -mt-2 -ml-3 bg-transparent cursor-pointer"
+            className="absolute w-6 h-6 sm:w-8 sm:h-8 -mt-2 sm:-mt-2.5 -ml-3 sm:-ml-4 bg-transparent cursor-pointer"
             style={{
               left: `${getRightPosition()}%`,
               pointerEvents: 'auto',
@@ -542,9 +519,9 @@ const PriceSlider = ({
       </div>
 
       {/* Отображение текущих значений */}
-      <div className="flex justify-between text-sm text-gray-600">
-        <span>{formatPriceWithCurrency(minValue)}</span>
-        <span>{formatPriceWithCurrency(maxValue)}</span>
+      <div className="flex justify-between text-sm sm:text-base text-gray-600">
+        <span className="font-medium">{formatPriceWithCurrency(minValue)}</span>
+        <span className="font-medium">{formatPriceWithCurrency(maxValue)}</span>
       </div>
 
       {/* Кнопки управления */}
@@ -552,7 +529,7 @@ const PriceSlider = ({
         <button
           onClick={applyFilter}
           disabled={!hasChanges}
-          className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+          className={`flex-1 px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-200 touch-manipulation ${
             hasChanges
               ? 'bg-pink-500 text-white hover:bg-pink-600 shadow-md hover:shadow-lg'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
@@ -562,7 +539,7 @@ const PriceSlider = ({
         </button>
         <button
           onClick={resetFilter}
-          className="px-4 py-2 rounded-lg font-medium text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all duration-200"
+          className="px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all duration-200 touch-manipulation"
         >
           Скинути
         </button>
@@ -579,6 +556,7 @@ const PriceSlider = ({
           border: 2px solid #ffffff;
           box-shadow: 0 2px 6px rgba(236, 72, 153, 0.3);
           transition: all 0.2s ease;
+          touch-action: manipulation;
         }
 
         .slider-thumb::-webkit-slider-thumb:hover {
@@ -618,6 +596,7 @@ const PriceSlider = ({
           border: 2px solid #ffffff;
           box-shadow: 0 2px 6px rgba(236, 72, 153, 0.3);
           transition: all 0.2s ease;
+          touch-action: manipulation;
         }
 
         .slider-thumb::-moz-range-thumb:hover {
@@ -652,15 +631,30 @@ const PriceSlider = ({
         /* Touch-friendly стилі для мобільних пристроїв */
         @media (pointer: coarse) {
           .slider-thumb::-webkit-slider-thumb {
-            height: 24px;
-            width: 24px;
-            border: 3px solid #ffffff;
+            height: 20px;
+            width: 20px;
+            border: 2px solid #ffffff;
           }
 
           .slider-thumb::-moz-range-thumb {
-            height: 24px;
-            width: 24px;
-            border: 3px solid #ffffff;
+            height: 20px;
+            width: 20px;
+            border: 2px solid #ffffff;
+          }
+        }
+
+        /* Додаткові стилі для мобільних пристроїв */
+        @media (max-width: 640px) {
+          .slider-thumb::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border: 2px solid #ffffff;
+          }
+
+          .slider-thumb::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border: 2px solid #ffffff;
           }
         }
 
@@ -670,6 +664,50 @@ const PriceSlider = ({
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+        }
+
+        /* Touch оптимізації */
+        .touch-manipulation {
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Покращені стилі для кнопок на мобільних */
+        @media (max-width: 640px) {
+          button {
+            min-height: 48px; /* Мінімальна висота для touch */
+            touch-action: manipulation;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+          }
+
+          button:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+          }
+
+          button:disabled {
+            opacity: 0.6;
+            transform: none;
+          }
+        }
+
+        /* Загальні стилі для мобільних пристроїв */
+        @media (max-width: 640px) {
+          .space-y-4 > * + * {
+            margin-top: 1.25rem;
+          }
+
+          .space-y-6 > * + * {
+            margin-top: 1.75rem;
+          }
+
+          label {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            margin-bottom: 0.5rem;
+          }
         }
       `}</style>
     </div>
