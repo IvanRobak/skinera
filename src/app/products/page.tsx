@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import PriceSlider from '@/components/products/PriceSlider';
 import CategoryFilter from '@/components/products/CategoryFilter';
+import CategoryModal from '@/components/products/CategoryModal';
+import CategoryButton from '@/components/products/CategoryButton';
 
 // Lazy load the ProductList component
 const ProductList = dynamic(() => import('@/components/products/ProductList'), {
@@ -71,10 +73,21 @@ const ProductsPage = () => {
     limit: 12,
     totalPages: 0,
   });
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   // Функція для прокручування сторінки вгору
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Функція для відкриття модалки категорій
+  const openCategoryModal = () => {
+    setIsCategoryModalOpen(true);
+  };
+
+  // Функція для закриття модалки категорій
+  const closeCategoryModal = () => {
+    setIsCategoryModalOpen(false);
   };
 
   const fetchProducts = useCallback(async () => {
@@ -238,10 +251,6 @@ const ProductsPage = () => {
       <h1 className="text-5xl font-bold text-gray-800 text-center m-10">Наші Товари</h1>
       <div className="flex flex-col md:flex-row gap-6 relative">
         <aside className="md:w-1/4 p-6 bg-white rounded-lg shadow-md space-y-6 h-fit md:sticky md:top-20 md:max-h-[calc(100vh-3rem)]">
-          <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-D4D4D4 pb-2">
-            Пошук та Фільтри
-          </h2>
-
           {/* Пошук товарів */}
           <div className="space-y-3">
             <label className="text-gray-700 font-semibold block text-sm uppercase tracking-wide">
@@ -314,8 +323,16 @@ const ProductsPage = () => {
               )}
             </div>
           </div>
-          {/* Фільтр за категорією */}
-          <div className="space-y-2">
+
+          {/* Кнопка категорій на мобільному */}
+          <CategoryButton
+            onClick={openCategoryModal}
+            selectedCategories={selectedCategories}
+            totalCategories={allCategories.length}
+          />
+
+          {/* Фільтр за категорією (тільки на десктопі) */}
+          <div className="hidden md:block space-y-2">
             <CategoryFilter
               categories={allCategories}
               selectedCategories={selectedCategories}
@@ -367,6 +384,15 @@ const ProductsPage = () => {
           {!isFilterLoading && renderPagination()}
         </div>
       </div>
+
+      {/* Модалка категорій */}
+      <CategoryModal
+        isOpen={isCategoryModalOpen}
+        onClose={closeCategoryModal}
+        categories={allCategories}
+        selectedCategories={selectedCategories}
+        onCategoryChange={handleCategoryChange}
+      />
     </div>
   );
 };
