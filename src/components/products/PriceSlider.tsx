@@ -9,6 +9,7 @@ interface PriceSliderProps {
   onPriceChange: (min: number, max: number) => void;
   currentMin?: number;
   currentMax?: number;
+  hideButtons?: boolean;
 }
 
 const PriceSlider = ({
@@ -17,6 +18,7 @@ const PriceSlider = ({
   onPriceChange,
   currentMin = minPrice,
   currentMax = maxPrice,
+  hideButtons = false,
 }: PriceSliderProps) => {
   const [minValue, setMinValue] = useState(currentMin);
   const [maxValue, setMaxValue] = useState(currentMax);
@@ -29,6 +31,9 @@ const PriceSlider = ({
     setAppliedMin(currentMin);
     setAppliedMax(currentMax);
   }, [currentMin, currentMax]);
+
+  // Якщо кнопки приховані, не викликаємо onPriceChange автоматично
+  // Замість цього, зміни будуть застосовані при натисканні кнопки "Застосувати"
 
   // Cleanup event listeners on unmount
   useEffect(() => {
@@ -86,6 +91,9 @@ const PriceSlider = ({
         );
         const roundedValue = roundPrice(newValue, false);
         setMinValue(roundedValue);
+        if (hideButtons) {
+          onPriceChange(roundedValue, maxValue);
+        }
       } catch (error) {
         console.warn('Error in min slider drag:', error);
       }
@@ -137,7 +145,16 @@ const PriceSlider = ({
         document.addEventListener('mouseup', handleMouseUp);
       }
     };
-  }, [minPrice, maxPrice, minValue, maxValue, getRoundingStep, roundPrice]);
+  }, [
+    minPrice,
+    maxPrice,
+    minValue,
+    maxValue,
+    getRoundingStep,
+    roundPrice,
+    hideButtons,
+    onPriceChange,
+  ]);
 
   // Універсальний обробник перетягування для максимального повзунка (підтримує mouse і touch)
   const createMaxDragHandler = useCallback(() => {
@@ -161,6 +178,9 @@ const PriceSlider = ({
         );
         const roundedValue = roundPrice(newValue, true);
         setMaxValue(roundedValue);
+        if (hideButtons) {
+          onPriceChange(minValue, roundedValue);
+        }
       } catch (error) {
         console.warn('Error in max slider drag:', error);
       }
@@ -212,18 +232,33 @@ const PriceSlider = ({
         document.addEventListener('mouseup', handleMouseUp);
       }
     };
-  }, [minPrice, maxPrice, minValue, maxValue, getRoundingStep, roundPrice]);
+  }, [
+    minPrice,
+    maxPrice,
+    minValue,
+    maxValue,
+    getRoundingStep,
+    roundPrice,
+    hideButtons,
+    onPriceChange,
+  ]);
 
   const handleSliderMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.min(Number(e.target.value), maxValue - getRoundingStep());
     const roundedValue = roundPrice(value, false);
     setMinValue(roundedValue);
+    if (hideButtons) {
+      onPriceChange(roundedValue, maxValue);
+    }
   };
 
   const handleSliderMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(Number(e.target.value), minValue + getRoundingStep());
     const roundedValue = roundPrice(value, true);
     setMaxValue(roundedValue);
+    if (hideButtons) {
+      onPriceChange(minValue, roundedValue);
+    }
   };
 
   // Обробники для активного стану повзунків
@@ -302,11 +337,17 @@ const PriceSlider = ({
       const newMinValue = Math.min(clickValue, maxValue - getRoundingStep());
       const roundedMinValue = roundPrice(newMinValue, false);
       setMinValue(roundedMinValue);
+      if (hideButtons) {
+        onPriceChange(roundedMinValue, maxValue);
+      }
     } else {
       setActiveSlider('max');
       const newMaxValue = Math.max(clickValue, minValue + getRoundingStep());
       const roundedMaxValue = roundPrice(newMaxValue, true);
       setMaxValue(roundedMaxValue);
+      if (hideButtons) {
+        onPriceChange(minValue, roundedMaxValue);
+      }
     }
 
     // Скидаємо активний стан через невеликий час
@@ -400,6 +441,9 @@ const PriceSlider = ({
             const newMinValue = Math.min(clickValue, maxValue - getRoundingStep());
             const roundedMinValue = roundPrice(newMinValue, false);
             setMinValue(roundedMinValue);
+            if (hideButtons) {
+              onPriceChange(roundedMinValue, maxValue);
+            }
             setActiveSlider('min');
             setTimeout(() => setActiveSlider(null), 100);
           }}
@@ -413,6 +457,9 @@ const PriceSlider = ({
             const newMinValue = Math.min(clickValue, maxValue - getRoundingStep());
             const roundedMinValue = roundPrice(newMinValue, false);
             setMinValue(roundedMinValue);
+            if (hideButtons) {
+              onPriceChange(roundedMinValue, maxValue);
+            }
             setActiveSlider('min');
             setTimeout(() => setActiveSlider(null), 100);
           }}
@@ -435,6 +482,9 @@ const PriceSlider = ({
             const newMaxValue = Math.max(clickValue, minValue + getRoundingStep());
             const roundedMaxValue = roundPrice(newMaxValue, true);
             setMaxValue(roundedMaxValue);
+            if (hideButtons) {
+              onPriceChange(minValue, roundedMaxValue);
+            }
             setActiveSlider('max');
             setTimeout(() => setActiveSlider(null), 100);
           }}
@@ -449,6 +499,9 @@ const PriceSlider = ({
             const newMaxValue = Math.max(clickValue, minValue + getRoundingStep());
             const roundedMaxValue = roundPrice(newMaxValue, true);
             setMaxValue(roundedMaxValue);
+            if (hideButtons) {
+              onPriceChange(minValue, roundedMaxValue);
+            }
             setActiveSlider('max');
             setTimeout(() => setActiveSlider(null), 100);
           }}
@@ -525,25 +578,27 @@ const PriceSlider = ({
       </div>
 
       {/* Кнопки управления */}
-      <div className="flex gap-2 mt-4">
-        <button
-          onClick={applyFilter}
-          disabled={!hasChanges}
-          className={`flex-1 px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-200 touch-manipulation ${
-            hasChanges
-              ? 'bg-pink-500 text-white hover:bg-pink-600 shadow-md hover:shadow-lg'
-              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-          }`}
-        >
-          Застосувати
-        </button>
-        <button
-          onClick={resetFilter}
-          className="px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all duration-200 touch-manipulation"
-        >
-          Скинути
-        </button>
-      </div>
+      {!hideButtons && (
+        <div className="flex gap-2 mt-4">
+          <button
+            onClick={applyFilter}
+            disabled={!hasChanges}
+            className={`flex-1 px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-200 touch-manipulation ${
+              hasChanges
+                ? 'bg-pink-500 text-white hover:bg-pink-600 shadow-md hover:shadow-lg'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            Застосувати
+          </button>
+          <button
+            onClick={resetFilter}
+            className="px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all duration-200 touch-manipulation"
+          >
+            Скинути
+          </button>
+        </div>
+      )}
 
       <style jsx>{`
         .slider-thumb::-webkit-slider-thumb {

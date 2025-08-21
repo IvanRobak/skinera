@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import PriceSlider from '@/components/products/PriceSlider';
+import PriceButton from '@/components/products/PriceButton';
+import PriceModal from '@/components/products/PriceModal';
 import CategoryFilter from '@/components/products/CategoryFilter';
 import CategoryModal from '@/components/products/CategoryModal';
 import CategoryButton from '@/components/products/CategoryButton';
@@ -74,6 +76,7 @@ const ProductsPage = () => {
     totalPages: 0,
   });
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
 
   // Функція для прокручування сторінки вгору
   const scrollToTop = () => {
@@ -88,6 +91,16 @@ const ProductsPage = () => {
   // Функція для закриття модалки категорій
   const closeCategoryModal = () => {
     setIsCategoryModalOpen(false);
+  };
+
+  // Функція для відкриття модалки цін
+  const openPriceModal = () => {
+    setIsPriceModalOpen(true);
+  };
+
+  // Функція для закриття модалки цін
+  const closePriceModal = () => {
+    setIsPriceModalOpen(false);
   };
 
   const fetchProducts = useCallback(async () => {
@@ -176,6 +189,7 @@ const ProductsPage = () => {
   };
 
   const handlePriceChange = (min: number, max: number) => {
+    console.log('ProductsPage: handlePriceChange called', { min, max });
     setMinPrice(min);
     setMaxPrice(max);
     setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
@@ -331,6 +345,15 @@ const ProductsPage = () => {
             totalCategories={allCategories.length}
           />
 
+          {/* Кнопка цін на мобільному */}
+          <PriceButton
+            onClick={openPriceModal}
+            currentMin={minPrice}
+            currentMax={maxPrice}
+            defaultMin={priceRange.min}
+            defaultMax={priceRange.max}
+          />
+
           {/* Фільтр за категорією (тільки на десктопі) */}
           <div className="hidden md:block space-y-2">
             <CategoryFilter
@@ -339,8 +362,8 @@ const ProductsPage = () => {
               onCategoryChange={handleCategoryChange}
             />
           </div>
-          {/* Фільтр за ціною */}
-          <div className="space-y-2">
+          {/* Фільтр за ціною (тільки на десктопі) */}
+          <div className="hidden md:block space-y-2">
             <PriceSlider
               minPrice={priceRange.min}
               maxPrice={priceRange.max}
@@ -354,7 +377,14 @@ const ProductsPage = () => {
           <div className="pt-4 border-t border-gray-200">
             <button
               onClick={resetAllFilters}
-              className="w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
+              className="hidden md:block w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
+            >
+              🗑️ Скинути всі фільтри
+            </button>
+            {/* Кнопка скидання всіх фільтрів для мобільної версії */}
+            <button
+              onClick={resetAllFilters}
+              className="md:hidden w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
             >
               🗑️ Скинути всі фільтри
             </button>
@@ -392,6 +422,17 @@ const ProductsPage = () => {
         categories={allCategories}
         selectedCategories={selectedCategories}
         onCategoryChange={handleCategoryChange}
+      />
+
+      {/* Модалка цін */}
+      <PriceModal
+        isOpen={isPriceModalOpen}
+        onClose={closePriceModal}
+        minPrice={priceRange.min}
+        maxPrice={priceRange.max}
+        currentMin={minPrice}
+        currentMax={maxPrice}
+        onPriceChange={handlePriceChange}
       />
     </div>
   );
