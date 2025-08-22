@@ -117,7 +117,7 @@ const CategoryModal = memo(
             <div className="px-6 py-4 max-h-96 overflow-y-auto">
               <div className="space-y-4">
                 {/* Categories grid */}
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 w-[400px]:grid-cols-3 gap-3">
                   {categories.map(category => (
                     <button
                       key={category}

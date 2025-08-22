@@ -269,7 +269,9 @@ const ProductsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto py-10">
-      <h1 className="text-5xl font-bold text-gray-800 text-center m-10">Наші Товари</h1>
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 text-center m-6 sm:m-8 md:m-10 lg:m-12">
+        Наші Товари
+      </h1>
       <div className="flex flex-col md:flex-row gap-6 relative">
         <aside className="md:w-1/4 p-6 bg-white rounded-lg shadow-md space-y-6 h-fit md:sticky md:top-20 md:max-h-[calc(100vh-3rem)]">
           {/* Пошук товарів */}
