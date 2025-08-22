@@ -36,7 +36,7 @@ const PriceButton = memo(
           }
         `}
       >
-        <div className="flex items-center">
+        <div className="flex items-center text-gray-700">
           <span className="mr-2">💰</span>
           {isDefaultRange ? 'Діапазон цін' : 'Ціна змінена'}
         </div>

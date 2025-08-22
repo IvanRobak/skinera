@@ -139,9 +139,7 @@ const PriceModal = memo(
                 onClick={handleApply}
                 className="w-full inline-flex justify-center rounded-xl bg-gradient-to-r from-pink-500 to-pink-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:from-pink-600 hover:to-pink-700 transition-all duration-300"
               >
-                {hasChanges || currentMin !== minPrice || currentMax !== maxPrice
-                  ? 'Показати'
-                  : 'Застосувати'}
+                Застосувати
               </button>
             </div>
           </div>
