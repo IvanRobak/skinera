@@ -357,14 +357,6 @@ const PriceSlider = ({
     onPriceChange(minValue, maxValue);
   };
 
-  const resetFilter = () => {
-    setMinValue(minPrice);
-    setMaxValue(maxPrice);
-    setAppliedMin(minPrice);
-    setAppliedMax(maxPrice);
-    onPriceChange(minPrice, maxPrice);
-  };
-
   const hasChanges = minValue !== appliedMin || maxValue !== appliedMax;
 
   const getLeftPosition = () => ((minValue - minPrice) / (maxPrice - minPrice)) * 100;
@@ -580,19 +572,13 @@ const PriceSlider = ({
           <button
             onClick={applyFilter}
             disabled={!hasChanges}
-            className={`flex-1 px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-200 touch-manipulation ${
+            className={`w-full px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-200 touch-manipulation ${
               hasChanges
                 ? 'bg-pink-500 text-white hover:bg-pink-600 shadow-md hover:shadow-lg'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >
             Застосувати
-          </button>
-          <button
-            onClick={resetFilter}
-            className="px-4 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all duration-200 touch-manipulation"
-          >
-            Скинути
           </button>
         </div>
       )}

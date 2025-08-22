@@ -383,17 +383,10 @@ const ProductsPage = () => {
           </div>
 
           {/* Кнопка скидання всіх фільтрів */}
-          <div className="pt-4 border-t border-gray-200">
+          <div className="hidden md:block pt-4 border-t border-gray-200">
             <button
               onClick={resetAllFilters}
               className="hidden md:block w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
-            >
-              🗑️ Скинути всі фільтри
-            </button>
-            {/* Кнопка скидання всіх фільтрів для мобільної версії */}
-            <button
-              onClick={resetAllFilters}
-              className="md:hidden w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
             >
               🗑️ Скинути всі фільтри
             </button>

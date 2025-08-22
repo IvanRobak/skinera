@@ -117,7 +117,7 @@ const CategoryModal = memo(
             <div className="px-6 py-4 max-h-96 overflow-y-auto">
               <div className="space-y-4">
                 {/* Categories grid */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-3 gap-3">
                   {categories.map(category => (
                     <button
                       key={category}
@@ -131,8 +131,8 @@ const CategoryModal = memo(
                         }
                       `}
                     >
-                      <div className="flex flex-col items-center text-center space-y-2">
-                        <span className="text-lg">{getCategoryIcon(category)}</span>
+                      <div className="flex items-center justify-around text-center space-y-2">
+                        {/* <span className="text-lg">{getCategoryIcon(category)}</span> */}
                         <span className="text-xs leading-tight">{category}</span>
                         {localSelectedCategories.includes(category) && (
                           <span className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
@@ -173,23 +173,5 @@ const CategoryModal = memo(
 );
 
 CategoryModal.displayName = 'CategoryModal';
-
-// Функція для отримання іконки категорії
-const getCategoryIcon = (category: string): string => {
-  const iconMap: { [key: string]: string } = {
-    'Догляд за обличчям': '🧴',
-    'Догляд за тілом': '🧴',
-    Макіяж: '💄',
-    Парфуми: '🌸',
-    'Догляд за волоссям': '💇‍♀️',
-    'Сонцезахисні засоби': '☀️',
-    'Дитяча косметика': '🍼',
-    'Чоловіча косметика': '👨',
-    Інструменти: '🔧',
-    Аксесуари: '✨',
-  };
-
-  return iconMap[category] || '📦';
-};
 
 export default CategoryModal;
