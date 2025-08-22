@@ -306,7 +306,7 @@ const ProductsPage = () => {
                     scrollToTop();
                   }
                 }}
-                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:bg-white transition-all duration-300 outline-none hover:border-pink-300 hover:bg-white text-sm"
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:bg-white transition-all duration-300 outline-none hover:border-pink-300 hover:bg-white text-sm shadow-sm hover:shadow-md"
               />
               {searchQuery && (
                 <div className="absolute inset-y-0 right-0 flex items-center">
@@ -345,22 +345,23 @@ const ProductsPage = () => {
             </div>
           </div>
 
-          {/* Кнопка категорій на мобільному */}
-          <CategoryButton
-            onClick={openCategoryModal}
-            selectedCategories={selectedCategories}
-            totalCategories={allCategories.length}
-          />
+          {/* Кнопки фільтрів на мобільному */}
+          <div className="md:hidden flex gap-3 w-full">
+            <CategoryButton
+              onClick={openCategoryModal}
+              selectedCategories={selectedCategories}
+              totalCategories={allCategories.length}
+            />
 
-          {/* Кнопка цін на мобільному */}
-          <PriceButton
-            onClick={openPriceModal}
-            currentMin={minPrice}
-            currentMax={maxPrice}
-            defaultMin={priceRange.min}
-            defaultMax={priceRange.max}
-            onReset={resetPriceFilter}
-          />
+            <PriceButton
+              onClick={openPriceModal}
+              currentMin={minPrice}
+              currentMax={maxPrice}
+              defaultMin={priceRange.min}
+              defaultMax={priceRange.max}
+              onReset={resetPriceFilter}
+            />
+          </div>
 
           {/* Фільтр за категорією (тільки на десктопі) */}
           <div className="hidden md:block space-y-2">

@@ -10,14 +10,15 @@ interface CategoryButtonProps {
 
 const CategoryButton = memo(({ onClick, selectedCategories }: CategoryButtonProps) => {
   return (
-    <button
+    <div
       onClick={onClick}
       className="
         md:hidden flex items-center justify-between gap-4 px-4 py-3 
-        bg-white border-2 border-gray-200 rounded-xl 
-        hover:border-pink-300 hover:bg-pink-50 
+        bg-white border border-gray-200 rounded-xl 
+        hover:border-pink-300 hover:bg-white 
         transition-all duration-300 group
         shadow-sm hover:shadow-md
+        flex-1 min-w-0
       "
     >
       <div className="flex items-center space-x-3">
@@ -35,7 +36,7 @@ const CategoryButton = memo(({ onClick, selectedCategories }: CategoryButtonProp
           </span>
         )}
       </div>
-    </button>
+    </div>
   );
 });
 

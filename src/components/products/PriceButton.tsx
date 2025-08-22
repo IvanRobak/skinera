@@ -27,12 +27,12 @@ const PriceButton = memo(
       <div
         onClick={onClick}
         className={`
-          md:hidden w-full inline-flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium
-          transition-all duration-300 border-2 cursor-pointer
+          md:hidden flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium
+          transition-all duration-300 border cursor-pointer shadow-sm hover:shadow-md flex-1 min-w-0
           ${
             hasActiveFilter
-              ? 'bg-white text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-pink-50'
-              : ''
+              ? 'bg-white text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-white'
+              : 'bg-white text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-white'
           }
         `}
       >
