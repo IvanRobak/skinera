@@ -32,9 +32,6 @@ const PriceSlider = ({
     setAppliedMax(currentMax);
   }, [currentMin, currentMax]);
 
-  // Якщо кнопки приховані, не викликаємо onPriceChange автоматично
-  // Замість цього, зміни будуть застосовані при натисканні кнопки "Застосувати"
-
   // Cleanup event listeners on unmount
   useEffect(() => {
     return () => {

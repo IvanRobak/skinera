@@ -196,6 +196,13 @@ const ProductsPage = () => {
     scrollToTop();
   };
 
+  const resetPriceFilter = useCallback(() => {
+    setMinPrice(priceRange.min);
+    setMaxPrice(priceRange.max);
+    setPagination(prev => ({ ...prev, page: 1 }));
+    scrollToTop();
+  }, [priceRange.min, priceRange.max]);
+
   const resetAllFilters = useCallback(() => {
     setSearchQuery('');
     setSelectedBrand('');
@@ -352,6 +359,7 @@ const ProductsPage = () => {
             currentMax={maxPrice}
             defaultMin={priceRange.min}
             defaultMax={priceRange.max}
+            onReset={resetPriceFilter}
           />
 
           {/* Фільтр за категорією (тільки на десктопі) */}
