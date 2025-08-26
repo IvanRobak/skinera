@@ -18,7 +18,7 @@ input:-webkit-autofill:active {
   box-shadow: 0 0 0px 1000px white inset !important;
 }
 
-input:-webkit-autofill ~ label {
+input:-webkit-autofill~label {
   top: -1.5rem;
   font-size: 13px;
 }
@@ -38,4 +38,43 @@ input:-webkit-autofill ~ label {
     background: gray;
     /* Example: change color on hover */
   }
+}
+
+
+@layer utilities {
+  .cities-container::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .cities-container:hover::-webkit-scrollbar-thumb {
+    background: gray;
+    /* Example: change color on hover */
+  }
+
+  .cities-container::-webkit-scrollbar-thumb {
+    background: #a6a2a2;
+    height: 10px;
+  }
+
+}
+
+/* Custom select arrow positioning */
+select[name="delivery-option"] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+/* Alternative approach using CSS transforms */
+select[name="delivery-option"]::-ms-expand {
+  display: none;
+}
+
+/* For Firefox */
+select[name="delivery-option"] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
 }

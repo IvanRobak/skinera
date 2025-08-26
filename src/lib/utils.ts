@@ -1,3 +1,5 @@
+import { NovaPoshtaData } from "@/interfaces/NovaPoshtaResponse";
+
 /**
  * Форматує ціну, додаючи пробіл після тисяч
  * @param price - ціна в грн
@@ -24,4 +26,8 @@ export function formatPrice(price: number): string {
  */
 export function formatPriceWithCurrency(price: number, currency: string = 'грн'): string {
   return `${formatPrice(price)} ${currency}`;
+}
+
+export function parseNovaPoshtaCities(data : NovaPoshtaData) : string[]{
+    return data.Addresses.map((address) => address.Present);
 }

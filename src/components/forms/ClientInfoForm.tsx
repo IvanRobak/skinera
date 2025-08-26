@@ -6,6 +6,8 @@ import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { ClientInfoFormFields, ClientInfoFormSchema } from '@/scripts/zod-schemas';
 import DeliveryInfoForm from './DeliveryInfoForm';
 import { IMaskInput } from 'react-imask';
+import DropDown from '../common/DropDown';
+import { delivery_options, payment_options } from '@/mockData/nova-postha-mock';
 
 const ClientInfoForm = () => {
   const [firstCurrentStep, setFirstCurrentStep] = useState(true);
@@ -58,13 +60,13 @@ const ClientInfoForm = () => {
         </h3>
         <h3
           className={`font-semibold text-xl transition-colors duration-200 ${
-            !firstCurrentStep ? 'text-[#5b24c9]' : 'text-[#a6a2a2]'
+            !firstCurrentStep ? 'text-brand-600' : 'text-[#a6a2a2]'
           }`}
         >
           2 Інформація про доставку
         </h3>
       </div>
-      {firstCurrentStep ? (
+      {false ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-10">
             <div className="flex flex-col gap-12  w-[50%]">
@@ -264,8 +266,15 @@ const ClientInfoForm = () => {
           </div>
         </form>
       ) : (
-        <div>
-          <DeliveryInfoForm />
+        <div className="flex gap-8">
+          <div className="flex flex-col gap-6 flex-1">
+            <DeliveryInfoForm />
+            <DropDown labelName="Варіант доставки" arrOptions={delivery_options} />
+            <DropDown labelName="Відділення" arrOptions={payment_options} />
+          </div>
+          <div className="flex flex-col flex-1">
+            <DropDown labelName="Варіант оплати" arrOptions={payment_options} />
+          </div>
         </div>
       )}
     </div>

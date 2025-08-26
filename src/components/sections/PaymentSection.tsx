@@ -2,7 +2,7 @@ import React from 'react';
 
 const PaymentSection = () => {
   return (
-    <div className="flex flex-col gap-8 w-full pr-3">
+    <div className="flex flex-col gap-8 pr-3 w-[50%]">
       <div className="relative border-b border-[#ebebeb]">
         {/* <div className="absolute top-1/2 -translate-y-1/2 right-3 w-4 h-4 bg-arrow-down bg-contain bg-center bg-no-repeat pointer-events-none" /> */}
         <label
