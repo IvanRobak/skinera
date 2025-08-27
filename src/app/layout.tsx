@@ -8,6 +8,7 @@ import Main from '@/components/layout/Main';
 import { ToastContainer } from 'react-toastify';
 import ClientSessionProvider from '@/components/ClientSessionProvider';
 import StructuredData from '@/components/seo/StructuredData';
+import { ModalProvider } from '@/components/common/ModalContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -104,12 +105,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <ClientSessionProvider>
-          <Header />
-          <Main>
-            {children}
-            <ToastContainer />
-          </Main>
-          <Footer />
+          <ModalProvider>
+            <Header />
+            <Main>
+              {children}
+              <ToastContainer />
+            </Main>
+            <Footer />
+          </ModalProvider>
         </ClientSessionProvider>
       </body>
     </html>
