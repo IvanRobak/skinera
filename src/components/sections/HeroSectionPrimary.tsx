@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useState, useEffect, useCallback } from 'react';
 import ModalButton from '../common/ModalButton';
 import ContactForm from '../forms/ContactForm';
+import { useModal } from '../common/ModalContext';
 
 const mockSliderData = [
   {
@@ -43,6 +44,7 @@ const mockSliderData = [
 const HeroSectionPrimary = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const { isModalOpen } = useModal();
 
   const onSetCurrentSlide = useCallback(() => {
     const currentIndex = currentSlide === mockSliderData.length - 1 ? 0 : currentSlide + 1;
@@ -67,9 +69,11 @@ const HeroSectionPrimary = () => {
   return (
     <section className="w-full mt-[64px]">
       <div
-        className="w-full overflow-hidden relative group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className={`w-full overflow-hidden relative group ${
+          isModalOpen ? 'pointer-events-none' : ''
+        }`}
+        onMouseEnter={() => !isModalOpen && setIsHovered(true)}
+        onMouseLeave={() => !isModalOpen && setIsHovered(false)}
       >
         <div className="relative w-full aspect-[2.39/1] max-h-[650px]">
           {mockSliderData.map((item, index) => {
@@ -121,14 +125,20 @@ const HeroSectionPrimary = () => {
         </div>
 
         {/* Кнопки навігації слайдера */}
-        <div className="absolute bottom-2  sm:bottom-6 md:bottom-8 left-0 right-0 pointer-events-none z-20">
+        <div
+          className={`absolute bottom-2  sm:bottom-6 md:bottom-8 left-0 right-0 pointer-events-none z-10 transition-opacity duration-300 ${
+            isModalOpen ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
           <div className="hidden min-[450px]:flex w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 h-full  items-center justify-between ">
             <motion.button
               initial={{ opacity: 0, x: 50 }}
               animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
               transition={{ duration: 0.2, ease: 'linear' }}
               onClick={onSetPreviousSlide}
-              className="flex pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 items-center justify-center rounded-full bg-white hover:bg-pink-600 active:bg-pink-700 text-gray-800 hover:text-white shadow-xl transition-colors duration-300 ease-in-out"
+              className={`flex w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 items-center justify-center rounded-full bg-white hover:bg-pink-600 active:bg-pink-700 text-gray-800 hover:text-white shadow-xl transition-colors duration-300 ease-in-out z-0 ${
+                isModalOpen ? 'pointer-events-none' : 'pointer-events-auto'
+              }`}
               aria-label="Попередній слайд"
             >
               <svg
@@ -152,7 +162,9 @@ const HeroSectionPrimary = () => {
               animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0 }}
               transition={{ duration: 0.2, ease: 'linear' }}
               onClick={onSetCurrentSlide}
-              className="flex pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 items-center justify-center rounded-full bg-white hover:bg-pink-600 active:bg-pink-700 text-gray-800 hover:text-white shadow-xl transition-colors duration-300 ease-in-out"
+              className={`flex w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 items-center justify-center rounded-full bg-white hover:bg-pink-600 active:bg-pink-700 text-gray-800 hover:text-white shadow-xl transition-colors duration-300 ease-in-out z-0 ${
+                isModalOpen ? 'pointer-events-none' : 'pointer-events-auto'
+              }`}
               aria-label="Наступний слайд"
             >
               <svg

@@ -44,7 +44,7 @@ const ContactSection = () => {
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">Адреса</p>
-                      <p className="text-gray-600">м. Львів, пр. Червоної калини, 36в</p>
+                      <p className="text-gray-600">м.Львів, пр.Червоної калини 36в</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Modal from './Modal';
+import { useModal } from './ModalContext';
 
 interface ModalButtonProps {
   buttonText: React.ReactNode;
@@ -11,9 +12,16 @@ interface ModalButtonProps {
 
 const ModalButton: React.FC<ModalButtonProps> = ({ buttonText, modalContent, className }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setIsModalOpen: setGlobalModalOpen } = useModal();
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+    setGlobalModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setGlobalModalOpen(false);
+  };
 
   return (
     <>
