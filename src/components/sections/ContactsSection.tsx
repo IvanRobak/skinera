@@ -13,7 +13,7 @@ const ContactSection = () => {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-md p-8 w-[90%]">
+        <div className="bg-white rounded-2xl shadow-md p-6 w-[90%]">
           <div className="flex flex-col md:flex-row justify-between gap-8">
             {/* Контактна інформація */}
             <div className="md:w-1/2 flex flex-col items-start justify-between">

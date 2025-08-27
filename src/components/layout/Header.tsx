@@ -25,7 +25,7 @@ const Header = () => {
   return (
     <>
       <header className="bg-white shadow-md fixed top-0 w-full z-50">
-        <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
           {/* Логотип */}
           <Link href="/" className="flex items-center space-x-3 cursor-pointer">
             <div className="bg-brand-600 rounded-full p-1">
@@ -38,8 +38,10 @@ const Header = () => {
 
           {/* Меню для великих екранів */}
           <div className="hidden md:flex items-center">
-            <Navigation />
-            <FavoritesButton />
+            <div className="flex items-center gap-10">
+              <Navigation />
+              <FavoritesButton />
+            </div>
             <CartButton />
             {session ? (
               <Link
