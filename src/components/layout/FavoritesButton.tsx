@@ -23,7 +23,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
         className={`
           relative flex items-center space-x-2 px-4 py-2 rounded-full 
           text-gray-700 hover:text-brand-600 transition-colors
-          ${isMobile ? 'w-full justify-center' : ''}
+          ${isMobile ? 'w-full' : ''}
         `}
       >
         <div className="relative">
@@ -45,7 +45,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
       className={`
         relative flex items-center space-x-2 px-4 py-2 rounded-full 
         text-gray-700 hover:text-brand-600 transition-colors
-        ${isMobile ? 'w-full justify-center' : ''}
+        ${isMobile ? 'w-full ' : ''}
       `}
     >
       <div className="relative">

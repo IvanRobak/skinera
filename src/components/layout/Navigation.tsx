@@ -28,7 +28,7 @@ const Navigation = ({ isMobile, onNavigate }: { isMobile?: boolean; onNavigate?:
             isActive(path)
               ? 'text-brand-600 bg-brand-50 font-medium'
               : 'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
-          } ${isMobile ? 'text-center' : ''}`}
+          }`}
           onClick={() => isMobile && onNavigate?.()}
         >
           {label}

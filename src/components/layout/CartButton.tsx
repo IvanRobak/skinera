@@ -21,7 +21,7 @@ const CartButton = ({ isMobile }: { isMobile?: boolean }) => {
     <>
       <button
         className={`flex items-center gap-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 hover:bg-gray-50 transition-colors ${
-          isMobile ? 'w-full justify-center' : ''
+          isMobile ? 'w-full' : ''
         }`}
         onClick={toggleCart}
       >
