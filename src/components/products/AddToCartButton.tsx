@@ -57,7 +57,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   };
 
   return (
-    <div className="flex gap-4 w-full">
+    <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-4 w-full">
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
