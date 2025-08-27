@@ -38,7 +38,9 @@ const Header = () => {
 
           {/* Меню для великих екранів */}
           <div className="hidden md:flex items-center">
-            <Navigation />
+            <div className="mr-10">
+              <Navigation />
+            </div>
             <FavoritesButton />
             <CartButton />
             {session ? (
@@ -84,13 +86,15 @@ const Header = () => {
 
         {/* Мобільне меню */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
-            <Navigation isMobile onNavigate={() => setIsMenuOpen(false)} />
-            <div className="px-4 py-3 border-t border-gray-100">
+          <div className="md:hidden bg-white border-t border-gray-100 shadow-lg py-2 px-4 flex flex-col gap-4 items-start justify-center">
+            <div className="px-4">
+              <Navigation isMobile onNavigate={() => setIsMenuOpen(false)} />
+            </div>
+            <div className="px-4 flex flex-col gap-4">
               <FavoritesButton isMobile />
               <CartButton isMobile />
             </div>
-            <div className="px-4 py-3 border-t border-gray-100">
+            <div className="px-4  border-t border-gray-100">
               {session ? (
                 <Link
                   href="/account"
@@ -106,7 +110,7 @@ const Header = () => {
                     setIsMenuOpen(false);
                     setIsAuthModalOpen(true);
                   }}
-                  className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors w-full"
+                  className="flex items-center space-x-2  py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors w-full"
                 >
                   <UserIcon className="w-5 h-5" />
                   <span>Увійти або зареєструватися</span>

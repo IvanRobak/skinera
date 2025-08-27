@@ -21,7 +21,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
       <Link
         href="/favorites"
         className={`
-          relative flex items-center space-x-2 px-4 py-2 rounded-full 
+          relative flex items-center space-x-2 py-2 rounded-full 
           text-gray-700 hover:text-brand-600 transition-colors
           ${isMobile ? 'w-full' : ''}
         `}
@@ -35,6 +35,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
             className="opacity-100"
           />
         </div>
+        {isMobile && <span className=" font-medium">Улюблене</span>}
       </Link>
     );
   }
@@ -43,10 +44,10 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
     <Link
       href="/favorites"
       className={`
-        relative flex items-center space-x-2 px-4 py-2 rounded-full 
-        text-gray-700 hover:text-brand-600 transition-colors
-        ${isMobile ? 'w-full ' : ''}
-      `}
+          relative flex items-center space-x-2 ${isMobile ? 'py-2' : 'px-4 py-2'} rounded-full 
+          text-gray-700 hover:text-brand-600 transition-colors
+          ${isMobile ? 'w-full ' : ''}
+        `}
     >
       <div className="relative">
         <Image
@@ -66,6 +67,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
           </motion.div>
         )}
       </div>
+      {isMobile && <span className=" font-medium">Улюблене</span>}
     </Link>
   );
 }

@@ -15,16 +15,12 @@ const Navigation = ({ isMobile, onNavigate }: { isMobile?: boolean; onNavigate?:
   ];
 
   return (
-    <nav
-      className={`${
-        isMobile ? 'flex flex-col space-y-1 py-3' : 'hidden md:flex items-center space-x-1'
-      }`}
-    >
+    <nav className={`${isMobile ? 'flex flex-col gap-4' : 'hidden md:flex items-center gap-6'}`}>
       {navItems.map(({ path, label }) => (
         <Link
           key={path}
           href={path}
-          className={`px-4 py-2 rounded-full transition-colors ${
+          className={`py-2 rounded-full transition-colors ${
             isActive(path)
               ? 'text-brand-600 bg-brand-50 font-medium'
               : 'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
