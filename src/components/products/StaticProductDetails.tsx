@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Product } from '@/lib/products';
 import ProductCard from '@/components/products/ProductCard';
 import DescriptionRenderer from '@/components/common/DescriptionRenderer';
@@ -257,7 +257,28 @@ export default function StaticProductDetails({
 }
 
 function ProductDetailsAccordion({ product }: { product: Product }) {
+  // За замовчуванням всі секції закриті для уникнення hydration mismatch
   const [openSections, setOpenSections] = useState<Set<string>>(new Set(['description']));
+
+  // Функція для оновлення стану секцій при зміні розміру екрану
+  const updateSectionsForScreenSize = () => {
+    if (window.innerWidth >= 768) {
+      // На десктопах відкриваємо всі секції
+      setOpenSections(new Set(['description', 'characteristics', 'usage', 'components']));
+    } else {
+      // На мобільних залишаємо тільки "Опис"
+      setOpenSections(new Set(['description']));
+    }
+  };
+
+  // Встановлюємо початковий стан після монтування компонента
+  useEffect(() => {
+    updateSectionsForScreenSize();
+
+    // Додаємо слухач зміни розміру екрану
+    window.addEventListener('resize', updateSectionsForScreenSize);
+    return () => window.removeEventListener('resize', updateSectionsForScreenSize);
+  }, []);
 
   const toggleSection = (sectionId: string) => {
     const newOpenSections = new Set(openSections);
