@@ -8,9 +8,10 @@ import { useSession } from 'next-auth/react';
 
 interface FavoritesButtonProps {
   isMobile?: boolean;
+  onNavigate?: () => void;
 }
 
-export default function FavoritesButton({ isMobile = false }: FavoritesButtonProps) {
+export default function FavoritesButton({ isMobile = false, onNavigate }: FavoritesButtonProps) {
   const { getFavoritesCount, hasHydrated } = useFavorites();
   const { data: session } = useSession();
   const favoritesCount = getFavoritesCount();
@@ -48,6 +49,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
           text-gray-700 hover:text-brand-600 transition-colors
           ${isMobile ? 'w-full ' : ''}
         `}
+      onClick={() => isMobile && onNavigate?.()}
     >
       <div className="relative">
         <Image

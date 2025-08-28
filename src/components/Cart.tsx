@@ -52,7 +52,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
       onClick={onClose}
     >
       <div
-        className="bg-white p-4 sm:p-6 rounded-2xl shadow-xl w-full mx-2 sm:mx-4 max-h-[90vh] sm:max-h-[85vh] flex flex-col max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl"
+        className="bg-white p-4 sm:p-6 rounded-2xl shadow-xl w-full mx-2 sm:mx-4 max-h-[90vh] sm:max-h-[85vh] flex flex-col max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4 sm:mb-6">
