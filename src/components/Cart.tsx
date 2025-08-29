@@ -172,7 +172,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
               </span>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-[80%] sm:w-[100%] md:w-[80%] align-center mx-auto ">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-[100%] md:w-[70%]  align-center mx-auto ">
             <button
               className="order-2 sm:order-1 flex-1 bg-gray-100 text-gray-700 px-4 sm:px-6 py-3 rounded-full hover:bg-gray-200 transition-colors font-semibold text-sm sm:text-base"
               onClick={onClose}
