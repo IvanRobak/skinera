@@ -1,4 +1,4 @@
-import { NovaPoshtaData } from "@/interfaces/NovaPoshtaResponse";
+import { Addresses, NovaPoshtaAddressesData } from '@/interfaces/NovaPoshtaResponse';
 
 /**
  * Форматує ціну, додаючи пробіл після тисяч
@@ -28,6 +28,6 @@ export function formatPriceWithCurrency(price: number, currency: string = 'гр�
   return `${formatPrice(price)} ${currency}`;
 }
 
-export function parseNovaPoshtaCities(data : NovaPoshtaData) : string[]{
-    return data.Addresses.map((address) => address.Present);
+export function parseNovaPoshtaCities(data: NovaPoshtaAddressesData): Addresses[] {
+  return data.Addresses.map(address => address);
 }
