@@ -22,7 +22,7 @@ const OrderSection = () => {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <div className="p-6 min-w-[540px] border-[#ebebeb] border-[1px] h-auto">
+    <div className="p-6 min-w-[440px] border-[#ebebeb] border-[1px] h-auto">
       <div className="border-b border-[#ebebeb] pb-4">
         <h2 className="text-[#212121] text-xl font-bold">Ваше замовлення</h2>{' '}
       </div>

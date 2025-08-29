@@ -1,13 +1,12 @@
-import { z } from 'zod';
-import dotenv from 'dotenv';
+// import { z } from 'zod';
 
-dotenv.config({ path: '.env.local' });
+// const ENVSchema = z.object({
+//   NEXTAUTH_SECRET: z.string(),
+//   MERCHANT_ACCOUNT: z.string(),
+//   MERCHANT_SECRET_KEY: z.string(),
+//   WAYFORPAY_API: z.string(),
+//   NOVAPOSHTA_API_KEY: z.string(),
+//   NOVAPOSHTA_API_URL: z.string(),
+// });
 
-const ENVSchema = z.object({
-  NEXTAUTH_SECRET: z.string(),
-  MERCHANT_ACCOUNT: z.string(),
-  MERCHANT_SECRET_KEY: z.string(),
-  WAYFORPAY_API: z.string(),
-});
-
-export const config = ENVSchema.parse(process.env);
+// export const config = ENVSchema.parse(process.env);

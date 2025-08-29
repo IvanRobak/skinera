@@ -1,35 +1,28 @@
+import { NovaPoshtaDepartmentsData } from '@/interfaces/NovaPoshtaResponse';
 import React, { useState } from 'react';
-import { CiSearch } from 'react-icons/ci';
-import { AiOutlineClose } from 'react-icons/ai';
-import { Addresses } from '@/interfaces/NovaPoshtaResponse';
 
-interface DeliveryAddressSectionProps {
-  cities: Addresses[];
-  cityName: string;
-  setCityName: (name: string) => void;
-  setCityError: React.Dispatch<React.SetStateAction<boolean>>;
+interface Props {
+  departmentName: string;
+  setDepartmentName: (departmentName: string) => void;
+  setDepartmentError: React.Dispatch<React.SetStateAction<boolean>>;
+  departments: NovaPoshtaDepartmentsData[];
   error: boolean;
   isLoading: boolean;
-  onCitySelect: (city: Addresses) => void;
+  onDepartmentSelect: (department: string) => void;
   onClear?: () => void;
 }
 
-const DeliveryAddressSection = ({
-  cityName,
-  setCityName,
-  setCityError,
+const DepartmentDropDown = ({
+  departmentName,
+  setDepartmentName,
+  setDepartmentError,
+  departments,
   error,
-  cities,
   isLoading,
-  onCitySelect,
+  onDepartmentSelect,
   onClear,
-}: DeliveryAddressSectionProps) => {
+}: Props) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const handleItemSelect = (city: Addresses) => {
-    onCitySelect(city);
-    setIsDropdownOpen(false);
-  };
 
   const handleInputFocus = () => {
     setIsDropdownOpen(true);
@@ -43,31 +36,36 @@ const DeliveryAddressSection = ({
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCityName(e.target.value);
+    setDepartmentName(e.target.value);
     setIsDropdownOpen(true);
   };
 
+  const handleItemSelect = (department: string) => {
+    onDepartmentSelect(department);
+    setIsDropdownOpen(false);
+  };
+
   const handleClear = () => {
-    setCityName('');
-    setCityError(false);
+    setDepartmentName('');
+    setDepartmentError(false);
     onClear?.();
   };
 
   return (
     <div className="relative">
       <label
-        htmlFor="city"
+        htmlFor="department"
         className="block text-gray-400 pointer-events-none transition-all duration-200
                     peer-focus:-top-6 peer-focus:text-[13px]
                     -top-6 left-0 text-[13px]"
       >
-        Місто*
+        Відділення*
       </label>
       <input
         type="text"
-        id="city"
-        placeholder="Введіть ваше місто"
-        value={cityName}
+        id="department"
+        placeholder="Оберіть відділення"
+        value={departmentName}
         onChange={handleInputChange}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
@@ -75,44 +73,46 @@ const DeliveryAddressSection = ({
             focus:outline-none focus:border-b focus:border-[#ebebeb] focus:ring-0 focus:shadow-none
             focus:placeholder-transparent"
       />
-      <CiSearch className="absolute top-[35px] left-0 w-4 h-4" />
-      {cityName && (
-        <AiOutlineClose
+      {departmentName && (
+        <button
+          type="button"
           className="absolute top-[33px] right-0 w-4 h-4 cursor-pointer"
           onClick={handleClear}
-        />
+        >
+          ✕
+        </button>
       )}
-
+      
       <ul
         className={`border-x border-b w-full overflow-y-scroll absolute top-full left-0 bg-white shadow-lg
-              transition-all duration-300 ease-in-out max-h-[250px] cities-container z-50
+              transition-all duration-300 ease-in-out max-h-[250px] z-50
               ${isDropdownOpen ? 'block' : 'hidden'}`}
       >
         {isLoading && (
           <li className="p-4 text-sm text-gray-500 flex items-center justify-center">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-              <span>Пошук міст...</span>
+              <span>Пошук відділень...</span>
             </div>
           </li>
         )}
 
         {!isLoading &&
-          cities.length > 0 &&
+          departments.length > 0 &&
           !error &&
-          cities.map((city, index) => (
+          departments.map((department: NovaPoshtaDepartmentsData, index) => (
             <li
               key={index}
               className="p-4 hover:bg-slate-50 break-words whitespace-normal text-sm cursor-pointer"
-              onMouseDown={() => handleItemSelect(city)}
+              onMouseDown={() => handleItemSelect(department.Description)}
             >
-              {city.Present}
+              {department.Description}
             </li>
           ))}
 
-        {!isLoading && cities.length === 0 && cityName && !error && (
+        {!isLoading && departments.length === 0 && departmentName && !error && (
           <li className="p-4 text-sm text-gray-500 text-center">
-            Місто не знайдено
+            Відділення не знайдено
           </li>
         )}
 
@@ -126,4 +126,4 @@ const DeliveryAddressSection = ({
   );
 };
 
-export default DeliveryAddressSection;
+export default DepartmentDropDown;

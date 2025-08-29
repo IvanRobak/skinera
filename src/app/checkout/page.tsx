@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import OrderSection from '@/components/sections/OrderSection';
 import PermanentClientForm from '@/components/forms/PermanentClientForm';
-import ClientInfoForm from '@/components/forms/ClientInfoForm';
 import TabsSlider from '@/components/slider/TabsSlider';
+import NewClientInfoTab from '@/components/tabs/NewClientInfoTab';
 
 const Checkout = () => {
   const [activeTab, setActiveTab] = useState<'new' | 'permanent'>('new');
@@ -21,7 +21,7 @@ const Checkout = () => {
             <TabsSlider activeTab={activeTab} setActiveTab={setActiveTab} />
 
             <div className="tabs-panels mt-5">
-              {activeTab === 'new' && <ClientInfoForm />}
+              {activeTab === 'new' && <NewClientInfoTab />}
               {activeTab === 'permanent' && <PermanentClientForm />}
             </div>
           </div>
