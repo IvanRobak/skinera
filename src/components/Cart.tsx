@@ -52,7 +52,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
       onClick={onClose}
     >
       <div
-        className="bg-white p-4 sm:p-6 rounded-2xl shadow-xl w-full mx-2 sm:mx-4 max-h-[90vh] sm:max-h-[85vh] flex flex-col max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl"
+        className="bg-white p-4 sm:p-6 rounded-2xl shadow-xl w-full mx-2 sm:mx-4 max-h-[90vh] sm:max-h-[85vh] flex flex-col max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4 sm:mb-6">
@@ -172,7 +172,7 @@ const Cart = ({ cart, onUpdateQuantity, onRemoveFromCart, onClose }: CartProps) 
               </span>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-[80%] sm:w-[100%] md:w-[80%] align-center mx-auto ">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-[100%] md:w-[70%]  align-center mx-auto ">
             <button
               className="order-2 sm:order-1 flex-1 bg-gray-100 text-gray-700 px-4 sm:px-6 py-3 rounded-full hover:bg-gray-200 transition-colors font-semibold text-sm sm:text-base"
               onClick={onClose}

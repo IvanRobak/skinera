@@ -25,7 +25,7 @@ const Header = () => {
   return (
     <>
       <header className="bg-white shadow-md fixed top-0 w-full z-50">
-        <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
           {/* Логотип */}
           <Link href="/" className="flex items-center space-x-3 cursor-pointer">
             <div className="bg-brand-600 rounded-full p-1">
@@ -38,7 +38,9 @@ const Header = () => {
 
           {/* Меню для великих екранів */}
           <div className="hidden md:flex items-center">
-            <Navigation />
+            <div className="mr-10">
+              <Navigation />
+            </div>
             <FavoritesButton />
             <CartButton />
             {session ? (
@@ -84,13 +86,16 @@ const Header = () => {
 
         {/* Мобільне меню */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
-            <Navigation isMobile onNavigate={() => setIsMenuOpen(false)} />
-            <div className="px-4 py-3 border-t border-gray-100">
-              <FavoritesButton isMobile />
+          <div className="md:hidden bg-white border-t border-gray-100 shadow-lg py-2 px-4 flex flex-col gap-4 items-start justify-center">
+            <h3 className="text-xl font-bold mx-auto">Меню</h3>
+            <div className="px-4">
+              <Navigation isMobile onNavigate={() => setIsMenuOpen(false)} />
+            </div>
+            <div className="px-4 flex flex-col gap-4">
+              <FavoritesButton isMobile onNavigate={() => setIsMenuOpen(false)} />
               <CartButton isMobile />
             </div>
-            <div className="px-4 py-3 border-t border-gray-100">
+            <div className="px-4  border-t border-gray-100">
               {session ? (
                 <Link
                   href="/account"
@@ -106,7 +111,7 @@ const Header = () => {
                     setIsMenuOpen(false);
                     setIsAuthModalOpen(true);
                   }}
-                  className="flex items-center justify-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors w-full"
+                  className="flex items-center space-x-2  py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors w-full"
                 >
                   <UserIcon className="w-5 h-5" />
                   <span>Увійти або зареєструватися</span>

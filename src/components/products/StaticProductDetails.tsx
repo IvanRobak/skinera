@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Product } from '@/lib/products';
 import ProductCard from '@/components/products/ProductCard';
 import DescriptionRenderer from '@/components/common/DescriptionRenderer';
@@ -257,92 +257,153 @@ export default function StaticProductDetails({
 }
 
 function ProductDetailsAccordion({ product }: { product: Product }) {
-  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="border-b border-gray-200 last:border-b-0">
-      <div className="py-4 px-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">{title}</h3>
-        <div className="text-gray-600">{children}</div>
+  // За замовчуванням всі секції закриті для уникнення hydration mismatch
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set(['description']));
+
+  // Функція для оновлення стану секцій при зміні розміру екрану
+  const updateSectionsForScreenSize = () => {
+    if (window.innerWidth >= 768) {
+      // На десктопах відкриваємо всі секції
+      setOpenSections(new Set(['description', 'characteristics', 'usage', 'components']));
+    } else {
+      // На мобільних залишаємо тільки "Опис"
+      setOpenSections(new Set(['description']));
+    }
+  };
+
+  // Встановлюємо початковий стан після монтування компонента
+  useEffect(() => {
+    updateSectionsForScreenSize();
+
+    // Додаємо слухач зміни розміру екрану
+    window.addEventListener('resize', updateSectionsForScreenSize);
+    return () => window.removeEventListener('resize', updateSectionsForScreenSize);
+  }, []);
+
+  const toggleSection = (sectionId: string) => {
+    const newOpenSections = new Set(openSections);
+    if (newOpenSections.has(sectionId)) {
+      newOpenSections.delete(sectionId);
+    } else {
+      newOpenSections.add(sectionId);
+    }
+    setOpenSections(newOpenSections);
+  };
+
+  const Section = ({
+    id,
+    title,
+    children,
+  }: {
+    id: string;
+    title: string;
+    children: React.ReactNode;
+  }) => {
+    const isOpen = openSections.has(id);
+
+    return (
+      <div className="border-b border-gray-200 last:border-b-0">
+        <button
+          onClick={() => toggleSection(id)}
+          className="w-full py-4 px-6 text-left hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between"
+        >
+          <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+          <svg
+            className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="px-6 pb-4 text-gray-600">{children}</div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-      {/* Sections - Always Open */}
-      <div>
-        {/* Description */}
-        {product.content?.description && (
-          <Section title="Опис">
-            <DescriptionRenderer description={product.content.description} />
-          </Section>
-        )}
-
-        {/* Characteristics */}
-        <Section title="Характеристики">
-          <ul className="space-y-2">
-            {product.characteristics?.cosmetic_classification && (
-              <li>
-                <strong>Класифікація:</strong> {product.characteristics.cosmetic_classification}
-              </li>
-            )}
-            {product.characteristics?.skin_type && (
-              <li>
-                <strong>Тип шкіри:</strong> {product.characteristics.skin_type}
-              </li>
-            )}
-            {product.characteristics?.purpose_and_result && (
-              <li>
-                <strong>Призначення:</strong> {product.characteristics.purpose_and_result}
-              </li>
-            )}
-            {(product.characteristics?.volume || product.volume) && (
-              <li>
-                <strong>Обʼєм:</strong> {product.characteristics?.volume || product.volume} мл
-              </li>
-            )}
-            {product.characteristics?.cleanser_type && (
-              <li>
-                <strong>Тип очищувача:</strong> {product.characteristics.cleanser_type}
-              </li>
-            )}
-            {product.characteristics?.skin_problem && (
-              <li>
-                <strong>Проблеми шкіри:</strong> {product.characteristics.skin_problem}
-              </li>
-            )}
-            {product.characteristics?.age && (
-              <li>
-                <strong>Вік:</strong> {product.characteristics.age}
-              </li>
-            )}
-            {product.characteristics?.hypoallergenic && (
-              <li>
-                <strong>Гіпоалергенність:</strong> {product.characteristics.hypoallergenic}
-              </li>
-            )}
-            <li>
-              <strong>Бренд:</strong> {product.brand}
-            </li>
-            <li>
-              <strong>Країна:</strong> {product.country}
-            </li>
-          </ul>
+      {/* Description */}
+      {product.content?.description && (
+        <Section id="description" title="Опис">
+          <DescriptionRenderer description={product.content.description} />
         </Section>
+      )}
 
-        {/* Instructions */}
-        {product.content?.usage && (
-          <Section title="Як використовувати">
-            <p className="leading-relaxed">{product.content.usage}</p>
-          </Section>
-        )}
+      {/* Characteristics */}
+      <Section id="characteristics" title="Характеристики">
+        <ul className="space-y-2">
+          {product.characteristics?.cosmetic_classification && (
+            <li>
+              <strong>Класифікація:</strong> {product.characteristics.cosmetic_classification}
+            </li>
+          )}
+          {product.characteristics?.skin_type && (
+            <li>
+              <strong>Тип шкіри:</strong> {product.characteristics.skin_type}
+            </li>
+          )}
+          {product.characteristics?.purpose_and_result && (
+            <li>
+              <strong>Призначення:</strong> {product.characteristics.purpose_and_result}
+            </li>
+          )}
+          {(product.characteristics?.volume || product.volume) && (
+            <li>
+              <strong>Обʼєм:</strong> {product.characteristics?.volume || product.volume} мл
+            </li>
+          )}
+          {product.characteristics?.cleanser_type && (
+            <li>
+              <strong>Тип очищувача:</strong> {product.characteristics.cleanser_type}
+            </li>
+          )}
+          {product.characteristics?.skin_problem && (
+            <li>
+              <strong>Проблеми шкіри:</strong> {product.characteristics.skin_problem}
+            </li>
+          )}
+          {product.characteristics?.age && (
+            <li>
+              <strong>Вік:</strong> {product.characteristics.age}
+            </li>
+          )}
+          {product.characteristics?.hypoallergenic && (
+            <li>
+              <strong>Гіпоалергенність:</strong> {product.characteristics.hypoallergenic}
+            </li>
+          )}
+          <li>
+            <strong>Бренд:</strong> {product.brand}
+          </li>
+          <li>
+            <strong>Країна:</strong> {product.country}
+          </li>
+        </ul>
+      </Section>
 
-        {/* Ingredients */}
-        {product.content?.activeComponents && (
-          <Section title="Активні компоненти">
-            <p className="leading-relaxed">{product.content.activeComponents}</p>
-          </Section>
-        )}
-      </div>
+      {/* Instructions */}
+      {product.content?.usage && (
+        <Section id="usage" title="Як використовувати">
+          <p className="leading-relaxed">{product.content.usage}</p>
+        </Section>
+      )}
+
+      {/* Ingredients */}
+      {product.content?.activeComponents && (
+        <Section id="components" title="Активні компоненти">
+          <p className="leading-relaxed">{product.content.activeComponents}</p>
+        </Section>
+      )}
     </div>
   );
 }

@@ -8,9 +8,10 @@ import { useSession } from 'next-auth/react';
 
 interface FavoritesButtonProps {
   isMobile?: boolean;
+  onNavigate?: () => void;
 }
 
-export default function FavoritesButton({ isMobile = false }: FavoritesButtonProps) {
+export default function FavoritesButton({ isMobile = false, onNavigate }: FavoritesButtonProps) {
   const { getFavoritesCount, hasHydrated } = useFavorites();
   const { data: session } = useSession();
   const favoritesCount = getFavoritesCount();
@@ -21,9 +22,9 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
       <Link
         href="/favorites"
         className={`
-          relative flex items-center space-x-2 px-4 py-2 rounded-full 
+          relative flex items-center space-x-2 py-2 rounded-full 
           text-gray-700 hover:text-brand-600 transition-colors
-          ${isMobile ? 'w-full justify-center' : ''}
+          ${isMobile ? 'w-full' : ''}
         `}
       >
         <div className="relative">
@@ -35,6 +36,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
             className="opacity-100"
           />
         </div>
+        {isMobile && <span className=" font-medium">Улюблене</span>}
       </Link>
     );
   }
@@ -43,10 +45,11 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
     <Link
       href="/favorites"
       className={`
-        relative flex items-center space-x-2 px-4 py-2 rounded-full 
-        text-gray-700 hover:text-brand-600 transition-colors
-        ${isMobile ? 'w-full justify-center' : ''}
-      `}
+          relative flex items-center space-x-2 ${isMobile ? 'py-2' : 'px-4 py-2'} rounded-full 
+          text-gray-700 hover:text-brand-600 transition-colors
+          ${isMobile ? 'w-full ' : ''}
+        `}
+      onClick={() => isMobile && onNavigate?.()}
     >
       <div className="relative">
         <Image
@@ -66,6 +69,7 @@ export default function FavoritesButton({ isMobile = false }: FavoritesButtonPro
           </motion.div>
         )}
       </div>
+      {isMobile && <span className=" font-medium">Улюблене</span>}
     </Link>
   );
 }
