@@ -5,14 +5,15 @@ import WavyBottomBorder from '../common/WavyBottomBorder';
 const ServicesSection = () => {
   return (
     <section
-      className="relative w-screen left-1/2 -translate-x-1/2 pt-16 pb-24"
+      data-section="services"
+      className="relative w-full pt-16 pb-40 overflow-hidden"
       style={{
         backgroundColor: '#EAD2D7',
         borderTopLeftRadius: '50% 20px',
         borderTopRightRadius: '50% 20px',
       }}
     >
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 flex flex-col items-center">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-800 mb-6">Обирайте найкращі послуги</h1>
           <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
@@ -152,7 +153,7 @@ const ServicesSection = () => {
           </Link>
         </div>
       </div>
-      <WavyBottomBorder />
+      <WavyBottomBorder fillColor="white" />
     </section>
   );
 };

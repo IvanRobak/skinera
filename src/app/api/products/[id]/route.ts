@@ -3,6 +3,17 @@ import { db } from '@/lib/firebase';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
+  // Skip Firebase operations during build time
+  if (process.env.VERCEL_BUILD) {
+    return NextResponse.json({ error: 'Service temporarily unavailable' }, { status: 503 });
+  }
+
+  // For local development, try to use Firebase if available
+  if (!db) {
+    console.warn('Firebase not initialized, returning product not found');
+    return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+  }
+
   try {
     const { id } = await context.params;
     if (!id) {

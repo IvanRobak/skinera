@@ -106,7 +106,7 @@ const Header = () => {
                     setIsMenuOpen(false);
                     setIsAuthModalOpen(true);
                   }}
-                  className="flex items-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors w-full"
+                  className="flex items-center justify-center space-x-2 px-4 py-2 rounded-full text-gray-700 hover:text-brand-600 transition-colors w-full"
                 >
                   <UserIcon className="w-5 h-5" />
                   <span>Увійти або зареєструватися</span>

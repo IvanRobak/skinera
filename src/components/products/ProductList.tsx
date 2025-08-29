@@ -32,7 +32,7 @@ const ProductList = ({
   }, [products]);
 
   return (
-    <div className="w-full flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-3 gap-10 sm:gap-6 p-4 sm:p-6 sm:justify-items-center">
+    <div className="w-full grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 sm:p-6 justify-items-center">
       {products.length > 0 ? (
         renderedProducts
       ) : (

@@ -48,7 +48,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center p-4 text-gray-500">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Записатись на прийом</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Ім'я */}

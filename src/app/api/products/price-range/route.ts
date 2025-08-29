@@ -3,32 +3,41 @@ import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
 export async function GET() {
+  // Skip Firebase operations during build time
+  if (process.env.VERCEL_BUILD) {
+    return NextResponse.json({ error: 'Service temporarily unavailable' }, { status: 503 });
+  }
+
+  if (!db) {
+    console.warn('Firebase not initialized, returning default price range');
+    return NextResponse.json({ minPrice: 0, maxPrice: 1000 });
+  }
+
   try {
-    const snapshot = await getDocs(collection(db, 'products'));
+    const querySnapshot = await getDocs(collection(db, 'products'));
+    const products = querySnapshot.docs.map(doc => doc.data());
 
-    if (snapshot.empty) {
-      return NextResponse.json({ minPrice: 0, maxPrice: 1000 });
-    }
-
-    const prices: number[] = [];
-    snapshot.forEach(doc => {
-      const data = doc.data() as { price?: number };
-      if (typeof data.price === 'number') prices.push(data.price);
-    });
+    const prices = products.map(p => p.price).filter(price => typeof price === 'number');
 
     if (prices.length === 0) {
       return NextResponse.json({ minPrice: 0, maxPrice: 1000 });
     }
 
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
 
     return NextResponse.json({
-      minPrice: Math.floor(minPrice),
-      maxPrice: Math.ceil(maxPrice),
+      minPrice: Math.floor(min),
+      maxPrice: Math.ceil(max),
     });
   } catch (error) {
-    console.error('Error getting price range from Firestore:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error fetching price range from Firestore:', error);
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }

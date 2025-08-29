@@ -3,7 +3,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import PriceSlider from '@/components/products/PriceSlider';
+import PriceButton from '@/components/products/PriceButton';
+import PriceModal from '@/components/products/PriceModal';
 import CategoryFilter from '@/components/products/CategoryFilter';
+import CategoryModal from '@/components/products/CategoryModal';
+import CategoryButton from '@/components/products/CategoryButton';
 
 // Lazy load the ProductList component
 const ProductList = dynamic(() => import('@/components/products/ProductList'), {
@@ -71,10 +75,32 @@ const ProductsPage = () => {
     limit: 12,
     totalPages: 0,
   });
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
 
   // Функція для прокручування сторінки вгору
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Функція для відкриття модалки категорій
+  const openCategoryModal = () => {
+    setIsCategoryModalOpen(true);
+  };
+
+  // Функція для закриття модалки категорій
+  const closeCategoryModal = () => {
+    setIsCategoryModalOpen(false);
+  };
+
+  // Функція для відкриття модалки цін
+  const openPriceModal = () => {
+    setIsPriceModalOpen(true);
+  };
+
+  // Функція для закриття модалки цін
+  const closePriceModal = () => {
+    setIsPriceModalOpen(false);
   };
 
   const fetchProducts = useCallback(async () => {
@@ -163,11 +189,19 @@ const ProductsPage = () => {
   };
 
   const handlePriceChange = (min: number, max: number) => {
+    console.log('ProductsPage: handlePriceChange called', { min, max });
     setMinPrice(min);
     setMaxPrice(max);
     setPagination(prev => ({ ...prev, page: 1 })); // Скидаємо на першу сторінку
     scrollToTop();
   };
+
+  const resetPriceFilter = useCallback(() => {
+    setMinPrice(priceRange.min);
+    setMaxPrice(priceRange.max);
+    setPagination(prev => ({ ...prev, page: 1 }));
+    scrollToTop();
+  }, [priceRange.min, priceRange.max]);
 
   const resetAllFilters = useCallback(() => {
     setSearchQuery('');
@@ -235,13 +269,11 @@ const ProductsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto py-10">
-      <h1 className="text-5xl font-bold text-gray-800 text-center m-10">Наші Товари</h1>
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 text-center m-6 sm:m-8 md:m-10 lg:m-12">
+        Наші Товари
+      </h1>
       <div className="flex flex-col md:flex-row gap-6 relative">
         <aside className="md:w-1/4 p-6 bg-white rounded-lg shadow-md space-y-6 h-fit md:sticky md:top-20 md:max-h-[calc(100vh-3rem)]">
-          <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-D4D4D4 pb-2">
-            Пошук та Фільтри
-          </h2>
-
           {/* Пошук товарів */}
           <div className="space-y-3">
             <label className="text-gray-700 font-semibold block text-sm uppercase tracking-wide">
@@ -276,7 +308,7 @@ const ProductsPage = () => {
                     scrollToTop();
                   }
                 }}
-                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:bg-white transition-all duration-300 outline-none hover:border-pink-300 hover:bg-white text-sm"
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 focus:bg-white transition-all duration-300 outline-none hover:border-pink-300 hover:bg-white text-sm shadow-sm hover:shadow-md"
               />
               {searchQuery && (
                 <div className="absolute inset-y-0 right-0 flex items-center">
@@ -314,16 +346,35 @@ const ProductsPage = () => {
               )}
             </div>
           </div>
-          {/* Фільтр за категорією */}
-          <div className="space-y-2">
+
+          {/* Кнопки фільтрів на мобільному */}
+          <div className="md:hidden flex gap-3 w-full">
+            <CategoryButton
+              onClick={openCategoryModal}
+              selectedCategories={selectedCategories}
+              totalCategories={allCategories.length}
+            />
+
+            <PriceButton
+              onClick={openPriceModal}
+              currentMin={minPrice}
+              currentMax={maxPrice}
+              defaultMin={priceRange.min}
+              defaultMax={priceRange.max}
+              onReset={resetPriceFilter}
+            />
+          </div>
+
+          {/* Фільтр за категорією (тільки на десктопі) */}
+          <div className="hidden md:block space-y-2">
             <CategoryFilter
               categories={allCategories}
               selectedCategories={selectedCategories}
               onCategoryChange={handleCategoryChange}
             />
           </div>
-          {/* Фільтр за ціною */}
-          <div className="space-y-2">
+          {/* Фільтр за ціною (тільки на десктопі) */}
+          <div className="hidden md:block space-y-2">
             <PriceSlider
               minPrice={priceRange.min}
               maxPrice={priceRange.max}
@@ -334,10 +385,10 @@ const ProductsPage = () => {
           </div>
 
           {/* Кнопка скидання всіх фільтрів */}
-          <div className="pt-4 border-t border-gray-200">
+          <div className="hidden md:block pt-4 border-t border-gray-200">
             <button
               onClick={resetAllFilters}
-              className="w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
+              className="hidden md:block w-full px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 hover:text-gray-800"
             >
               🗑️ Скинути всі фільтри
             </button>
@@ -367,6 +418,26 @@ const ProductsPage = () => {
           {!isFilterLoading && renderPagination()}
         </div>
       </div>
+
+      {/* Модалка категорій */}
+      <CategoryModal
+        isOpen={isCategoryModalOpen}
+        onClose={closeCategoryModal}
+        categories={allCategories}
+        selectedCategories={selectedCategories}
+        onCategoryChange={handleCategoryChange}
+      />
+
+      {/* Модалка цін */}
+      <PriceModal
+        isOpen={isPriceModalOpen}
+        onClose={closePriceModal}
+        minPrice={priceRange.min}
+        maxPrice={priceRange.max}
+        currentMin={minPrice}
+        currentMax={maxPrice}
+        onPriceChange={handlePriceChange}
+      />
     </div>
   );
 };

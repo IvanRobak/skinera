@@ -58,7 +58,7 @@ const ProductCard = memo(({ product }: { product: Product }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Контейнер для зображення з підложкою */}
-      <div className="w-full h-64 p-2 sm:p-4 flex items-center justify-center relative">
+      <div className="w-full h-64 p-4 sm:p-2 flex items-center justify-center relative">
         <FavoriteButton product={product} size="sm" isHovered={isHovered} />
         <Image
           src={product.image_url}

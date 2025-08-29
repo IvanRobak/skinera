@@ -78,3 +78,18 @@ select[name="delivery-option"] {
   -webkit-appearance: none;
   appearance: none;
 }
+/* Modal open state - ensure modal content is interactive */
+body.modal-open .modal-content,
+body.modal-open [data-modal-content] {
+  pointer-events: auto !important;
+}
+
+body.modal-open .modal-content *,
+body.modal-open [data-modal-content] * {
+  pointer-events: auto !important;
+}
+
+/* Ensure close button works */
+body.modal-open .modal-close-button {
+  pointer-events: auto !important;
+}
