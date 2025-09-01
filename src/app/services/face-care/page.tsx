@@ -72,19 +72,23 @@ export default function FaceCarePage() {
         <div className="flex flex-col gap-20 max-w-6xl mx-auto mb-20">
           <ProceduresTypesSection data={proceduresTypesData} />
           <WhyChooseUsSection data={whyChooseUsData} />
+        </div>
 
-          {/* Photo Gallery Section */}
-          <ServiceGallerySection
-            title="Наші процедури догляду за обличчям"
-            subtitle="Переглянуте фото наших процедур та результатів роботи. Кожна процедура виконується професійними косметологами з використанням сучасного обладнання."
-            images={faceCareProceduresGallery}
-            columns={3}
-            showTitles={true}
-          />
+        {/* Photo Gallery Section - винесено з обмеженої обгортки для фону на всю ширину */}
+        <ServiceGallerySection
+          title="Наші процедури догляду за обличчям"
+          subtitle="Переглянуте фото наших процедур та результатів роботи. Кожна процедура виконується професійними косметологами з використанням сучасного обладнання."
+          images={faceCareProceduresGallery}
+          columns={3}
+          showTitles={true}
+        />
+
+        <div className="flex flex-col gap-20 max-w-6xl mx-auto mb-20">
           <ProcedureStepsSection />
           <PricesSection data={pricesData} />
           <SkinCareSection data={skinCareData} />
         </div>
+
         <ReadyForChangeSection imgUrl={spaCompositionImg} />
       </div>
     </>

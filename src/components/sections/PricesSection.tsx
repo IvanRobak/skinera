@@ -17,7 +17,7 @@ export default function PricesSection({ data }: Props) {
       }}
     >
       {/* Blurred background heading */}
-      <h1 className="absolute left-1/2 top-[20px] -translate-x-1/2 text-8xl font-semibold text-black select-none pointer-events-none z-0">
+      <h1 className="absolute left-1/2 top-[20px] -translate-x-1/2  text-5xl sm:text-6xl md:text-7xl  font-semibold text-black select-none pointer-events-none z-0">
         Ціни
       </h1>
       {/* Card */}

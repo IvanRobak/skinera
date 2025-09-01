@@ -1,7 +1,7 @@
 'use server';
 
-import { NovaPoshtaResponse } from '@/interfaces/NovaPoshtaResponse';
-import { favCities } from '@/mockData/nova-postha-fav-cities-mock';
+import { NovaPoshtaResponse, NovaPoshtaAddressesData } from '@/interfaces/NovaPoshtaResponse';
+import { favCities } from '@/mockData/nova-postha-mock';
 
 const NOVAPOSHTA_DEFAULTS = {
   modelName: 'AddressGeneral',
@@ -10,7 +10,9 @@ const NOVAPOSHTA_DEFAULTS = {
   page: '1',
 } as const;
 
-export const getCityByName = async (cityName: string): Promise<NovaPoshtaResponse> => {
+export const getCityByName = async (
+  cityName: string
+): Promise<NovaPoshtaResponse<NovaPoshtaAddressesData>> => {
   try {
     const body = JSON.stringify({
       apiKey: process.env.NEXT_PUBLIC_NOVAPOSHTA_API_KEY,
@@ -29,7 +31,7 @@ export const getCityByName = async (cityName: string): Promise<NovaPoshtaRespons
       body,
     });
 
-    const result: NovaPoshtaResponse = await response.json();
+    const result: NovaPoshtaResponse<NovaPoshtaAddressesData> = await response.json();
     return result;
   } catch (err) {
     console.error(`Error getting city by name - ${err}`);
@@ -37,9 +39,9 @@ export const getCityByName = async (cityName: string): Promise<NovaPoshtaRespons
   }
 };
 
-export const fetchFavCities = async (): Promise<NovaPoshtaResponse[]> => {
+export const fetchFavCities = async (): Promise<NovaPoshtaResponse<NovaPoshtaAddressesData>[]> => {
   try {
-    const response: NovaPoshtaResponse[] = await Promise.all(
+    const response: NovaPoshtaResponse<NovaPoshtaAddressesData>[] = await Promise.all(
       favCities.map(async name => {
         const response = await fetch(process.env.NEXT_PUBLIC_NOVAPOSHTA_API_URL || '', {
           method: 'POST',
