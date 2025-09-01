@@ -48,7 +48,7 @@ const SkinCareSection = ({ data }: Props) => {
         </div>
 
         {/* Content remains the same */}
-        <div className="flex-1 min-w-[300px] lg:min-w-[459px] grid grid-cols-1 gap-6 pb-11">
+        <div className="flex-1 min-w-[300px] lg:min-w-[459px] grid grid-cols-1 gap-6 pb-11 px-4">
           {listData.map(
             (
               item: {
