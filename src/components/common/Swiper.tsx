@@ -35,41 +35,32 @@ const SwiperComponent = ({
     setTimeout(() => setIsAutoPlaying(true), 5000);
   };
 
-  const slideWidth = 620;
-  const gap = 20;
-  const totalSlideWidth = slideWidth + gap;
-
   return (
-    <div className="max-w-[637px] overflow-hidden relative">
-      <div
-        className="flex gap-5 transition-transform duration-700 ease-in-out"
-        style={{
-          width: `${(images.length + 1) * totalSlideWidth}px`,
-          transform: `translateX(-${currentSlide * totalSlideWidth}px)`,
-        }}
-      >
-        {/* Дублюємо слайди для безкінечного ефекту + додаємо перший слайд в кінець */}
-        {[...images, ...images, images[0]].map((image, index) => (
+    <div className="w-full max-w-full overflow-hidden relative">
+      <div className="relative w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[440px]">
+        {images.map((image, index) => (
           <div
             key={index}
-            className="relative w-[620px] h-[440px] flex-shrink-0 rounded-[2rem] overflow-hidden"
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out rounded-xl sm:rounded-2xl lg:rounded-[2rem] overflow-hidden ${
+              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
           >
             {/* Зображення */}
             <Image src={image.src} alt={image.alt} fill className="object-cover" />
 
             {/* Тінь */}
-            <div className="absolute inset-0 rounded-[2rem] shadow-lg"></div>
+            <div className="absolute inset-0 rounded-xl sm:rounded-2xl lg:rounded-[2rem] shadow-lg"></div>
           </div>
         ))}
       </div>
 
       {/* Індикатори слайдів */}
-      <div className="flex justify-center gap-2 my-6">
+      <div className="flex justify-center gap-2 my-4 sm:my-6">
         {images.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${
+            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 cursor-pointer ${
               index === currentSlide ? 'scale-125' : 'hover:bg-gray-400'
             }`}
             style={{
