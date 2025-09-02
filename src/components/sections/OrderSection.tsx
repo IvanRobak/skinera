@@ -39,7 +39,7 @@ const OrderSection = () => {
                     alt="Appereance of how looking cream for face care"
                     fill
                     src={item.image_url ?? ''}
-                    className="object-cover"
+                    className="object-fill"
                   />
                 </div>
                 <div className="flex-1 ml-3 md:ml-0">
