@@ -86,8 +86,8 @@ export default function FaceCarePage() {
         <div className="flex flex-col gap-20 max-w-6xl mx-auto mb-20">
           <ProcedureStepsSection />
           <PricesSection data={pricesData} />
-          <SkinCareSection data={skinCareData} />
         </div>
+        <SkinCareSection data={skinCareData} />
 
         <ReadyForChangeSection imgUrl={spaCompositionImg} />
       </div>

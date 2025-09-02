@@ -15,6 +15,11 @@ interface ServiceGalleryProps {
   columns?: number; // reserved for future grid variant
   showTitles?: boolean;
   className?: string;
+  backgroundColor?: string;
+  borderRadius?: {
+    topLeft?: string;
+    topRight?: string;
+  };
 }
 
 const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
@@ -22,6 +27,8 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
   title,
   showTitles = true,
   className = '',
+  backgroundColor = '#FCEFE7',
+  borderRadius,
 }) => {
   const [visibleCounts, setVisibleCounts] = useState(3);
   const [slideWidthPx, setSlideWidthPx] = useState(370);
@@ -156,7 +163,16 @@ const ServiceGallerySection: React.FC<ServiceGalleryProps> = ({
 
   return (
     <section className={`w-full py-16 relative ${className}`}>
-      <div className="absolute inset-0 bg-[#FCEFE7] top-[220px] transition-all duration-1000 ease-out" />
+      <div
+        className="absolute inset-0 top-[220px] transition-all duration-1000 ease-out"
+        style={{
+          backgroundColor,
+          ...(borderRadius && {
+            borderTopLeftRadius: borderRadius.topLeft,
+            borderTopRightRadius: borderRadius.topRight,
+          }),
+        }}
+      />
 
       <div className="relative z-10 min-[1188px]:max-w-6xl min-[820px]:max-w-[785px] min-[542px]:max-w-[505px] min-[350px]:max-w-[300px] mx-auto">
         <h2 className="text-3xl lg:text-4xl font-bold text-black mb-14 text-center transition-all duration-700 ease-out hover:scale-105">

@@ -9,6 +9,7 @@ import readyForChange from '../../../../public/images/ready-for-change.png';
 import HeroSection from '@/components/sections/HeroSection';
 import { heroSectionData, proceduresTypesData, massagePricingData } from '@/mockData/massage-mock';
 import ProceduresTypesSection from '@/components/sections/ProceduresTypesSection';
+import ProcedureStepsSection from '@/components/sections/ProcedureStepsSection';
 
 // Gallery data for massage procedures
 const massageProceduresGallery = [
@@ -52,16 +53,20 @@ export default function MassagePage() {
         <div className="flex flex-col  max-w-6xl mx-auto mb-20">
           <ProceduresTypesSection data={proceduresTypesData} />
 
-          {/* Photo Gallery Section */}
-          <ServiceGallerySection
-            title="Наші масажні процедури"
-            subtitle="Переглянуте фото наших масажних процедур та атмосфери нашого центру. Кожен масаж виконується кваліфікованими спеціалістами з використанням натуральних олій та професійних технік."
-            images={massageProceduresGallery}
-            columns={2}
-            showTitles={true}
-          />
+          <div className="mb-20">
+            {/* Photo Gallery Section */}
+            <ServiceGallerySection
+              title="Наші масажні процедури"
+              subtitle="Переглянуте фото наших масажних процедур та атмосфери нашого центру. Кожен масаж виконується кваліфікованими спеціалістами з використанням натуральних олій та професійних технік."
+              images={massageProceduresGallery}
+              columns={2}
+              showTitles={true}
+              backgroundColor="none"
+            />
+          </div>
 
-          <PricesSection data={massagePricingData} />
+          <PricesSection data={massagePricingData} wavyBottomBorder={false} />
+          <ProcedureStepsSection />
         </div>
         <ReadyForChangeSection imgUrl={readyForChange} />
       </div>
