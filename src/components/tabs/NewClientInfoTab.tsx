@@ -9,9 +9,9 @@ const NewClientInfoTab = () => {
 
   return (
     <div id="new-customer" aria-labelledby="tab-1">
-      <div className="flex mb-12">
+      <div className="flex flex-col sm:flex-row mb-8 md:mb-12 gap-2 sm:gap-0">
         <h3
-          className={`font-semibold text-xl mr-11 cursor-pointer transition-colors duration-200 ${
+          className={`font-semibold text-lg md:text-xl sm:mr-11 cursor-pointer transition-colors duration-200 ${
             firstCurrentStep ? 'text-brand-600' : 'text-[#a6a2a2]'
           }`}
           onClick={() => setFirstCurrentStep(true)}
@@ -19,7 +19,7 @@ const NewClientInfoTab = () => {
           1 Особисті дані
         </h3>
         <h3
-          className={`font-semibold text-xl transition-colors duration-200 ${
+          className={`font-semibold text-lg md:text-xl transition-colors duration-200 ${
             !firstCurrentStep ? 'text-brand-600' : 'text-[#a6a2a2]'
           }`}
         >

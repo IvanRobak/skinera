@@ -20,8 +20,8 @@ const ClientDeliveryInfoForm = () => {
   const isSelectedCity = currentCity && cityName;
 
   return (
-    <div className="flex gap-8">
-      <div className="flex flex-col gap-6 flex-1">
+    <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+      <div className="flex flex-col gap-4 md:gap-6 flex-1">
         <DeliveryCityDropwDown
           city={currentCity}
           cityName={cityName}

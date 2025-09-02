@@ -48,8 +48,8 @@ const ClientInfoForm = ({
     <div>
       {' '}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex gap-10">
-          <div className="flex flex-col gap-12  w-[50%]">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+          <div className="flex flex-col gap-8 md:gap-12 w-full md:w-[50%]">
             <div>
               <div className="relative">
                 <input
@@ -132,7 +132,7 @@ const ClientInfoForm = ({
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-12  w-[50%]">
+          <div className="flex flex-col gap-8 md:gap-12 w-full md:w-[50%]">
             <div>
               <div className="relative">
                 <Controller
@@ -239,7 +239,10 @@ const ClientInfoForm = ({
                 {errors.email?.message ?? '\u00A0'}
               </p>
             </div>
-            <button type="submit" className="text-white bg-black min-h-12 hover:bg-gray-900">
+            <button
+              type="submit"
+              className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors"
+            >
               Далі
             </button>
           </div>
