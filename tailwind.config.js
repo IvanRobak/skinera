@@ -22,10 +22,13 @@ module.exports = {
                 '19xl': '176rem', // 2816px
             },
             colors: {
+                backgroundYellow: '#FCEFE7',
+                backgroundPink: '#F5E6ED',
                 background: "var(--background)",
                 foreground: "var(--foreground)",
                 grayCustom: '#8F8F8F',
                 pinkCustom: '#FFE9F5',
+
                 brand: {
                     50: '#FAF7F9',
                     100: '#F5E6ED',
