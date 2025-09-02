@@ -39,11 +39,11 @@ const SkinCareSection = ({ data }: Props) => {
   const listData = data.list;
 
   return (
-    <section className="w-full">
+    <section className="max-w-12xl mx-auto">
       <h2 className="font-bold text-xl sm:text-2xl md:text-3xl text-center mb-6 sm:mb-8 md:mb-11 px-4">
         Працюємо з усіма типами шкіри
       </h2>
-      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-11 px-4 sm:px-6 lg:px-8 max-w-8xl mx-auto ">
+      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-11 px-4 sm:px-6 lg:px-8">
         {/* Enhanced Photo Slider */}
         <div className="w-full lg:w-1/2 py-3">
           <Swiper images={skinCareImages} />

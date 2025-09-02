@@ -7,6 +7,20 @@ module.exports = {
     ],
     theme: {
         extend: {
+            maxWidth: {
+                '8xl': '88rem',   // 1408px
+                '9xl': '96rem',   // 1536px
+                '10xl': '104rem', // 1664px
+                '11xl': '112rem', // 1792px
+                '12xl': '120rem', // 1920px
+                '13xl': '128rem', // 2048px
+                '14xl': '136rem', // 2176px
+                '15xl': '144rem', // 2304px
+                '16xl': '152rem', // 2432px
+                '17xl': '160rem', // 2560px
+                '18xl': '168rem', // 2688px
+                '19xl': '176rem', // 2816px
+            },
             colors: {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
