@@ -10,6 +10,7 @@ const Navigation = ({ isMobile, onNavigate }: { isMobile?: boolean; onNavigate?:
   const isActive = (path: string) => pathname === path;
 
   const navItems = [
+    { path: '/services', label: 'Послуги' },
     { path: '/products', label: 'Товари' },
     { path: '/contacts', label: 'Контакти' },
   ];

@@ -4,9 +4,10 @@ import { formatPriceWithCurrency } from '@/lib/utils';
 
 interface Props {
   data: SectionPriceInterface[];
+  wavyBottomBorder?: boolean;
 }
 
-export default function PricesSection({ data }: Props) {
+export default function PricesSection({ data, wavyBottomBorder = true }: Props) {
   return (
     <section
       className="relative p-10 pb-20 w-screen left-1/2 -translate-x-1/2 pt-36"
@@ -52,7 +53,7 @@ export default function PricesSection({ data }: Props) {
           );
         })}
       </div>
-      <WavyBottomBorder />
+      {wavyBottomBorder && <WavyBottomBorder />}
     </section>
   );
 }

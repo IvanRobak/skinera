@@ -65,19 +65,26 @@ export default function LaserHairRemovalPage() {
         <HeroSection data={heroSectionData} />
         <div className="flex flex-col gap-20 max-w-6xl mx-auto mb-20 mt-20">
           <WhyChooseUsSection data={whyChooseUsData} />
-
-          {/* Photo Gallery Section */}
-          <ServiceGallerySection
-            title="Наші процедури лазерної епіляції"
-            subtitle="Переглянуте фото наших процедур лазерної епіляції та сучасного обладнання. Всі процедури виконуються кваліфікованими спеціалістами з дотриманням найвищих стандартів безпеки."
-            images={laserHairRemovalGallery}
-            columns={3}
-            showTitles={true}
-          />
+        </div>
+        <ServiceGallerySection
+          title="Наші процедури лазерної епіляції"
+          subtitle="Переглянуте фото наших процедур лазерної епіляції та сучасного обладнання. Всі процедури виконуються кваліфікованими спеціалістами з дотриманням найвищих стандартів безпеки."
+          images={laserHairRemovalGallery}
+          columns={3}
+          showTitles={true}
+          backgroundColor="#EAD2D7"
+          borderRadius={{
+            topLeft: '50% 20px',
+            topRight: '50% 20px',
+          }}
+        />
+        <div className="flex flex-col gap-20 max-w-6xl mx-auto mb-20">
           <ProcedureStepsSection />
           <PricesSection data={pricesData} />
           <LaserFaqSection />
         </div>
+        {/* Photo Gallery Section */}
+
         <ReadyForChangeSection imgUrl={readyForChangeImg} />
       </div>
     </>
