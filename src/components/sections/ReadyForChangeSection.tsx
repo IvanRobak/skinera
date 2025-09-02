@@ -2,9 +2,9 @@ import Image, { StaticImageData } from 'next/image';
 import ModalButton from '@/components/common/ModalButton';
 import ContactForm from '@/components/forms/ContactForm';
 
-export default function ReadyForChangeSection({imgUrl } : {imgUrl : StaticImageData}) {
+export default function ReadyForChangeSection({ imgUrl }: { imgUrl: StaticImageData }) {
   return (
-    <section className=" max-w-[1440px]  h-[367px] relative mx-auto">
+    <section className=" w-full  h-[367px] relative mx-auto ">
       <Image
         src={imgUrl}
         alt="Лазерна епіляція у салоні Skinera"
@@ -12,7 +12,7 @@ export default function ReadyForChangeSection({imgUrl } : {imgUrl : StaticImageD
         className="object-cover"
         priority
       />
-      <div className="relative z-10 pl-36 pt-[70px] flex flex-col items-start">
+      <div className="relative z-10 px-4 pt-[70px] flex flex-col items-center">
         <h2 className="text-3xl text-white font-semibold mb-4">Готова до перетвореня?</h2>
         <p className="text-xl text-white mb-6">
           Запишіться на безкоштовну консультацію та першу процедуру
