@@ -1,40 +1,40 @@
-import { StaticImageData } from "next/image";
-import { FC, SVGProps } from "react";
-
+import { StaticImageData } from 'next/image';
+import { FC, SVGProps } from 'react';
 
 export interface SkinCareDataInterface {
-    imgUrl : StaticImageData;
-    list : { title: string; description: string; Icon: FC<SVGProps<SVGSVGElement>> }[]
+  imgUrl: StaticImageData;
+  list: { title: string; description: string; Icon: FC<SVGProps<SVGSVGElement>> }[];
 }
 
 export interface ProceduresTypeDataInterface {
-    sectionTitle: string;
-    listAdvantages : {
-        title: string;
-        description : string;
-        price: number;
-        time: number;
-        list: string[];
-    }[]
+  sectionTitle: string;
+  listAdvantages: {
+    title: string;
+    description: string;
+    image?: string;
+    price?: number;
+    time?: number;
+    list: string[];
+  }[];
 }
 
 export interface HeroSectionDataInterface {
-    imgUrl : StaticImageData;
-    title: string;
-    description: string;
+  imgUrl: StaticImageData;
+  title: string;
+  description: string;
 }
 
 export interface WhyChooseUsDataInterface {
-    title: string,
-    description: string,
-    SvgIcon: FC<SVGProps<SVGSVGElement>>,
-    svgIconColor: string;
+  title: string;
+  description: string;
+  SvgIcon: FC<SVGProps<SVGSVGElement>>;
+  svgIconColor: string;
 }
 
 export interface SectionPriceInterface {
-    sectionTitle : string;
-    procedure : {
-        titles : string[];
-        prices: number[];
-    }
+  sectionTitle: string;
+  procedure: {
+    titles: string[];
+    prices: number[];
+  };
 }

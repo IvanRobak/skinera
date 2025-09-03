@@ -19,17 +19,17 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
     {
       path: '/services/face-care',
       label: 'Догляд за обличчям',
-      description: 'Професійний догляд за шкірою обличчя',
+      //   description: 'Професійний догляд за шкірою обличчя',
     },
     {
       path: '/services/laser-hair-removal',
       label: 'Лазерна епіляція',
-      description: 'Безболісне видалення небажаного волосся',
+      //   description: 'Безболісне видалення небажаного волосся',
     },
     {
       path: '/services/massage',
       label: 'Масаж',
-      description: 'Розслаблюючі та оздоровчі процедури',
+      //   description: 'Розслаблюючі та оздоровчі процедури',
     },
   ];
 
@@ -110,7 +110,7 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
                 onClick={handleServiceClick}
               >
                 <div className="font-medium">{service.label}</div>
-                <div className="text-xs text-gray-500 mt-1">{service.description}</div>
+                {/* <div className="text-xs text-gray-500 mt-1">{service.description}</div> */}
               </Link>
             ))}
           </div>
@@ -168,7 +168,7 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
             >
               {service.label}
             </div>
-            <div className="text-sm text-gray-500 mt-1">{service.description}</div>
+            {/* <div className="text-sm text-gray-500 mt-1">{service.description}</div> */}
           </Link>
         ))}
       </div>

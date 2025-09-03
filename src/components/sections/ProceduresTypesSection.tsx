@@ -1,7 +1,7 @@
 import React from 'react';
 import ModalButton from '../common/ModalButton';
 import ContactForm from '../forms/ContactForm';
-import CardPrice from '../common/CardPrice';
+import ProcedureCard from '../common/ProcedureCard';
 import WavyBottomBorder from '../common/WavyBottomBorder';
 import { ProceduresTypeDataInterface } from '@/interfaces/Section';
 
@@ -23,9 +23,10 @@ const ProceduresTypesSection = ({ data }: Props) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4 items-stretch">
           {advantagesArray.map((item, index) => {
             return (
-              <CardPrice
+              <ProcedureCard
                 title={item.title}
                 description={item.description}
+                image={item.image}
                 price={item.price}
                 time={item.time}
                 list={item.list}
@@ -36,7 +37,7 @@ const ProceduresTypesSection = ({ data }: Props) => {
         </div>
         <div className="text-center mt-12">
           <ModalButton
-            buttonText="Записатись на масаж"
+            buttonText="Записатись на консультацію"
             modalContent={<ContactForm />}
             className="px-8 py-3 rounded-full text-lg font-semibold transition duration-300 shadow-lg hover:shadow-xl"
           />
