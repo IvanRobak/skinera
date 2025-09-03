@@ -7,18 +7,17 @@ import massage from '../../public/images/massage.jpg';
 
 export const heroSectionData: HeroSectionDataInterface = {
   imgUrl: massage,
-  title: 'Масаж у Львовіі',
+  title: 'Масаж у Львові',
   description: ' Масаж - це не просто фізичний вплив, це відчуття здоровʼя та гармонії',
 };
 
 export const proceduresTypesData: ProceduresTypeDataInterface = {
-  sectionTitle: 'Процедури масажу',
+  sectionTitle: 'Огляд процедур',
   listAdvantages: [
     {
       title: 'Класичний',
       description: 'Традиційний масаж для розслаблення мʼязів та покращення кровообігу',
-      price: 600,
-      time: 45,
+      image: '/images/woman-getting-back-massage-from-masseur-small.jpg',
       list: [
         'Зняття мʼязової напруги',
         'Покращення кровообігу та лімфотоку',
@@ -29,8 +28,7 @@ export const proceduresTypesData: ProceduresTypeDataInterface = {
     {
       title: 'Антицелюлітний',
       description: 'Інтенсивний масаж для боротьби з целюлітом та покращення контурів тіла',
-      price: 800,
-      time: 60,
+      image: '/images/massage.jpg',
       list: [
         'Боротьба з целюлітом',
         'Покращення контурів тіла',
@@ -40,9 +38,8 @@ export const proceduresTypesData: ProceduresTypeDataInterface = {
     },
     {
       title: 'Лімфодренажний',
-      description: 'М’який масаж для виведення токсинів та зменшення набряклості',
-      price: 700,
-      time: 50,
+      description: 'Мʼякий масаж для виведення токсинів та зменшення набряклості',
+      image: '/images/woman-getting-back-massage-from-masseur.jpg',
       list: [
         'Виведення токсинів',
         'Зменшення набряклості',
@@ -53,8 +50,7 @@ export const proceduresTypesData: ProceduresTypeDataInterface = {
     {
       title: 'Розслаблюючий',
       description: 'Ніжний масаж для зняття стресу та досягнення повного розслаблення',
-      price: 650,
-      time: 45,
+      image: '/images/spa-composition.png',
       list: [
         'Зняття стресу',
         'Поновлення душевної рівноваги',

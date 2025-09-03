@@ -7,12 +7,12 @@ type Props = {
 
 const TabsSlider = ({ activeTab, setActiveTab }: Props) => {
   return (
-    <ul className="tabs-list flex" aria-labelledby="tabs-title">
-      <li>
+    <ul className="tabs-list flex flex-col sm:flex-row" aria-labelledby="tabs-title">
+      <li className="w-full sm:w-auto">
         <button
           type="button"
           onClick={() => setActiveTab('new')}
-          className={`tabsList-button pr-9 relative inline-block text-[#a6a2a2] pb-1
+          className={`tabsList-button w-full sm:w-auto pr-0 sm:pr-9 relative inline-block text-[#a6a2a2] pb-1 text-sm sm:text-base
             hover:text-[#212121]
             transition-all duration-500 ease-in-out
             before:content-[''] before:absolute before:left-0 before:bottom-0
@@ -26,11 +26,11 @@ const TabsSlider = ({ activeTab, setActiveTab }: Props) => {
           Новий покупець
         </button>
       </li>
-      <li>
+      <li className="w-full sm:w-auto">
         <button
           type="button"
           onClick={() => setActiveTab('permanent')}
-          className={`tabsList-button pl-9 relative inline-block text-[#a6a2a2] pb-1
+          className={`tabsList-button w-full sm:w-auto pl-0 sm:pl-9 relative inline-block text-[#a6a2a2] pb-1 text-sm sm:text-base
             hover:text-[#212121]
             transition-all duration-500 ease-in-out
             before:content-[''] before:absolute before:left-0 before:bottom-0

@@ -4,8 +4,8 @@ import { formatPriceWithCurrency } from '@/lib/utils';
 interface Props {
   title: string;
   description: string;
-  price: number;
-  time: number;
+  price?: number;
+  time?: number;
   list: string[];
 }
 
@@ -14,10 +14,23 @@ const CardPrice = ({ title, description, price, time, list }: Props) => {
     <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 h-full flex flex-col">
       <h3 className="text-xl font-semibold mb-2 text-gray-800">{title}</h3>
       <p className="text-gray-500 text-sm mb-4 h-16">{description}</p>
-      <div className="flex items-baseline justify-between mb-8">
-        <span className="text-2xl font-bold text-gray-800">{formatPriceWithCurrency(price)}</span>
-        <span className="text-brand-600 bg-brand-100 px-3 py-1 rounded-full text-sm">{time}хв</span>
-      </div>
+
+      {/* Показуємо ціну та час тільки якщо вони є */}
+      {(price !== undefined || time !== undefined) && (
+        <div className="flex items-baseline justify-between mb-8">
+          {price !== undefined && (
+            <span className="text-2xl font-bold text-gray-800">
+              {formatPriceWithCurrency(price)}
+            </span>
+          )}
+          {time !== undefined && (
+            <span className="text-brand-600 bg-brand-100 px-3 py-1 rounded-full text-sm">
+              {time}хв
+            </span>
+          )}
+        </div>
+      )}
+
       <ul className="space-y-3 mb-8">
         {list.map((item, index) => {
           return (
