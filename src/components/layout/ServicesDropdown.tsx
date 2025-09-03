@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface ServicesDropdownProps {
   isMobile?: boolean;
@@ -13,6 +12,7 @@ interface ServicesDropdownProps {
 const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
 
   const services = [
@@ -40,21 +40,46 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        forceClose();
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, []);
 
   const handleServiceClick = () => {
-    setIsOpen(false);
+    forceClose();
     if (isMobile && onNavigate) {
       onNavigate();
     }
+  };
+
+  const forceClose = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setIsOpen(false);
+  };
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 300); // 300ms затримка для більшої стабільності
   };
 
   if (isMobile) {
@@ -62,16 +87,13 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
       <div className="flex flex-col ">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`py-2 px-4 rounded-full transition-colors flex items-center justify-between ${
+          className={`py-2 px-4 rounded-full transition-colors ${
             isServicesActive
               ? 'text-brand-600 bg-brand-50 font-medium'
               : 'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
           }`}
         >
           <span>Послуги</span>
-          <ChevronDownIcon
-            className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          />
         </button>
 
         {isOpen && (
@@ -98,42 +120,58 @@ const ServicesDropdown = ({ isMobile, onNavigate }: ServicesDropdownProps) => {
   }
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div
+      className="relative"
+      ref={dropdownRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`py-2 px-4 rounded-full transition-colors flex items-center gap-1 ${
+        className={`py-2 px-4 rounded-full transition-colors ${
           isServicesActive
             ? 'text-brand-600 bg-brand-50 font-medium'
             : 'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
         }`}
       >
         <span>Послуги</span>
-        <ChevronDownIcon className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
-          {services.map(service => (
-            <Link
-              key={service.path}
-              href={service.path}
-              className={`block px-4 py-3 hover:bg-gray-50 transition-colors ${
-                pathname === service.path ? 'bg-brand-50' : ''
+      {/* Невидимий місток для з'єднання кнопки з меню */}
+      <div
+        className={`absolute top-full left-0 w-full h-2 ${isOpen ? 'block' : 'hidden'}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      />
+
+      <div
+        className={`absolute top-full left-0 mt-1 w-80 bg-white rounded-xl shadow-lg border border-gray-100 pt-3 pb-2 z-50 transition-all duration-200 ease-in-out ${
+          isOpen
+            ? 'opacity-100 visible transform translate-y-0'
+            : 'opacity-0 invisible transform -translate-y-2 pointer-events-none'
+        }`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {services.map(service => (
+          <Link
+            key={service.path}
+            href={service.path}
+            className={`block px-4 py-3 hover:bg-gray-100 transition-colors ${
+              pathname === service.path ? 'bg-brand-50' : ''
+            }`}
+            onClick={handleServiceClick}
+          >
+            <div
+              className={`font-medium ${
+                pathname === service.path ? 'text-brand-600' : 'text-gray-900'
               }`}
-              onClick={handleServiceClick}
             >
-              <div
-                className={`font-medium ${
-                  pathname === service.path ? 'text-brand-600' : 'text-gray-900'
-                }`}
-              >
-                {service.label}
-              </div>
-              <div className="text-sm text-gray-500 mt-1">{service.description}</div>
-            </Link>
-          ))}
-        </div>
-      )}
+              {service.label}
+            </div>
+            <div className="text-sm text-gray-500 mt-1">{service.description}</div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };
