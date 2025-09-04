@@ -76,7 +76,7 @@ const ClientInfoForm = ({
 
                 <span
                   className={`absolute left-0 bottom-0 h-[1px] w-0 ${
-                    errors.name ? 'bg-red-500 w-full' : 'bg-purple-600'
+                    errors.name ? 'bg-red-500 w-full' : 'bg-brand-600'
                   }
                                                         transition-all duration-500 ease-in-out 
                                                         origin-left peer-focus:w-full z-10`}
@@ -241,7 +241,7 @@ const ClientInfoForm = ({
             </div>
             <button
               type="submit"
-              className="text-white bg-black min-h-12 hover:bg-gray-900 w-full md:w-auto px-6 py-3 text-sm md:text-base transition-colors"
+              className="text-white bg-brand-600 min-h-12 hover:bg-brand-700 rounded-full w-full md:w-auto px-6 py-3 text-xl font-semibold md:text-base transition-colors"
             >
               Далі
             </button>

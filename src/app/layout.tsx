@@ -47,14 +47,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://skinera.com.ua'), // Update with your actual domain
+  metadataBase: new URL('https://skinera-3ndk.vercel.app/'), // Update with your actual domain
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'Skinera - Салон краси у Львові',
     description: 'Професійний салон краси у Львові. Догляд за обличчям, лазерна епіляція, масаж.',
-    url: 'https://skinera.com.ua',
+    url: 'https://skinera-3ndk.vercel.app/',
     siteName: 'Skinera',
     images: [
       {
